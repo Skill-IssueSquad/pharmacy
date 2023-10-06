@@ -19,11 +19,11 @@ const createMedicine = async (req,res)=>{
             isArchived,
             requiresPrescription
         });
-        res.json({message: "Medicine created successfully", newMedicine});
+        res.status(201).json({success:true,message:"Medicine created successfully", data: newMedicine});
     }
     catch(error){
 
-        res.status(400).json({error:error.message})
+        res.status(400).json({success:false,error:error.message,data:null})
 
     }
 }
@@ -33,11 +33,38 @@ const getMedicines = async (req,res)=>{
 
     try{
         const medicines = await Medicine.find({});
-        res.json({medicines});
+        res.status(201).json({success:true,message:"All Medicines",data:medicines});
     }
     catch(error){
-        res.status(400).json({error:error.message});
+        res.status(500).json({success:false,error:error.message,data:null});
     }
 }
 
-module.exports ={createMedicine,getMedicines}
+
+
+
+const searchMedicine = async (req,res)=>{
+
+  
+    //search by name
+    try{
+        
+        const medicine = await Medicine.find({medicineName:req.params.medicine});
+       
+       
+        if(medicine.length == 0)
+        {
+            return res.status(404).json({success:false,message:"Medicine not found",data:null});
+        }
+
+        res.status(201).json({success:true,message:"Medicine found",data:medicine});
+    }
+    catch(error){
+        res.status(500).json({success:false,error:error.message,data:null});
+    }
+
+}
+
+
+
+module.exports ={createMedicine,getMedicines,searchMedicine}

@@ -11,4 +11,4 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true }).then(() =>
 
 app.use(express.json())
 
-app.use('/medicines',medicineRouter);
+app.use('/pharmacist/medicines',medicineRouter);
