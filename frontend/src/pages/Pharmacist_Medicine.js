@@ -1,4 +1,6 @@
+
 import useAxios from "../useAxios";
+
 
 const Pharamacist_Medicine = () => {
   const { success, message, data } = useAxios();
@@ -13,10 +15,13 @@ const Pharamacist_Medicine = () => {
   // Access the first item in the data array
   const firstMedicine = data[0];
 
+
   return (
     <div className="home">
       <h4>{success}</h4>
       <p>Name of the first medicine: {firstMedicine.medicineName}</p>
+      <img src= {firstMedicine.picture} alt="Medicine" />
+
       {/* Access other properties as needed */}
     </div>
   );
