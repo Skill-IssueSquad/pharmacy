@@ -12,4 +12,4 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true }).then(() =>
 app.use(express.json())
 
 // Use the medicines route with controller
-app.use('/api', medicinesRouter);
+app.use('/api/medicines', medicinesRouter);
