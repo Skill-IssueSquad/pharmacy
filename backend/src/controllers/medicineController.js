@@ -63,7 +63,40 @@ const searchMedicine = async (req,res)=>{
     }
 
 }
+const updateMedicine = async (req, res) => {
+    const { medicineId } = req.params;
+    const { newDescription, newPrice } = req.body;
+  
+    try {
+      const updatedMedicine = await Medicine.findByIdAndUpdate(
+        medicineId,
+        {
+          $set: {
+            description: newDescription,
+            price: newPrice,
+          },
+        },
+        { new: true }
+      );
+  
+      if (!updatedMedicine) {
+        return res
+          .status(404)
+          .json({ success: false, message: 'Medicine not found', data: null });
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: 'Medicine updated successfully',
+        data: updatedMedicine,
+      });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ success: false, error: error.message, data: null });
+    }
+  };
+  
 
 
-
-module.exports ={createMedicine,getMedicines,searchMedicine}
+module.exports ={createMedicine,getMedicines,searchMedicine,updateMedicine}
