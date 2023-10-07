@@ -22,7 +22,6 @@ const getMedicineByName = (req,res)=>{
 
     const medicineName = req.params.name;
 
-
     Medicine.find({ medicineName: medicineName })
     .then(medicine => {
       if (medicine) {
