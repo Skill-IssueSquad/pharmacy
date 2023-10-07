@@ -16,8 +16,8 @@ router.get('/searchByName/:name' , medicineController.getMedicineByName)
 
 
 
-
 //get a specific medicine by use
 router.get('/searchByMedial_use/:medical_use' , medicineController.getMedicineByMedicalUse)
+
 
 module.exports = router;
