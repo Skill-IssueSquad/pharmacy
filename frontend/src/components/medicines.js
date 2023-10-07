@@ -1,83 +1,141 @@
-import React from 'react';
-import { Grid, Card, CardContent, Typography, CardMedia } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+  TextField,
+  InputAdornment,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const dummyData = [
-  {
-    id: 1,
-    name: 'Medicine 1',
-    price: '$10',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    imageUrl: 'https://example.com/medicine1.jpg',
-  },
-  {
-    id: 2,
-    name: 'Medicine 2',
-    price: '$15',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    imageUrl: 'https://example.com/medicine2.jpg',
-  },
-  // Add more dummy data here
-];
-
-const styles = {
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '60vh', // Adjust the container size
+    {
+      id: 1,
+      name: 'Medicine 1',
+      price: '$10',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      medicalUsage: 'For pain relief',
+      imageUrl: 'https://example.com/medicine1.jpg',
     },
-    card: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      textAlign: 'center'
-      
+    {
+      id: 2,
+      name: 'Medicine 2',
+      price: '$15',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      medicalUsage: 'For allergies',
+      imageUrl: 'https://example.com/medicine2.jpg',
     },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9 aspect ratio for the image
+    {
+      id: 3,
+      name: 'Medicine 2',
+      price: '$20',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      medicalUsage: 'For cough and cold',
+      imageUrl: 'https://example.com/medicine3.jpg',
     },
-    heading: {
-      fontSize: '1.2rem',
-      fontWeight: 'bold',
-      margin: '0.5rem 0',
+    {
+      id: 4,
+      name: 'Medicine 2',
+      price: '$12',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      medicalUsage: 'For fever',
+      imageUrl: 'https://example.com/medicine4.jpg',
     },
-    description: {
-      fontSize: '0.9rem',
-      marginBottom: '0.3rem', // Adjust the margin to reduce space
-    },
-    price: {
-      fontSize: '1rem',
-      fontWeight: 'bold',
-    },
-  };
+    // Add more dummy data here
+  ];
+  
+ 
   
 
 const MedicineList = () => {
-  return (
-    <div style={styles.container}>
-      <Grid container spacing={10}>
-        {dummyData.map((medicine) => (
-          <Grid item xs={12} sm={6} md={3} lg={2} key={medicine.id}>
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterMedicalUsage, setFilterMedicalUsage] = useState('');
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleFilterChange = (event) => {
+    setFilterMedicalUsage(event.target.value);
+  };
+
+  // Function to filter the medicines based on the search term
+  const filteredMedicines = dummyData.filter((medicine) => {
+    const { name } = medicine;
+    const search = searchTerm.toLowerCase();
+    return search ? name.toLowerCase().includes(search) : true;
+  });
+
+  // Function to filter the medicines based on the selected medical usage
+  const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
+    if (filterMedicalUsage) {
+      const { medicalUsage } = medicine;
+      const filter = filterMedicalUsage.toLowerCase();
+      return medicalUsage.toLowerCase().includes(filter);
+    }
+    return true;
+  });
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <TextField
+        label="Search by Name"
+        variant="outlined"
+        fullWidth
+        size="small"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        style={{ marginBottom: '1rem' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <i className="fa fa-search" />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <TextField
+        label="Filter by Medical Usage"
+        variant="outlined"
+        fullWidth
+        size="small"
+        value={filterMedicalUsage}
+        onChange={handleFilterChange}
+        style={{ marginBottom: '1rem' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <i className="fa fa-filter" />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <Grid container spacing={3}>
+        {filteredByMedicalUsage.map((medicine) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={medicine.id}>
             <Link to={`/medicine/${medicine.id}`} style={{ textDecoration: 'none' }}>
-              <Card style={styles.card}>
+              <Card>
                 <CardMedia
                   component="img"
                   alt={medicine.name}
                   image={medicine.imageUrl}
-                  style={styles.media}
+                  style={{ height: 0, paddingTop: '56.25%' }}
                 />
                 <CardContent>
-                  <Typography style={styles.heading} variant="h6" component="div">
+                  <Typography variant="h6" component="div">
                     {medicine.name}
                   </Typography>
-                  <Typography style={styles.description} variant="body2" color="textSecondary">
+                  <Typography variant="body2" color="textSecondary">
                     {medicine.description}
                   </Typography>
-                  <Typography style={styles.price} variant="h6" component="div">
+                  <Typography variant="body2" color="textSecondary">
+                    Medical Usage: {medicine.medicalUsage}
+                  </Typography>
+                  <Typography variant="h6" component="div">
                     {medicine.price}
                   </Typography>
                 </CardContent>
