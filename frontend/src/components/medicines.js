@@ -8,50 +8,26 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-const dummyData = [
-    {
-      id: 1,
-      name: 'Medicine 1',
-      price: '$10',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      medicalUsage: 'For pain relief',
-      imageUrl: 'https://example.com/medicine1.jpg',
-    },
-    {
-      id: 2,
-      name: 'Medicine 2',
-      price: '$15',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      medicalUsage: 'For allergies',
-      imageUrl: 'https://example.com/medicine2.jpg',
-    },
-    {
-      id: 3,
-      name: 'Medicine 2',
-      price: '$20',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      medicalUsage: 'For cough and cold',
-      imageUrl: 'https://example.com/medicine3.jpg',
-    },
-    {
-      id: 4,
-      name: 'Medicine 2',
-      price: '$12',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      medicalUsage: 'For fever',
-      imageUrl: 'https://example.com/medicine4.jpg',
-    },
-    // Add more dummy data here
-  ];
+import useAxios from '../useAxios';
   
- 
+ import { useEffect } from 'react';
   
 
 const MedicineList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMedicalUsage, setFilterMedicalUsage] = useState('');
+  const [dummyData, setDummyData] = useState([]);
+  const medicinesResponse = useAxios();
+
+  // Update dummyData with fetched data whenever medicinesResponse changes
+  useEffect(() => {
+    // Extract the data array from the response
+    if (medicinesResponse.data && Array.isArray(medicinesResponse.data)) {
+      setDummyData(medicinesResponse.data);
+    }
+  }, [medicinesResponse]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -61,11 +37,13 @@ const MedicineList = () => {
     setFilterMedicalUsage(event.target.value);
   };
 
+
+
   // Function to filter the medicines based on the search term
   const filteredMedicines = dummyData.filter((medicine) => {
-    const { name } = medicine;
+    const { medicineName } = medicine;
     const search = searchTerm.toLowerCase();
-    return search ? name.toLowerCase().includes(search) : true;
+    return search ? medicineName.toLowerCase().includes(search) : true;
   });
 
   // Function to filter the medicines based on the selected medical usage
@@ -79,7 +57,10 @@ const MedicineList = () => {
   });
 
   return (
-    <div style={{ padding: '20px' }}>
+    
+    <div className="search_and_filter" style={{ padding: '20px' }}>
+
+      <h1>Available Medicines</h1>
       <TextField
         label="Search by Name"
         variant="outlined"
@@ -116,18 +97,19 @@ const MedicineList = () => {
 
       <Grid container spacing={3}>
         {filteredByMedicalUsage.map((medicine) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={medicine.id}>
+         
+          <Grid item xs={11} sm={5} md={3} lg={2} key={medicine._id}>
             <Link to={`/medicine/${medicine.id}`} style={{ textDecoration: 'none' }}>
               <Card>
                 <CardMedia
                   component="img"
-                  alt={medicine.name}
-                  image={medicine.imageUrl}
-                  style={{ height: 0, paddingTop: '56.25%' }}
+                  alt={medicine.medicineName}
+                  image={medicine.picture}
+                 
                 />
                 <CardContent>
                   <Typography variant="h6" component="div">
-                    {medicine.name}
+                    {medicine.medicineName}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     {medicine.description}
