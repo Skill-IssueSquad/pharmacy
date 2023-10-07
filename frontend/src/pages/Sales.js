@@ -133,6 +133,7 @@ const MedicineSales = () => {
           />
         </div>
       </div>
+{medicinesResponse && <div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -176,6 +177,7 @@ const MedicineSales = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+            </div>}
     </div>
   );
 };

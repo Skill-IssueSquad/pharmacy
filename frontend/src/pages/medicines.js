@@ -78,10 +78,11 @@ const MedicineList = () => {
         />
       </div>
 </div>
+{medicinesResponse &&<div>
       <Grid container spacing={3}>
         {filteredByMedicalUsage.map((medicine) => (
           <Grid item xs={11} sm={5} md={3} lg={2} key={medicine._id}>
-            <Link to={`./${medicine._id}`} style={{ textDecoration: 'none' }}>
+          
               <Card>
                 <CardMedia
                   component="img"
@@ -109,10 +110,11 @@ const MedicineList = () => {
                   </Typography>
                 </CardContent>
               </Card>
-            </Link>
+            
           </Grid>
         ))}
       </Grid>
+      </div>}
     </div>
   );
 };
