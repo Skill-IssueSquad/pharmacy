@@ -20,3 +20,31 @@ text-align:center;
   align-items:space-between;
   justify-content:center;
 }
+
+/* MedicineDetails.css */
+.medicine-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.medicine-details-left {
+  flex: 1;
+  padding: 20px;
+}
+
+.medicine-details-right {
+  flex: 1;
+  text-align: center;
+}
+
+.medicine-details-right img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  margin-top:30px;
+}
+

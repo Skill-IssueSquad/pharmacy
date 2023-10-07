@@ -17,7 +17,7 @@ const MedicineList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMedicalUsage, setFilterMedicalUsage] = useState('');
   const [dummyData, setDummyData] = useState([]);
-  const medicinesResponse = useAxios();
+  const medicinesResponse = useAxios("http://localhost:8000/pharmacist/medicines");
 
   // Update dummyData with fetched data whenever medicinesResponse changes
   useEffect(() => {
@@ -81,7 +81,7 @@ const MedicineList = () => {
       <Grid container spacing={3}>
         {filteredByMedicalUsage.map((medicine) => (
           <Grid item xs={11} sm={5} md={3} lg={2} key={medicine._id}>
-            <Link to={`/medicine/${medicine.id}`} style={{ textDecoration: 'none' }}>
+            <Link to={`./${medicine._id}`} style={{ textDecoration: 'none' }}>
               <Card>
                 <CardMedia
                   component="img"

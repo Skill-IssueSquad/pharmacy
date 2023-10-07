@@ -52,10 +52,10 @@ const searchMedicine = async (req,res)=>{
     //search by name
     try{
         
-        const medicine = await Medicine.find({medicineName:req.params.medicine});
+        const medicine = await Medicine.findById(req.params.medicine);
        
        
-        if(medicine.length == 0)
+        if(medicine== null)
         {
             return res.status(404).json({success:false,message:"Medicine not found",data:null});
         }

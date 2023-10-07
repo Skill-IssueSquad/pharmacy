@@ -1,8 +1,7 @@
 import axios from "axios";
 import React from "react"
-const baseUrl = "http://localhost:8000/pharmacist/medicines";
 
-const useAxios = () => {
+const useAxios = (baseUrl) => {
    
 const[medicines,setMedicines]= React.useState([]);
 
