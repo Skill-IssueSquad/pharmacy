@@ -24,7 +24,7 @@ router.get('/' , async (req,res)=>{
 router.get('/searchByName/:name' , (req,res)=>{
     const medicineName = req.params.name;
 
-    Medicine.findOne({ medicineName: medicineName })
+    Medicine.find({ medicineName: medicineName })
     .then(medicine => {
       if (medicine) {
         res.status(200).json(medicine);
@@ -53,7 +53,7 @@ router.get('/searchByMedial_use/:medical_use' , (req,res)=>{
     //res.json({mssg : 'get a specific medicine by use '})
     
     
-    Medicine.findOne({ medicinalUsage: medicinalUsage })
+    Medicine.find({ medicinalUsage: medicinalUsage })
     .then(medicine => {
       if (medicine) {
         res.status(200).json(medicine);
