@@ -4,14 +4,14 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getMedicines,createMedicine,searchMedicine,updateMedicine
+    getMedicines,AddMedicine,searchMedicine,updateMedicine
 }=require('../controllers/medicineController');
 
 router.get('/:medicine',searchMedicine);
 router.get('/',getMedicines);
 
-router.post('/',createMedicine);
-router.patch('/:id', updateMedicine);
+router.post('/',AddMedicine);
+router.patch('/:name', updateMedicine);
 
 
 module.exports = router;

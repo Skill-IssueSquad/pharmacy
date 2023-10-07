@@ -2,7 +2,7 @@ const Medicine = require('../models/Medicines');
 
 const mongoose = require('mongoose');
 
-const createMedicine = async (req,res)=>{
+const AddMedicine = async (req,res)=>{
 
     const{medicineName,description,medicinalUsage,activeIngredients,quantity,price,picture,sales,isArchived,requiresPrescription} = req.body;
 
@@ -64,39 +64,40 @@ const searchMedicine = async (req,res)=>{
 
 }
 const updateMedicine = async (req, res) => {
-    const { medicineId } = req.params;
-    const { newDescription, newPrice } = req.body;
-  
-    try {
-      const updatedMedicine = await Medicine.findByIdAndUpdate(
-        medicineId,
-        {
-          $set: {
-            description: newDescription,
-            price: newPrice,
-          },
+  const { medicineName } = req.params; // Get the medicine name from URL params
+  const { newDescription, newPrice } = req.body;
+
+  try {
+    const updatedMedicine = await Medicine.findOneAndUpdate(
+      { medicineName: medicineName }, // Find by medicine name
+      {
+        $set: {
+          description: newDescription,
+          price: newPrice,
         },
-        { new: true }
-      );
-  
-      if (!updatedMedicine) {
-        return res
-          .status(404)
-          .json({ success: false, message: 'Medicine not found', data: null });
-      }
-  
-      res.status(200).json({
-        success: true,
-        message: 'Medicine updated successfully',
-        data: updatedMedicine,
-      });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ success: false, error: error.message, data: null });
+      },
+      { new: true }
+    );
+
+    if (!updatedMedicine) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Medicine not found', data: null });
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      message: 'Medicine updated successfully',
+      data: updatedMedicine,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: error.message, data: null });
+  }
+};
+
   
 
 
-module.exports ={createMedicine,getMedicines,searchMedicine,updateMedicine}
+module.exports ={AddMedicine,getMedicines,searchMedicine,updateMedicine}
