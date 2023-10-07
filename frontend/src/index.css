@@ -2,3 +2,21 @@
 font-size:45px;
 text-align:center;
 }
+/* Add this CSS to your stylesheet or component */
+
+
+/* Add this CSS to your stylesheet or component */
+.input-container {
+  padding:15px;
+  margin-bottom:20px;
+}
+
+/* Style the label */
+.input-container > .MuiTypography-root {
+  width: 150px; /* Adjust the width of the label as needed */
+}
+.TextFields{
+  display:flex;
+  align-items:space-between;
+  justify-content:center;
+}

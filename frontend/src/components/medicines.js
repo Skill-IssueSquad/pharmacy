@@ -11,9 +11,7 @@ import {
 import { Link } from "react-router-dom";
 
 import useAxios from '../useAxios';
-  
- import { useEffect } from 'react';
-  
+import { useEffect } from 'react';
 
 const MedicineList = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,8 +35,6 @@ const MedicineList = () => {
     setFilterMedicalUsage(event.target.value);
   };
 
-
-
   // Function to filter the medicines based on the search term
   const filteredMedicines = dummyData.filter((medicine) => {
     const { medicineName } = medicine;
@@ -49,55 +45,41 @@ const MedicineList = () => {
   // Function to filter the medicines based on the selected medical usage
   const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
     if (filterMedicalUsage) {
-      const { medicalUsage } = medicine;
+      const { medicinalUsage } = medicine;
       const filter = filterMedicalUsage.toLowerCase();
-      return medicalUsage.toLowerCase().includes(filter);
+      return medicinalUsage.toLowerCase().includes(filter);
     }
     return true;
   });
 
   return (
-    
     <div className="search_and_filter" style={{ padding: '20px' }}>
 
       <h1>Available Medicines</h1>
-      <TextField
-        label="Search by Name"
-        variant="outlined"
-        fullWidth
-        size="small"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        style={{ marginBottom: '1rem' }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <i className="fa fa-search" />
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <TextField
-        label="Filter by Medical Usage"
-        variant="outlined"
-        fullWidth
-        size="small"
-        value={filterMedicalUsage}
-        onChange={handleFilterChange}
-        style={{ marginBottom: '1rem' }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <i className="fa fa-filter" />
-            </InputAdornment>
-          ),
-        }}
-      />
-
+      <div className="TextFields">
+      <div className="input-container">
+        <Typography variant="body2">Search by Name</Typography>
+        <TextField
+          variant="outlined"
+          fullWidth
+          size="small"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+      <div className="input-container">
+        <Typography variant="body2">Filter by Medical Usage</Typography>
+        <TextField
+          variant="outlined"
+          fullWidth
+          size="small"
+          value={filterMedicalUsage}
+          onChange={handleFilterChange}
+        />
+      </div>
+</div>
       <Grid container spacing={3}>
         {filteredByMedicalUsage.map((medicine) => (
-         
           <Grid item xs={11} sm={5} md={3} lg={2} key={medicine._id}>
             <Link to={`/medicine/${medicine.id}`} style={{ textDecoration: 'none' }}>
               <Card>
@@ -105,7 +87,6 @@ const MedicineList = () => {
                   component="img"
                   alt={medicine.medicineName}
                   image={medicine.picture}
-                 
                 />
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -115,7 +96,7 @@ const MedicineList = () => {
                     {medicine.description}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    Medical Usage: {medicine.medicalUsage}
+                    Medical Usage: {medicine.medicinalUsage}
                   </Typography>
                   <Typography variant="h6" component="div">
                     {medicine.price}
