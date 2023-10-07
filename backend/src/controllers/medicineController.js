@@ -64,40 +64,22 @@ const searchMedicine = async (req,res)=>{
 
 }
 const updateMedicine = async (req, res) => {
-  const { medicineName } = req.params; // Get the medicine name from URL params
-  const { newDescription, newPrice } = req.body;
-
-  try {
-    const updatedMedicine = await Medicine.findOneAndUpdate(
-      { medicineName: medicineName }, // Find by medicine name
-      {
-        $set: {
-          description: newDescription,
-          price: newPrice,
-        },
-      },
-      { new: true }
-    );
-
-    if (!updatedMedicine) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'Medicine not found', data: null });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: 'Medicine updated successfully',
-      data: updatedMedicine,
-    });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, error: error.message, data: null });
-  }
-};
-
+  const { id } = req.params; // Get the medicine name from URL params
   
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return res.status(404).json({error: "no such medicine"})
+  }
+  const medicine = await Medicine.findOneAndUpdate({_id: id}, { 
+    ...req.body
+   })
+
+
+if(!medicine){
+  return res.status(404).json({error: "no such medicine"})
+}
+res.status(200).json(medicine)
+
+}
 
 
 module.exports ={AddMedicine,getMedicines,searchMedicine,updateMedicine}

@@ -11,7 +11,7 @@ router.get('/:medicine',searchMedicine);
 router.get('/',getMedicines);
 
 router.post('/',AddMedicine);
-router.patch('/:name', updateMedicine);
+router.patch('/:id', updateMedicine);
 
 
 module.exports = router;
