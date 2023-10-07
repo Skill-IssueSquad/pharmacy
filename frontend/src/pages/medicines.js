@@ -90,16 +90,22 @@ const MedicineList = () => {
                 />
                 <CardContent>
                   <Typography variant="h6" component="div">
-                    {medicine.medicineName}
+                    Name: {medicine.medicineName}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {medicine.description}
+                  <Typography variant="body2" >
+                   Description: {medicine.description}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Medical Usage: {medicine.medicinalUsage}
+                  <Typography variant="body2" >
+                     Usage: {medicine.medicinalUsage}
                   </Typography>
-                  <Typography variant="h6" component="div">
-                    {medicine.price}
+                  <Typography variant="body2" component="div">
+                     Price: {medicine.price}
+                  </Typography>
+                  <Typography variant="body2" component="div">
+                     Sales: {medicine.sales}
+                  </Typography>
+                  <Typography variant="body2" component="div">
+                     Quantity: {medicine.quantity}
                   </Typography>
                 </CardContent>
               </Card>
