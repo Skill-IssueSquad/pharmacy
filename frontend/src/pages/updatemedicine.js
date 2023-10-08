@@ -16,7 +16,7 @@ function UpdateMedicine() {
     // Fetch medicine details based on medicineId and update medicineData state
     const fetchMedicineDetails = async () => {
       try {
-        const response = await fetch(`/pharmacist/medicines/${medicineId}`);
+        const response = await fetch(`http://localhost:8000/pharmacist/medicines/${medicineId}`);
         if (response.status === 200) {
           const data = await response.json();
           setMedicineData(data);

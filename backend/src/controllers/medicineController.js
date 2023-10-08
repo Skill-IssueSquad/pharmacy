@@ -63,6 +63,22 @@ const searchMedicine = async (req,res)=>{
     }
 
 }
+const medicinedetailsbyid = async (req, res) => {
+   // const id = req.params.id; // Get the medicine ID from the request parameters
+  
+    try {
+      const medicine = await Medicine.findById({_id:id});
+  
+      if (!medicine) {
+        return res.status(404).json({ success: false, message: "Medicine not found", data: null });
+      }
+  
+      res.status(200).json({ success: true, message: "Medicine found", data: medicine });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.message, data: null });
+    }
+  }
+  
 const updateMedicine = async (req, res) => {
   const { id } = req.params; // Get the medicine name from URL params
   
@@ -82,4 +98,4 @@ res.status(200).json(medicine)
 }
 
 
-module.exports ={AddMedicine,getMedicines,searchMedicine,updateMedicine}
+module.exports ={AddMedicine,getMedicines,searchMedicine,updateMedicine,medicinedetailsbyid}
