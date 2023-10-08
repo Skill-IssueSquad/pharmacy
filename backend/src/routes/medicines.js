@@ -26,11 +26,15 @@ const fileStorageEngine = multer.diskStorage({
 
 
 const {
-    getMedicines,createMedicine,searchMedicine
+    getMedicines,createMedicine,searchMedicine,updateMedicine,medicinedetailsbyid
 }=require('../controllers/medicineController');
 
-router.get('/:medicine',searchMedicine);
+
+
 router.get('/',getMedicines);
+router.get('/:id',medicinedetailsbyid);
+router.patch('/:id', updateMedicine);
+
 
 router.post('/',upload.single('image'),createMedicine);
 

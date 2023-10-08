@@ -20,6 +20,14 @@ const Navbar = () => {
           >
             Sales
           </Button>
+          <Button
+            component={Link}
+            to="/pharmacist/medicines/addmedicine"
+            color="inherit"
+          >
+            AddMedicine
+          </Button>
+         
         </Toolbar>
       </Container>
     </AppBar>
