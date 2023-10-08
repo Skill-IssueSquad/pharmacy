@@ -16,14 +16,14 @@ import { useEffect } from 'react';
 const MedicineList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMedicalUsage, setFilterMedicalUsage] = useState('');
-  const [dummyData, setDummyData] = useState([]);
+  const [Data, setData] = useState([]);
   const {medicines} = useAxios("http://localhost:8000/pharmacist/medicines");
 
   // Update dummyData with fetched data whenever medicinesResponse changes
   useEffect(() => {
     // Extract the data array from the response
     if (medicines.data && Array.isArray(medicines.data)) {
-      setDummyData(medicines.data);
+      setData(medicines.data);
     }
   }, [medicines]);
 
@@ -36,7 +36,7 @@ const MedicineList = () => {
   };
 
   // Function to filter the medicines based on the search term
-  const filteredMedicines = dummyData.filter((medicine) => {
+  const filteredMedicines = Data.filter((medicine) => {
     const { medicineName } = medicine;
     const search = searchTerm.toLowerCase();
     return search ? medicineName.toLowerCase().includes(search) : true;
