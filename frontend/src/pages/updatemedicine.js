@@ -120,6 +120,34 @@ function UpdateMedicine() {
           <Typography variant="body2">{medicineData.price}</Typography>
         )}
       </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2">Sales:</Typography>
+        {isEditing ? (
+          <TextField
+            label="Sales"
+            fullWidth
+            type="number"
+            value={medicineData.sales || ''}
+            onChange={(e) => handleInputChange('sales', e.target.value)}
+          />
+        ) : (
+          <Typography variant="body2">{medicineData.sales}</Typography>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2">Quantity:</Typography>
+        {isEditing ? (
+          <TextField
+            label="Quantity"
+            fullWidth
+            type="number"
+            value={medicineData.quantity || ''}
+            onChange={(e) => handleInputChange('quantity', e.target.value)}
+          />
+        ) : (
+          <Typography variant="body2">{medicineData.quantity}</Typography>
+        )}
+      </Grid>
       {/* Add more fields for other medicine details */}
       <Grid item xs={12}>
         {isEditing ? (
