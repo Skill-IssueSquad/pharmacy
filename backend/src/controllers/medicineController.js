@@ -2,13 +2,11 @@ const Medicine = require('../models/Medicines');
 
 const mongoose = require('mongoose');
 
-const createMedicine = async (req,res)=>{
+const AddMedicine = async (req,res)=>{
 
-    const{medicineName,description,medicinalUsage,activeIngredients,quantity,price,sales,isArchived,requiresPrescription} = req.body;
-
-   if(req.file != undefined)
-      picture =`http://localhost:8000/images/${req.file.filename}`
-  
+    const{medicineName,description,medicinalUsage,activeIngredients,quantity,price,picture,sales,isArchived,requiresPrescription} = req.body;
+    if(req.file != undefined)
+    picture =`http://localhost:8000/images/${req.file.filename}`;
     try{
         const newMedicine = await Medicine.create({
             medicineName,
@@ -30,6 +28,7 @@ const createMedicine = async (req,res)=>{
 
     }
 }
+
 
 
 const getMedicines = async (req,res)=>{
@@ -102,4 +101,4 @@ const medicinedetailsbyid = async (req, res) => {
  
  }
 
-module.exports ={createMedicine,getMedicines,searchMedicine,updateMedicine,medicinedetailsbyid}
+module.exports ={AddMedicine,getMedicines,searchMedicine,updateMedicine,medicinedetailsbyid}
