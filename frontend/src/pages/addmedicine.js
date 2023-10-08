@@ -24,7 +24,8 @@ const AddMedicine = () => {
   const [ingredientAmount, setIngredientAmount] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
-
+  const [isMedicineAdded, setIsMedicineAdded] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   // Function to handle adding active ingredients
   const handleAddIngredient = () => {
     if (ingredientName && ingredientAmount) {
@@ -64,9 +65,8 @@ const AddMedicine = () => {
       // Check the response status and handle success or error
       if (response.status === 201) {
         // Medicine successfully added
-        // You can handle success here, e.g., show a success message or redirect
-  
-        // Reset the form fields
+    setIsMedicineAdded(true);
+    setSuccessMessage('Medicine added successfully');
         setMedicineName('');
         setDescription('');
         setMedicinalUsage('');
@@ -82,12 +82,21 @@ const AddMedicine = () => {
       console.error('Error:', error); // Add this line
       // Handle network or other errors
     }
+
+
+    
   };
   
 
 
   return (
     <Grid container spacing={3}>
+        {isMedicineAdded && (
+  <Grid item xs={12}>
+    <Typography variant="successMessage">{successMessage}</Typography>
+  </Grid>
+)}
+
       <Grid item xs={12}>
         <Typography variant="h4">Add Medicine</Typography>
       </Grid>
