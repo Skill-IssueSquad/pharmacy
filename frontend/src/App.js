@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import MedicineList from "./pages/medicines";
+import MedicineList from "./pages/MedicineList";
 import Navbar from './components/Navbar';
 import MedicineSales from './pages/Sales';
 function App() {
