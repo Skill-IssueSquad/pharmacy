@@ -108,6 +108,7 @@ const MedicineList = () => {
                   <Typography variant="body2" component="div">
                      Quantity: {medicine.quantity}
                   </Typography>
+                  <Link to={`/pharmacist/medicines/updatemedicine/${medicine._id}`}>Update</Link>
                 </CardContent>
               </Card>
             

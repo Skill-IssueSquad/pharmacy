@@ -7,6 +7,7 @@ import MedicineList from "./pages/medicines";
 
 import MedicineSales from './pages/Sales';
 import AddMedicine from './pages/addmedicine';
+import UpdateMedicine from './pages/updatemedicine';
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,8 @@ function App() {
         <Route exact path="/pharmacist/medicines" element={<MedicineList />} />
         <Route exact path="/pharmacist/medicines/sales" element={<MedicineSales/>} />
         <Route exact path="/pharmacist/medicines/addmedicine" element={<AddMedicine/>} />
+        <Route exact path="/pharmacist/medicines/updatemedicine/:medicineId" element={<UpdateMedicine/>} />
+
 
       </Routes>
     </BrowserRouter>
