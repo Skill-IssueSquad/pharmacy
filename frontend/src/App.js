@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 
+import MedicinePatient from './pages/medicinePatient'
+
 function App() {
   return (
     <BrowserRouter>
