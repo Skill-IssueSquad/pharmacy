@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -11,18 +11,34 @@ import Button from "@mui/material/Button";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
-// Sample data
-const initialRows = [
-  { id: 1, name: "John", age: 30, country: "USA" },
-  { id: 2, name: "Alice", age: 25, country: "Canada" },
-  { id: 3, name: "Bob", age: 35, country: "USA" },
-  { id: 4, name: "Eve", age: 28, country: "Canada" },
-];
-
 const MultiLevelFilterTable = () => {
-  const [filter, setFilter] = useState({ name: "", age: 0, country: "" });
-  const [rows, setRows] = useState(initialRows);
+  const [filter, setFilter] = useState({ medicineName: "", medicinalUsage: "" });
+  const [data, setData] = useState([]); // Store the fetched data
   const [sorting, setSorting] = useState({ field: "", order: "" });
+
+  useEffect(() => {
+    // Fetch the data when the component mounts
+    fetchMedicines();
+  }, []);
+
+  const fetchMedicines = async () => {
+    try {
+      console.log("HERE:");
+      const response = await fetch("http://localhost:8000/medicine");
+      console.log("Response status:", response.status);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const json = await response.json();
+      console.log("Fetched data:", json);
+
+      // Store the fetched data in the 'data' state
+      setData(json);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -36,144 +52,117 @@ const MultiLevelFilterTable = () => {
         field,
         order: sorting.order === "asc" ? "desc" : "asc",
       });
-      // Reverse the rows
-      setRows([...rows].reverse());
+      // Reverse the data array
+      setData([...data].reverse());
     } else {
       // Set the field to sort and default order (asc)
       setSorting({
         field,
         order: "asc",
       });
-      // Sort the rows by the selected field in ascending order
-      setRows([...rows].sort((a, b) => a[field] - b[field]));
+      // Sort the data array by the selected field in ascending order
+      setData([...data].sort((a, b) => {
+        if (field === "_id") {
+          // Special case for sorting by "_id"
+          return a[field]["$oid"].localeCompare(b[field]["$oid"]);
+        }
+        return a[field].localeCompare(b[field]);
+      }));
     }
   };
+  
+  const tableHeaders = [
+    "_id",
+    "medicineName",
+    "description",
+    "medicinalUsage",
+    "activeIngredients",
+    "quantity",
+    "price",
+    "picture",
+    "sales",
+    "isArchived",
+    "__v",
+  ];
 
-  const filteredRows = rows.filter((row) => {
-    var cond1 = row.name.toLowerCase().includes(filter.name.toLowerCase());
-    var cond2 = false;
-    var cond3 = row.country
-      .toLowerCase()
-      .includes(filter.country.toLowerCase());
-    if (row.age > filter.age) {
-      cond2 = true;
-    }
+  const filteredData = data.filter((item) => {
+    const { medicineName, medicinalUsage } = filter;
     return (
-      //   row.name.toLowerCase().includes(filter.name.toLowerCase()) &&
-      //   row.age.toString().includes(filter.age) &&
-      //   row.country.toLowerCase().includes(filter.country.toLowerCase())
-      cond1 && cond2 && cond3
+      item.medicineName.toLowerCase().includes(medicineName.toLowerCase()) &&
+      item.medicinalUsage.toLowerCase().includes(medicinalUsage.toLowerCase())
     );
   });
 
   return (
     <div>
       <TextField
-        label="Filter by Name"
-        name="name"
-        value={filter.name}
+        label="Filter by medicineName"
+        name="medicineName"
+        value={filter.medicineName}
         onChange={handleFilterChange}
       />
       <TextField
-        label="Filter by Age"
-        name="age"
-        value={filter.age}
-        onChange={handleFilterChange}
-      />
-      <TextField
-        label="Filter by Country"
-        name="country"
-        value={filter.country}
+        label="Filter by medicinalUsage"
+        name="medicinalUsage"
+        value={filter.medicinalUsage}
         onChange={handleFilterChange}
       />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                ID{" "}
-                <Button
-                  size="small"
-                  onClick={() => handleSort("id")}
-                  startIcon={
-                    sorting.field === "id" ? (
-                      sorting.order === "asc" ? (
-                        <ArrowUpwardIcon />
+              {tableHeaders.map((header) => (
+                <TableCell key={header}>
+                  {header}{" "}
+                  <Button
+                    size="small"
+                    onClick={() => handleSort(header)}
+                    startIcon={
+                      sorting.field === header ? (
+                        sorting.order === "asc" ? (
+                          <ArrowUpwardIcon />
+                        ) : (
+                          <ArrowDownwardIcon />
+                        )
                       ) : (
-                        <ArrowDownwardIcon />
-                      )
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )
-                  }
-                ></Button>
-              </TableCell>
-              <TableCell>
-                Name{" "}
-                <Button
-                  size="small"
-                  onClick={() => handleSort("name")}
-                  startIcon={
-                    sorting.field === "name" ? (
-                      sorting.order === "asc" ? (
                         <ArrowUpwardIcon />
-                      ) : (
-                        <ArrowDownwardIcon />
                       )
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )
-                  }
-                ></Button>
-              </TableCell>
-              <TableCell>
-                Age{" "}
-                <Button
-                  size="small"
-                  onClick={() => handleSort("age")}
-                  startIcon={
-                    sorting.field === "age" ? (
-                      sorting.order === "asc" ? (
-                        <ArrowUpwardIcon />
-                      ) : (
-                        <ArrowDownwardIcon />
-                      )
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )
-                  }
-                ></Button>
-              </TableCell>
-              <TableCell>
-                Country{" "}
-                <Button
-                  size="small"
-                  onClick={() => handleSort("country")}
-                  startIcon={
-                    sorting.field === "country" ? (
-                      sorting.order === "asc" ? (
-                        <ArrowUpwardIcon />
-                      ) : (
-                        <ArrowDownwardIcon />
-                      )
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )
-                  }
-                ></Button>
-              </TableCell>
+                    }
+                  ></Button>
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.age}</TableCell>
-                <TableCell>{row.country}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+  {filteredData.map((item) => (
+    <TableRow key={item._id["$oid"]}>
+      <TableCell>{item._id}</TableCell>
+      <TableCell>{item.medicineName}</TableCell>
+      <TableCell>{item.description}</TableCell>
+      <TableCell>{item.medicinalUsage}</TableCell>
+      <TableCell>
+      <ul>
+                  {item.activeIngredients.map((ingredient) => (
+                    <li key={ingredient._id}>
+                      <p>Ingredient Name: {ingredient.ingredientName}</p>
+                      <p>Ingredient Amount: {ingredient.ingredientAmount}</p>
+                    </li>
+                  ))}
+                </ul>
+                </TableCell>
+
+      <TableCell>{item.quantity}</TableCell>
+      <TableCell>{item.price}</TableCell>
+     {/*<TableCell>{item.picture.type}</TableCell>*/}
+     <TableCell>TEMP</TableCell>
+      <TableCell>{item.sales}</TableCell>
+      <TableCell>
+  {item.isArchived !== undefined ? item.isArchived.toString() : ''}
+</TableCell>
+      <TableCell>{item.__v}</TableCell>
+    </TableRow>
+  ))}
+</TableBody>
         </Table>
       </TableContainer>
     </div>

@@ -1,6 +1,7 @@
 import MedicinePatients from "../components/medicinePatient";
 import SearchComponent from "../components/SearchComponent";
 import SearchComponentMedicalUse from "../components/SearchComponentMedicalUse";
+import MultiLevelFilterTable from "../components/test"
 
 import { useState } from "react";
 
@@ -13,9 +14,12 @@ const [filteredMedicines, setFilteredMedicines] = useState([]);
 
   return (
     <div className="home">
-      <SearchComponent updateFilteredMedicines={updateFilteredMedicines} />
+      {/*<SearchComponent updateFilteredMedicines={updateFilteredMedicines} />
       <SearchComponentMedicalUse updateFilteredMedicines={updateFilteredMedicines} />
-      <MedicinePatients medicines={filteredMedicines} />
+  <MedicinePatients medicines={filteredMedicines} />*/}
+  
+  <MultiLevelFilterTable />
+
     </div>
   );
 };
