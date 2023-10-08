@@ -24,15 +24,15 @@ const MedicineSales = () => {
   const [dummyData, setDummyData] = useState([]);
   const [page, setPage] = useState(0); // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page
-  const medicinesResponse = useAxios('http://localhost:8000/pharmacist/medicines');
+  const {medicines} = useAxios('http://localhost:8000/pharmacist/medicines');
 
   // Update dummyData with fetched data whenever medicinesResponse changes
   useEffect(() => {
     // Extract the data array from the response
-    if (medicinesResponse.data && Array.isArray(medicinesResponse.data)) {
-      setDummyData(medicinesResponse.data);
+    if (medicines.data && Array.isArray(medicines.data)) {
+      setDummyData(medicines.data);
     }
-  }, [medicinesResponse]);
+  }, [medicines]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -133,7 +133,7 @@ const MedicineSales = () => {
           />
         </div>
       </div>
-{medicinesResponse && <div>
+{medicines && <div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

@@ -17,15 +17,15 @@ const MedicineList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMedicalUsage, setFilterMedicalUsage] = useState('');
   const [dummyData, setDummyData] = useState([]);
-  const medicinesResponse = useAxios("http://localhost:8000/pharmacist/medicines");
+  const {medicines} = useAxios("http://localhost:8000/pharmacist/medicines");
 
   // Update dummyData with fetched data whenever medicinesResponse changes
   useEffect(() => {
     // Extract the data array from the response
-    if (medicinesResponse.data && Array.isArray(medicinesResponse.data)) {
-      setDummyData(medicinesResponse.data);
+    if (medicines.data && Array.isArray(medicines.data)) {
+      setDummyData(medicines.data);
     }
-  }, [medicinesResponse]);
+  }, [medicines]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -78,7 +78,7 @@ const MedicineList = () => {
         />
       </div>
 </div>
-{medicinesResponse &&<div>
+{medicines &&<div>
       <Grid container spacing={3}>
         {filteredByMedicalUsage.map((medicine) => (
           <Grid item xs={11} sm={5} md={3} lg={2} key={medicine._id}>

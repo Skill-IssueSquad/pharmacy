@@ -13,7 +13,7 @@ React.useEffect(()=>{
         console.log(err);
     })
 },[])
-return medicines;
+return {medicines};
 }
 
 export default useAxios;
