@@ -69,54 +69,69 @@ function UpdateMedicine() {
         <Typography variant="h6">Medicine Details</Typography>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body2">Medicine Name: {medicineData.medicineName}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2">Description: {medicineData.description}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2">Medicinal Usage: {medicineData.medicinalUsage}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2">Price: {medicineData.price}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2">Sales: {medicineData.sales}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2">Quantity: {medicineData.quantity}</Typography>
-      </Grid>
-      {/* Add more fields for other medicine details */}
-      <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>
-          Edit Medicine
-        </Button>
-      </Grid>
-
-      {/* Editable Fields */}
-      {isEditing && (
-        <Grid item xs={12}>
-          <Typography variant="h6">Update Medicine Details</Typography>
-        </Grid>
-      )}
-      {isEditing && (
-        <Grid item xs={12}>
+        <Typography variant="body2">Medicine Name:</Typography>
+        {isEditing ? (
           <TextField
             label="Medicine Name"
             fullWidth
             value={medicineData.medicineName || ''}
             onChange={(e) => handleInputChange('medicineName', e.target.value)}
           />
-        </Grid>
-      )}
-      {/* Add more editable fields for other medicine details */}
-      {isEditing && (
-        <Grid item xs={12}>
+        ) : (
+          <Typography variant="body2">{medicineData.medicineName}</Typography>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2">Description:</Typography>
+        {isEditing ? (
+          <TextField
+            label="Description"
+            fullWidth
+            value={medicineData.description || ''}
+            onChange={(e) => handleInputChange('description', e.target.value)}
+          />
+        ) : (
+          <Typography variant="body2">{medicineData.description}</Typography>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2">Medicinal Usage:</Typography>
+        {isEditing ? (
+          <TextField
+            label="Medicinal Usage"
+            fullWidth
+            value={medicineData.medicinalUsage || ''}
+            onChange={(e) => handleInputChange('medicinalUsage', e.target.value)}
+          />
+        ) : (
+          <Typography variant="body2">{medicineData.medicinalUsage}</Typography>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2">Price:</Typography>
+        {isEditing ? (
+          <TextField
+            label="Price"
+            fullWidth
+            value={medicineData.price || ''}
+            onChange={(e) => handleInputChange('price', e.target.value)}
+          />
+        ) : (
+          <Typography variant="body2">{medicineData.price}</Typography>
+        )}
+      </Grid>
+      {/* Add more fields for other medicine details */}
+      <Grid item xs={12}>
+        {isEditing ? (
           <Button variant="contained" color="primary" onClick={handleSave}>
             Save
           </Button>
-        </Grid>
-      )}
+        ) : (
+          <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>
+            Edit Medicine
+          </Button>
+        )}
+      </Grid>
     </Grid>
   );
 }
