@@ -1,4 +1,4 @@
-import MedicinePatients from "./medicinePatient";
+import MedicinePatients from "../components/medicinePatient";
 import SearchComponent from "../components/SearchComponent";
 import SearchComponentMedicalUse from "../components/SearchComponentMedicalUse";
 
