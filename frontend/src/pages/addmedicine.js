@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Grid,
   Typography,
@@ -27,6 +26,7 @@ const AddMedicine = () => {
   const [price, setPrice] = useState(0);
   const [isMedicineAdded, setIsMedicineAdded] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+
   // Function to handle adding active ingredients
   const handleAddIngredient = () => {
     if (ingredientName && ingredientAmount) {
@@ -40,7 +40,7 @@ const AddMedicine = () => {
   // Function to handle submitting the form
   const handleSubmit = async () => {
     console.log('handleSubmit called'); // Add this line
-    
+
     // Create a payload with the form data
     const formData = {
       medicineName,
@@ -50,7 +50,7 @@ const AddMedicine = () => {
       quantity,
       price,
     };
-  
+
     try {
       // Make an HTTP POST request to your server endpoint
       const response = await fetch('http://localhost:8000/pharmacist/medicines', {
@@ -60,14 +60,14 @@ const AddMedicine = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       console.log('Response status:', response.status); // Add this line
-  
+
       // Check the response status and handle success or error
       if (response.status === 201) {
         // Medicine successfully added
-    setIsMedicineAdded(true);
-    setSuccessMessage('Medicine added successfully');
+        setIsMedicineAdded(true);
+        setSuccessMessage('Medicine added successfully');
         setMedicineName('');
         setDescription('');
         setMedicinalUsage('');
@@ -83,20 +83,15 @@ const AddMedicine = () => {
       console.error('Error:', error); // Add this line
       // Handle network or other errors
     }
-
-
-    
   };
-  
-
 
   return (
     <Grid container spacing={3}>
-        {isMedicineAdded && (
-  <Grid item xs={12}>
-    <Typography variant="successMessage">{successMessage}</Typography>
-  </Grid>
-)}
+      {isMedicineAdded && (
+        <Grid item xs={12}>
+          <Typography variant="successMessage">{successMessage}</Typography>
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <Typography variant="h4">Add Medicine</Typography>
@@ -141,6 +136,8 @@ const AddMedicine = () => {
             <TextField
               label="Ingredient Amount"
               fullWidth
+              type="number"
+              inputProps={{ inputMode: 'numeric' }}
               value={ingredientAmount}
               onChange={(e) => setIngredientAmount(e.target.value)}
             />
