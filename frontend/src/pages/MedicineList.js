@@ -41,22 +41,23 @@ const MedicineList = () => {
     setFilterMedicalUsage(event.target.value);
   };
 
-  // Function to filter the medicines based on the search term
-  const filteredMedicines = Data.filter((medicine) => {
-    const { medicineName } = medicine;
-    const search = searchTerm.toLowerCase();
-    return search ? medicineName.toLowerCase().includes(search) : true;
-  });
+// Function to filter the medicines based on the search term
+const filteredMedicines = Data.filter((medicine) => {
+  const { medicineName } = medicine;
+  const search = searchTerm.toLowerCase();
+  return (search && medicineName) ? medicineName.toLowerCase().includes(search) : true;
+});
 
-  // Function to filter the medicines based on the selected medical usage
-  const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
-    if (filterMedicalUsage) {
-      const { medicinalUsage } = medicine;
-      const filter = filterMedicalUsage.toLowerCase();
-      return medicinalUsage.toLowerCase().includes(filter);
-    }
-    return true;
-  });
+// Function to filter the medicines based on the selected medical usage
+const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
+  if (filterMedicalUsage) {
+    const { medicinalUsage } = medicine;
+    const filter = filterMedicalUsage.toLowerCase();
+    return (medicinalUsage && medicinalUsage.trim()) ? medicinalUsage.toLowerCase().includes(filter) : false;
+  }
+  return true;
+});
+
 
   // Calculate total number of pages
   const pageCount = Math.ceil(filteredByMedicalUsage.length / rowsPerPage);
