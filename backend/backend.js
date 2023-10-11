@@ -1,11 +1,44 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
+//express app
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const PatientRegisteration = require("./src/routes/patientRegisteration");
+const PharmacistRegisteration = require("./src/routes/pharmacistRegisteration");
+const mongoose = require("mongoose");
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true }).then(() => {
-    app.listen(8000, () => console.log('Server Started'))
-}).catch(err => console.log(err))
+app.use(express.json());
+app.use(cors());
 
-app.use(express.json())
+//middleware
+app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
+});
+
+//routes
+// app.use("/", (req, res) => {
+//   res.send("hello");
+// });
+app.use("/register/patient", PatientRegisteration);
+app.use("/register/doctor", PharmacistRegisteration);
+
+//connect to mongodb
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(
+        "Connection to DB successful, server started on port",
+        process.env.PORT
+      );
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
