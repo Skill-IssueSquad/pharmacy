@@ -1,14 +1,13 @@
 const Admin = require("../models/Admin");
-const Doctor = require("../models/Doctor");
-const DoctorRequest = require("../models/DoctorRequest");
-const Patient = require("../models/Patient");
-const HealthPackage = require("../models/Packages");
 
 //Add Admin
 const createAdmin = async (req, res) => {
   const { username, password } = req.body;
   try {
-    const newAdmin = await Admin.create(username, password);
+    const newAdmin = await Admin.create({
+      username: username,
+      password: password,
+    });
     const reply = {
       success: true,
       data: newAdmin,

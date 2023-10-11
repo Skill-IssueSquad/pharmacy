@@ -12,3 +12,5 @@ const {
 router.get("/viewAdmins", viewAdmins);
 router.post("/createAdmin", createAdmin);
 router.delete("/removeAdmin/:username", removeAdmin);
+
+module.exports = router;
