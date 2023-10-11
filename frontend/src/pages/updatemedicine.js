@@ -163,7 +163,7 @@ function UpdateMedicine() {
           <TextField
             label="Price"
             fullWidth
-            
+            type="number"
             value={editedPrice}
             onChange={(e) => handleInputChange('price', e.target.value)}
           />

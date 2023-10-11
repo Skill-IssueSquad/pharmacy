@@ -24,6 +24,7 @@ const AddMedicine = () => {
   const [ingredientAmount, setIngredientAmount] = useState(''); // Changed to a string
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
+  const [sales, setSales] = useState(0); // Add Sales state
   const [isMedicineAdded, setIsMedicineAdded] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errors, setErrors] = useState({}); // Add errors state for validation
@@ -47,8 +48,8 @@ const AddMedicine = () => {
       medicinalUsage,
       activeIngredients,
       quantity,
-      price
-     
+      price,
+      sales, // Add the 'sales' field
     };
 
     // Validate form fields
@@ -91,8 +92,8 @@ const AddMedicine = () => {
         setIngredientAmount('');
         setQuantity(0);
         setPrice(0);
+        setSales(0); // Reset 'sales'
         setErrors({}); // Clear validation errors
-       
       } else {
         // Handle errors, e.g., show an error message
       }
@@ -201,6 +202,15 @@ const AddMedicine = () => {
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          label="Sales"
+          fullWidth
+          type="number"
+          value={sales}
+          onChange={(e) => setSales(e.target.value)}
         />
       </Grid>
       <Grid item xs={12}>
