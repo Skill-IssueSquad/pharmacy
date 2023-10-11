@@ -5,8 +5,9 @@ const mongoose = require('mongoose');
 const AddMedicine = async (req,res)=>{
 
     const{medicineName,description,medicinalUsage,activeIngredients,quantity,price,sales,isArchived,requiresPrescription} = req.body;
+    let picture ='';
     if(req.file != undefined)
-    picture =`http://localhost:8000/images/${req.file.filename}`;
+       picture =`http://localhost:8000/images/${req.file.filename}`;
     try{
         const newMedicine = await Medicine.create({
             medicineName,

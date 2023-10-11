@@ -47,7 +47,8 @@ const AddMedicine = () => {
       medicinalUsage,
       activeIngredients,
       quantity,
-      price,
+      price
+     
     };
 
     // Validate form fields
@@ -91,6 +92,7 @@ const AddMedicine = () => {
         setQuantity(0);
         setPrice(0);
         setErrors({}); // Clear validation errors
+       
       } else {
         // Handle errors, e.g., show an error message
       }
