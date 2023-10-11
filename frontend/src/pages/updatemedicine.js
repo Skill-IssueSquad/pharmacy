@@ -6,7 +6,7 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-
+import Navbar from '../components/Navbar';
 function UpdateMedicine() {
   const { medicineId } = useParams();
   const [medicineData, setMedicineData] = useState({});
@@ -111,6 +111,8 @@ function UpdateMedicine() {
   };
 
   return (
+   <div>
+    <Navbar/>
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography variant="h4">Update Medicine</Typography>
@@ -211,6 +213,7 @@ function UpdateMedicine() {
         )}
       </Grid>
     </Grid>
+    </div>
   );
 }
 

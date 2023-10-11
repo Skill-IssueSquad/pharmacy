@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
+
 import {
   Grid,
   Typography,
@@ -82,6 +84,7 @@ const MedicineSales = () => {
 
   return (
     <div className="search_and_filter" style={{ padding: '20px' }}>
+         <Navbar/>
       <h1>Available Medicines</h1>
       <div className="TextFields">
         <div className="input-container">
@@ -107,6 +110,7 @@ const MedicineSales = () => {
       </div>
       {medicines && (
         <div>
+     
           <TableContainer component={Paper}>
             <Table>
               <TableHead>

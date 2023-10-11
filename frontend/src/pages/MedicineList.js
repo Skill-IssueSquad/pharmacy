@@ -10,6 +10,7 @@ import {
   TablePagination,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 import useAxios from '../useAxios';
 import { useEffect } from 'react';
@@ -81,6 +82,7 @@ const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
 
   return (
     <div className="search_and_filter" style={{ padding: '20px' }}>
+       <Navbar/>
       <h1>Available Medicines</h1>
       <div className="TextFields">
         <div className="input-container">
@@ -106,6 +108,7 @@ const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
       </div>
       {medicines && (
         <div>
+         
           <Grid container spacing={3}>
             {slicedData.map((medicine) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={medicine._id}>
