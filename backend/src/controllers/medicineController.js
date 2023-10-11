@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 const AddMedicine = async (req,res)=>{
 
     const{medicineName,description,medicinalUsage,activeIngredients,quantity,price,picture,sales,isArchived,requiresPrescription} = req.body;
-
+    if(req.file != undefined)
+    picture =`http://localhost:8000/images/${req.file.filename}`;
     try{
         const newMedicine = await Medicine.create({
             medicineName,
@@ -29,6 +30,7 @@ const AddMedicine = async (req,res)=>{
 }
 
 
+
 const getMedicines = async (req,res)=>{
 
     try{
@@ -42,16 +44,17 @@ const getMedicines = async (req,res)=>{
 
 
 
+
 const searchMedicine = async (req,res)=>{
 
   
     //search by name
     try{
         
-        const medicine = await Medicine.find({medicineName:req.params.medicine});
+        const medicine = await Medicine.findById(req.params.medicine);
        
        
-        if(medicine.length == 0)
+        if(medicine== null)
         {
             return res.status(404).json({success:false,message:"Medicine not found",data:null});
         }
@@ -63,39 +66,39 @@ const searchMedicine = async (req,res)=>{
     }
 
 }
+
 const medicinedetailsbyid = async (req, res) => {
-   // const id = req.params.id; // Get the medicine ID from the request parameters
-  
-    try {
-      const medicine = await Medicine.findById({_id:id});
-  
-      if (!medicine) {
-        return res.status(404).json({ success: false, message: "Medicine not found", data: null });
-      }
-  
-      res.status(200).json({ success: true, message: "Medicine found", data: medicine });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message, data: null });
-    }
-  }
-  
-const updateMedicine = async (req, res) => {
-  const { id } = req.params; // Get the medicine name from URL params
-  
-  if(!mongoose.Types.ObjectId.isValid(id)){
-    return res.status(404).json({error: "no such medicine"})
-  }
-  const medicine = await Medicine.findOneAndUpdate({_id: id}, { 
-    ...req.body
-   })
-
-
-if(!medicine){
-  return res.status(404).json({error: "no such medicine"})
-}
-res.status(200).json(medicine)
-
-}
-
+     const {id} = req.params; // Get the medicine ID from the request parameters
+   
+     try {
+       const medicine = await Medicine.findById({_id:id});
+   
+       if (!medicine) {
+         return res.status(404).json({ success: false, message: "Medicine not found", data: null });
+       }
+   
+       res.status(200).json({ success: true, message: "Medicine found", data: medicine });
+     } catch (error) {
+       res.status(500).json({ success: false, error: error.message, data: null });
+     }
+   }
+   
+ const updateMedicine = async (req, res) => {
+   const { id } = req.params; // Get the medicine name from URL params
+   
+   if(!mongoose.Types.ObjectId.isValid(id)){
+     return res.status(404).json({error: "no such medicine"})
+   }
+   const medicine = await Medicine.findOneAndUpdate({_id: id}, { 
+     ...req.body
+    })
+ 
+ 
+ if(!medicine){
+   return res.status(404).json({error: "no such medicine"})
+ }
+ res.status(200).json(medicine)
+ 
+ }
 
 module.exports ={AddMedicine,getMedicines,searchMedicine,updateMedicine,medicinedetailsbyid}

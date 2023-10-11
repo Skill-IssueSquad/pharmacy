@@ -21,11 +21,13 @@ const AddMedicine = () => {
   const [medicinalUsage, setMedicinalUsage] = useState('');
   const [activeIngredients, setActiveIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState('');
-  const [ingredientAmount, setIngredientAmount] = useState('');
+  const [ingredientAmount, setIngredientAmount] = useState(''); // Changed to a string
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
   const [isMedicineAdded, setIsMedicineAdded] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [errors, setErrors] = useState({}); // Add errors state for validation
+
   // Function to handle adding active ingredients
   const handleAddIngredient = () => {
     if (ingredientName && ingredientAmount) {
@@ -38,8 +40,6 @@ const AddMedicine = () => {
 
   // Function to handle submitting the form
   const handleSubmit = async () => {
-    console.log('handleSubmit called'); // Add this line
-    
     // Create a payload with the form data
     const formData = {
       medicineName,
@@ -49,7 +49,24 @@ const AddMedicine = () => {
       quantity,
       price,
     };
-  
+
+    // Validate form fields
+    const validationErrors = {};
+
+    if (!medicineName) {
+      validationErrors.medicineName = 'Medicine Name is required';
+    }
+
+    // Update the following check to allow empty strings
+    if (ingredientAmount !== null && typeof ingredientAmount !== 'string') {
+      validationErrors.ingredientAmount = 'Ingredient Amount should be a string';
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       // Make an HTTP POST request to your server endpoint
       const response = await fetch('http://localhost:8000/pharmacist/medicines', {
@@ -59,14 +76,12 @@ const AddMedicine = () => {
         },
         body: JSON.stringify(formData),
       });
-  
-      console.log('Response status:', response.status); // Add this line
-  
+
       // Check the response status and handle success or error
       if (response.status === 201) {
         // Medicine successfully added
-    setIsMedicineAdded(true);
-    setSuccessMessage('Medicine added successfully');
+        setIsMedicineAdded(true);
+        setSuccessMessage('Medicine added successfully');
         setMedicineName('');
         setDescription('');
         setMedicinalUsage('');
@@ -75,27 +90,22 @@ const AddMedicine = () => {
         setIngredientAmount('');
         setQuantity(0);
         setPrice(0);
+        setErrors({}); // Clear validation errors
       } else {
         // Handle errors, e.g., show an error message
       }
     } catch (error) {
-      console.error('Error:', error); // Add this line
       // Handle network or other errors
     }
-
-
-    
   };
-  
-
 
   return (
     <Grid container spacing={3}>
-        {isMedicineAdded && (
-  <Grid item xs={12}>
-    <Typography variant="successMessage">{successMessage}</Typography>
-  </Grid>
-)}
+      {isMedicineAdded && (
+        <Grid item xs={12}>
+          <Typography variant="successMessage">{successMessage}</Typography>
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <Typography variant="h4">Add Medicine</Typography>
@@ -106,6 +116,8 @@ const AddMedicine = () => {
           fullWidth
           value={medicineName}
           onChange={(e) => setMedicineName(e.target.value)}
+          error={errors.medicineName}
+          helperText={errors.medicineName}
         />
       </Grid>
       <Grid item xs={12}>
@@ -142,6 +154,8 @@ const AddMedicine = () => {
               fullWidth
               value={ingredientAmount}
               onChange={(e) => setIngredientAmount(e.target.value)}
+              error={errors.ingredientAmount}
+              helperText={errors.ingredientAmount}
             />
           </Grid>
           <Grid item xs={2}>
