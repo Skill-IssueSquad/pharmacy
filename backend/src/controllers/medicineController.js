@@ -5,7 +5,7 @@ const Medicine = require('../models/Medicines');
 const getAllMedicine= async (req,res)=>{
     try{
         //console.log("ana hena");
-        const medicine = await Medicine.find()
+        const medicine = await Medicine.find({isArchived: false})
         //console.log("ana hena");
 //        console.log(medicine);
         res.status(200).json(medicine)
@@ -26,7 +26,7 @@ const getMedicineByName = (req,res)=>{
       res.status(200).json([]);
     }
     else{
-    Medicine.find({ medicineName: medicineName })
+    Medicine.find({ medicineName: medicineName ,isArchived: false })
     .then(medicine => {
       if (medicine) {
         res.status(200).json(medicine);
@@ -55,7 +55,7 @@ const getMedicineByMedicalUse = (req,res)=>{
       res.status(200).json([]);
     }
     else{
-    Medicine.find({ medicinalUsage: medicinalUsage })
+    Medicine.find({ medicinalUsage: medicinalUsage , isArchived: false })
     .then(medicine => {
       if (medicine) {
         res.status(200).json(medicine);
