@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
+
 import {
   Grid,
   Typography,
@@ -103,6 +105,8 @@ const AddMedicine = () => {
   };
 
   return (
+    <div>
+      <Navbar/>
     <Grid container spacing={3}>
       {isMedicineAdded && (
         <Grid item xs={12}>
@@ -219,6 +223,7 @@ const AddMedicine = () => {
         </Button>
       </Grid>
     </Grid>
+    </div>
   );
 };
 
