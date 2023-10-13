@@ -76,10 +76,8 @@ const MultiLevelFilterTable = () => {
     "description",
     "medicinalUsage",
     "activeIngredients",
-    "quantity",
     "price",
-    "picture",
-    "sales"
+    "picture"
   ];
 
   const filteredData = data.filter((item) => {
@@ -111,21 +109,7 @@ const MultiLevelFilterTable = () => {
               {tableHeaders.map((header) => (
                 <TableCell key={header}  sx = {{padding : "32px"}}>
                   {header}{" "}
-                  <Button
-                    size="small"
-                    onClick={() => handleSort(header)}
-                    startIcon={
-                      sorting.field === header ? (
-                        sorting.order === "asc" ? (
-                          <ArrowUpwardIcon />
-                        ) : (
-                          <ArrowDownwardIcon />
-                        )
-                      ) : (
-                        <ArrowUpwardIcon />
-                      )
-                    }
-                  ></Button>
+                  
                 </TableCell>
               ))}
             </TableRow>
@@ -147,10 +131,8 @@ const MultiLevelFilterTable = () => {
                 </ul>
                 </TableCell>
 
-      <TableCell>{item.quantity}</TableCell>
       <TableCell>{item.price}</TableCell>
      <TableCell ><img src = {item.picture } width = "100px"></img></TableCell>
-      <TableCell>{item.sales}</TableCell>
       </TableRow>
   ))}
 </TableBody>
