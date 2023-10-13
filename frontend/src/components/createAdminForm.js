@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
 
-const createAdminForm = ({ onSubmit }) => {
+const CreateAdminForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -79,4 +79,4 @@ const createAdminForm = ({ onSubmit }) => {
   );
 };
 
-export default createAdminForm;
+export default CreateAdminForm;

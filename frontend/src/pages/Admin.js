@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import createAdminForm from "../components/createAdminForm";
+import CreateAdminForm from "../components/createAdminForm";
 
 const Admin = () => {
   const submitAdmin = async (formData) => {
     //console.log(formData);
     await axios
-      .patch("", formData)
+      .post("http://localhost:8000/admin/createAdmin", formData)
       .then((res) => {
         console.log(res.data);
 
@@ -23,8 +23,8 @@ const Admin = () => {
   };
   return (
     <div className="admin">
-      <h2>This page will be to view admins and create new admins</h2>
-      <createAdminForm onSubmit={submitAdmin} />
+      <h2>Admin</h2>
+      <CreateAdminForm onSubmit={submitAdmin} />
     </div>
   );
 };
