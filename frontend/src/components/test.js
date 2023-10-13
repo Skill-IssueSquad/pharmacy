@@ -109,10 +109,10 @@ const MultiLevelFilterTable = () => {
       />
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead sx = {{padding : "32px"}} >
             <TableRow>
               {tableHeaders.map((header) => (
-                <TableCell key={header}>
+                <TableCell key={header}  sx = {{padding : "32px"}}>
                   {header}{" "}
                   <Button
                     size="small"
@@ -154,7 +154,7 @@ const MultiLevelFilterTable = () => {
       <TableCell>{item.quantity}</TableCell>
       <TableCell>{item.price}</TableCell>
      {/*<TableCell>{item.picture.type}</TableCell>*/}
-     <TableCell>TEMP</TableCell>
+     <TableCell ><img src = {item.picture } width = "100px"></img></TableCell>
       <TableCell>{item.sales}</TableCell>
       <TableCell>
   {item.isArchived !== undefined ? item.isArchived.toString() : ''}
