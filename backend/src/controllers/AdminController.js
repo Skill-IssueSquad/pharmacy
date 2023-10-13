@@ -1,6 +1,7 @@
 const Admin = require("../models/Admin");
 const Pharmacist = require("../models/Pharmacist");
 const Patient = require("../models/Patient");
+const Medicine = require("../models/Medicines");
 
 //Add Admin
 const createAdmin = async (req, res) => {
@@ -186,6 +187,21 @@ const viewPatientInfo = async (req, res) => {
     });
 };
 
+const getMedicines = async (req, res) => {
+  try {
+    const medicines = await Medicine.find({});
+    res.status(200).json({
+      success: true,
+      message: "All Medicines returned successfully",
+      data: medicines,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, data: null });
+  }
+};
+
+const findMedicine = async (req, res) => {};
+
 module.exports = {
   viewAdmins,
   createAdmin,
@@ -194,4 +210,6 @@ module.exports = {
   removePatient,
   viewPharmacistInfo,
   viewPatientInfo,
+  getMedicines,
+  findMedicine,
 };

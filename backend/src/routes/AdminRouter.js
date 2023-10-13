@@ -7,14 +7,25 @@ const {
   removePatient,
   viewPharmacistInfo,
   viewPatientInfo,
+  getMedicines,
+  findMedicine,
 } = require("../controllers/AdminController");
 
+//view and create admin
 router.get("/viewAdmins", viewAdmins);
 router.post("/createAdmin", createAdmin);
+
+//remove
 router.delete("/removeAdmin/:username", removeAdmin);
 router.delete("/removePharmacist/:username", removePharmacist);
 router.delete("/removePatient/:username", removePatient);
+
+//view info
 router.get("/viewPharmacistInfo/:username", viewPharmacistInfo);
 router.get("/viewPatientInfo/:username", viewPatientInfo);
+
+//medicine stuff
+router.get("/medicines", getMedicines);
+router.get("/findMedicine", findMedicine);
 
 module.exports = router;
