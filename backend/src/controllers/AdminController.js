@@ -190,17 +190,47 @@ const viewPatientInfo = async (req, res) => {
 const getMedicines = async (req, res) => {
   try {
     const medicines = await Medicine.find({});
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "All Medicines returned successfully",
       data: medicines,
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message, data: null });
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+      data: null,
+    });
   }
 };
 
-const findMedicine = async (req, res) => {};
+const findMedicine = async (req, res) => {
+  const { medicineName } = req.body;
+
+  const medicine = await Medicine.findOne({ medicineName: medicineName }).catch(
+    (error) => {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        data: null,
+      });
+    }
+  );
+
+  if (!medicine) {
+    return res.status(404).json({
+      success: false,
+      message: "Medicine not found",
+      data: null,
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Medicine returned successfully",
+    data: medicine,
+  });
+};
 
 module.exports = {
   viewAdmins,
