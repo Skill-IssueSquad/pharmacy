@@ -2,9 +2,23 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const patientSchema = new Schema({
-  username: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    //trim: true,
+    //minlength: 3,
+    //maxlength: 20, wah
+  },
   name: String,
-  email: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    //trim: true,
+    //minlength: 3,
+    //maxlength: 20, wah
+  },
   password: String,
   dateOfBirth: Date,
   gender: {
