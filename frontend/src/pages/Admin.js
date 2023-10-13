@@ -10,11 +10,7 @@ const Admin = () => {
       .then((res) => {
         console.log(res.data);
 
-        if (res.status === 200) {
-          return { message: res.data.message };
-        } else {
-          return { message: res.data.message };
-        }
+        return { message: res.data.message };
       })
       .catch((err) => {
         console.log(err);
@@ -24,6 +20,7 @@ const Admin = () => {
   return (
     <div className="admin">
       <h2>Admin</h2>
+      <p></p>
       <CreateAdminForm onSubmit={submitAdmin} />
     </div>
   );
