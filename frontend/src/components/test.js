@@ -72,7 +72,6 @@ const MultiLevelFilterTable = () => {
   };
   
   const tableHeaders = [
-    "_id",
     "medicineName",
     "description",
     "medicinalUsage",
@@ -80,9 +79,7 @@ const MultiLevelFilterTable = () => {
     "quantity",
     "price",
     "picture",
-    "sales",
-    "isArchived",
-    "__v",
+    "sales"
   ];
 
   const filteredData = data.filter((item) => {
@@ -136,7 +133,6 @@ const MultiLevelFilterTable = () => {
           <TableBody>
   {filteredData.map((item) => (
     <TableRow key={item._id["$oid"]}>
-      <TableCell>{item._id}</TableCell>
       <TableCell>{item.medicineName}</TableCell>
       <TableCell>{item.description}</TableCell>
       <TableCell>{item.medicinalUsage}</TableCell>
@@ -153,14 +149,9 @@ const MultiLevelFilterTable = () => {
 
       <TableCell>{item.quantity}</TableCell>
       <TableCell>{item.price}</TableCell>
-     {/*<TableCell>{item.picture.type}</TableCell>*/}
      <TableCell ><img src = {item.picture } width = "100px"></img></TableCell>
       <TableCell>{item.sales}</TableCell>
-      <TableCell>
-  {item.isArchived !== undefined ? item.isArchived.toString() : ''}
-</TableCell>
-      <TableCell>{item.__v}</TableCell>
-    </TableRow>
+      </TableRow>
   ))}
 </TableBody>
         </Table>
