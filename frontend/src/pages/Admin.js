@@ -4,19 +4,19 @@ import CreateAdminForm from "../components/createAdminForm";
 
 const Admin = () => {
   const submitAdmin = async (formData) => {
-    //console.log(formData);
-    await axios
-      .post("http://localhost:8000/admin/createAdmin", formData)
-      .then((res) => {
-        console.log(res.data);
-
-        return { message: res.data.message };
-      })
-      .catch((err) => {
-        console.log(err);
-        return { message: "Something went wrong" };
-      });
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/admin/createAdmin",
+        formData
+      );
+      console.log(res.data);
+      return { message: res.data.message };
+    } catch (error) {
+      console.log(error);
+      return { message: "Something went wrong" };
+    }
   };
+
   return (
     <div className="admin">
       <h2>Admin</h2>
