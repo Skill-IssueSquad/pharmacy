@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateAdminForm from "../components/createAdminForm";
+import ViewAdmins from "../components/viewAdmins";
 
 const Admin = () => {
   const submitAdmin = async (formData) => {
@@ -17,11 +18,18 @@ const Admin = () => {
     }
   };
 
+  useEffect(() => {}, [submitAdmin]);
+
   return (
     <div className="admin">
       <h2>Admin</h2>
       <p></p>
       <CreateAdminForm onSubmit={submitAdmin} />
+      <p></p>
+      <ViewAdmins
+        columns={["username"]}
+        API_GET_URL={"http://localhost:8000/admin/viewAdmins"}
+      />
     </div>
   );
 };
