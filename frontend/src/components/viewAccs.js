@@ -17,7 +17,7 @@ import CircularProgress from "@mui/joy/CircularProgress";
 
 let fullRows = [];
 
-const ViewAdmins = ({ columns, API_GET_URL }) => {
+const ViewAccs = ({ columns, API_GET_URL }) => {
   const initFilter = {};
   columns.forEach((key) => {
     initFilter[key] = "";
@@ -173,7 +173,7 @@ const ViewAdmins = ({ columns, API_GET_URL }) => {
   return (
     <div>
       {columns.map((key) =>
-        key !== "username" ? (
+        key !== "Remove" ? (
           <TextField
             label={"Filter by " + key}
             name={key}
@@ -242,7 +242,7 @@ const ViewAdmins = ({ columns, API_GET_URL }) => {
                           </span> */}
                         </Popup>
                       </TableCell>
-                    ) : key === "date" ? (
+                    ) : key === "dateOfBirth" ? (
                       <TableCell>
                         {new Date(row[key]).toLocaleDateString("fr-FR")}
                       </TableCell>
@@ -260,4 +260,4 @@ const ViewAdmins = ({ columns, API_GET_URL }) => {
   );
 };
 
-export default ViewAdmins;
+export default ViewAccs;

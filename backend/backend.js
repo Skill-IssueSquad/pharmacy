@@ -4,6 +4,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/PharmReqStaticData", express.static("PharmReqStaticData"));
 
 mongoose
   .connect(process.env.DATABASE_URL, { useNewUrlParser: true })

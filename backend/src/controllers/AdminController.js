@@ -127,24 +127,8 @@ const removePatient = async (req, res) => {
 const viewPharmacistInfo = async (req, res) => {
   //const { username } = req.params;
 
-  const pharmacists = await Pharmacist.find({})
-    .then(() => {
-      if (!pharmacists) {
-        const reply = {
-          success: false,
-          data: null,
-          message: "No pharmacists found",
-        };
-        return res.status(404).json(reply);
-      }
-      const reply = {
-        success: true,
-        data: pharmacists,
-        message: "Pharmacists retrieved successfully",
-      };
-      return res.status(200).json(reply);
-    })
-    .catch((error) => {
+  try {
+    const pharmacists = await Pharmacist.find({}).catch((error) => {
       const reply = {
         success: false,
         data: null,
@@ -152,29 +136,35 @@ const viewPharmacistInfo = async (req, res) => {
       };
       return res.status(500).json(reply);
     });
+
+    if (!pharmacists) {
+      const reply = {
+        success: false,
+        data: null,
+        message: "No pharmacists found",
+      };
+      return res.status(404).json(reply);
+    }
+    const reply = {
+      success: true,
+      data: pharmacists,
+      message: "Pharmacists retrieved successfully",
+    };
+    return res.status(200).json(reply);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+      data: null,
+    });
+  }
 };
 
 const viewPatientInfo = async (req, res) => {
   //const { username } = req.params;
 
-  const patients = await Patient.find({})
-    .then(() => {
-      if (!patients) {
-        const reply = {
-          success: false,
-          data: null,
-          message: "No patients found",
-        };
-        return res.status(404).json(reply);
-      }
-      const reply = {
-        success: true,
-        data: patient,
-        message: "Patients retrieved successfully",
-      };
-      return res.status(200).json(reply);
-    })
-    .catch((error) => {
+  try {
+    const patients = await Patient.find({}).catch((error) => {
       const reply = {
         success: false,
         data: null,
@@ -182,11 +172,39 @@ const viewPatientInfo = async (req, res) => {
       };
       return res.status(500).json(reply);
     });
+    if (!patients) {
+      const reply = {
+        success: false,
+        data: null,
+        message: "No patients found",
+      };
+      return res.status(404).json(reply);
+    }
+    const reply = {
+      success: true,
+      data: patients,
+      message: "Patients retrieved successfully",
+    };
+    return res.status(200).json(reply);
+  } catch (error) {
+    const reply = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(reply);
+  }
 };
 
 const getMedicines = async (req, res) => {
   try {
-    const medicines = await Medicine.find({});
+    const medicines = await Medicine.find({}).catch((error) => {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        data: null,
+      });
+    });
     return res.status(200).json({
       success: true,
       message: "All Medicines returned successfully",
