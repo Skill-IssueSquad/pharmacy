@@ -43,11 +43,14 @@ const PatientRegisterationForm = () => {
     console.log(formData);
     console.log(patient);
 
-    const response = await fetch("http://localhost:8000/register/patient");
+    const response = await axios.post(
+      "http://localhost:8000/register/patient",
+      patient
+    );
 
     const patientData = await json(response);
 
-    if (!response.ok) {
+    if (!response) {
       setError(patientData.message);
     } else {
       setError(null);

@@ -6,6 +6,10 @@ const app = express();
 const PatientRegisteration = require("./src/routes/patientRegisteration");
 const PharmacistRegisteration = require("./src/routes/pharmacistRegisteration");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
+//cors
+app.use(cors());
 
 app.use(express.json());
 

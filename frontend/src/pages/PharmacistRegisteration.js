@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import PharmacistRegisterationForm from "../components/pharmacistRegistrationForm";
+import axios from "axios";
+import { json } from "react-router-dom";
 
 const PharmacistRegisteration = () => {
   const [pharmacists, setPharmacists] = useState(null);
   useEffect(() => {
     const fetchPharmacists = async () => {
       try {
-        const response = await fetch("http://localhost:8000/register/doctor");
-        const data = await response.json();
+        const response = await axios.get(
+          "http://localhost:8000/register/pharmacist"
+        );
 
-        if (response.ok) {
-          setPharmacists(data.data);
+        if (response) {
+          setPharmacists(response.data.data);
         } else {
           console.error("Failed to fetch pharmacist data");
         }

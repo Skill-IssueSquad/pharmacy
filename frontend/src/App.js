@@ -23,7 +23,7 @@ function App() {
 
             <Route
               exact
-              path="/doctorRegisteration"
+              path="/pharmacistRegisteration"
               element={<PharmacistRegisteration />}
             />
           </Routes>
