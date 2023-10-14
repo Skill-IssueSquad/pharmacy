@@ -3,13 +3,11 @@ require("dotenv").config();
 //express app
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const PatientRegisteration = require("./src/routes/patientRegisteration");
 const PharmacistRegisteration = require("./src/routes/pharmacistRegisteration");
 const mongoose = require("mongoose");
 
 app.use(express.json());
-app.use(cors());
 
 //middleware
 app.use(express.json());
@@ -19,12 +17,8 @@ app.use((req, res, next) => {
   next();
 });
 
-//routes
-// app.use("/", (req, res) => {
-//   res.send("hello");
-// });
 app.use("/register/patient", PatientRegisteration);
-app.use("/register/doctor", PharmacistRegisteration);
+app.use("/register/pharmacist", PharmacistRegisteration);
 
 //connect to mongodb
 mongoose
