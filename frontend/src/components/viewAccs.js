@@ -17,7 +17,7 @@ import CircularProgress from "@mui/joy/CircularProgress";
 
 let fullRows = [];
 
-const ViewAccs = ({ columns, API_GET_URL }) => {
+const ViewAccs = ({ columns, API_GET_URL, removeFunc }) => {
   const initFilter = {};
   columns.forEach((key) => {
     initFilter[key] = "";
@@ -216,13 +216,13 @@ const ViewAccs = ({ columns, API_GET_URL }) => {
                   <React.Fragment>
                     {key === "Remove" ? (
                       <TableCell>
-                        <Popup
-                          trigger={
-                            <button className="button">Remove Account</button>
-                          }
-                          modal
+                        <button
+                          className="button"
+                          onClick={() => removeFunc(row["username"])}
                         >
-                          {/* <span>
+                          Remove Account
+                        </button>
+                        {/* <span>
                             {console.log("Prescription Data ", fullRows[i])}
                             {Object.keys(fullRows[i]).map((innerKey) =>
                               innerKey === "medicines" ? (
@@ -240,7 +240,6 @@ const ViewAccs = ({ columns, API_GET_URL }) => {
                               ) : null
                             )}
                           </span> */}
-                        </Popup>
                       </TableCell>
                     ) : key === "dateOfBirth" ? (
                       <TableCell>

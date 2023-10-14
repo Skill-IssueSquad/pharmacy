@@ -79,18 +79,10 @@ const removeAdmin = async (req, res) => {
 const removePharmacist = async (req, res) => {
   const { username } = req.params;
 
-  const removedPharm = await Pharmacist.deleteOne({
-    username: username,
-  })
-    .then(() => {
-      const reply = {
-        success: true,
-        data: removedPharm,
-        message: "Pharmacist removed successfully",
-      };
-      return res.status(200).json(reply);
-    })
-    .catch((error) => {
+  try {
+    const removedPharm = await Pharmacist.deleteOne({
+      username: username,
+    }).catch((error) => {
       const reply = {
         success: false,
         data: null,
@@ -98,23 +90,29 @@ const removePharmacist = async (req, res) => {
       };
       return res.status(500).json(reply);
     });
+    const reply = {
+      success: true,
+      data: removedPharm,
+      message: "Pharmacist removed successfully",
+    };
+    return res.status(200).json(reply);
+  } catch (error) {
+    const reply = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(reply);
+  }
 };
 
 const removePatient = async (req, res) => {
   const { username } = req.params;
 
-  const removedPatient = await Patient.deleteOne({
-    username: username,
-  })
-    .then(() => {
-      const reply = {
-        success: true,
-        data: removedPatient,
-        message: "Patient removed successfully",
-      };
-      return res.status(200).json(reply);
-    })
-    .catch((error) => {
+  try {
+    const removedPatient = await Patient.deleteOne({
+      username: username,
+    }).catch((error) => {
       const reply = {
         success: false,
         data: null,
@@ -122,6 +120,21 @@ const removePatient = async (req, res) => {
       };
       return res.status(500).json(reply);
     });
+
+    const reply = {
+      success: true,
+      data: removedPatient,
+      message: "Patient removed successfully",
+    };
+    return res.status(200).json(reply);
+  } catch (error) {
+    const reply = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(reply);
+  }
 };
 
 const viewPharmacistInfo = async (req, res) => {
