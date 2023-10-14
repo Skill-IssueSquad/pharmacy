@@ -3,21 +3,59 @@ const Schema = mongoose.Schema;
 
 const pharmacistRequestSchema = new Schema({
   status: Boolean,
-  username: String,
-  name: String,
-  email: String,
-  password: String,
-  dateOfBirth: Date,
-  hourlyRate: Number,
-  affiliationHospital: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    //trim: true,
+    //minlength: 3,
+    //maxlength: 20, wah
+  },
+  name: {
+    type: String,
+    required: true,
+    //trim: true,
+    //minlength: 3,
+    //maxlength: 20, wah
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    //trim: true,
+    //minlength: 3,
+    //maxlength: 20, wah
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  dateOfBirth: {
+    type: Date,
+    required: true,
+  },
+  hourlyRate: {
+    type: Number,
+    required: true,
+  },
+  affiliationHospital: {
+    type: String,
+    required: false,
+  },
   educationalBackground: String,
   documents: [
     {
-      documentType: String,
-      documentName: String,
-      documentFile: {
-        data: Buffer,
-        contentType: String,
+      documentType: {
+        type: String,
+        required: true,
+      },
+      documentName: {
+        type: String,
+        required: true,
+      },
+      documentUrl: {
+        type: String,
+        required: true,
       },
     },
   ],
