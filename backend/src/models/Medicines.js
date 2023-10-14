@@ -13,7 +13,7 @@ const medicinesSchema = new Schema({
   ],
   quantity: Number,
   price: Number,
-  picture: { type: Buffer }, // Assuming you store the file path
+  picture: String, // Assuming you store the file path
   sales: Number,
   isArchived: Boolean,
   requiresPrescription: Boolean,
