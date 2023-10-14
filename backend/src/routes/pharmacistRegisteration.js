@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Doctor = require("../models/PharmacistRequest");
-const Pharmacist = require("../models/Pharmacist");
+const Pharmacist = require("../models/PharmacistRequest");
 
 //get all doctor requests
 router.get("/", async (req, res) => {

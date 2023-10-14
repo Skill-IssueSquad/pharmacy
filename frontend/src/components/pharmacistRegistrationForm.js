@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { json } from "react-router-dom";
 
-const DoctorRegistrationForm = () => {
+const PharmacistRegistrationForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     realName: "",
@@ -24,7 +24,7 @@ const DoctorRegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const doctor = {
+    const pharmacist = {
       username: formData.username,
       name: formData.realName,
       password: formData.password,
@@ -36,17 +36,17 @@ const DoctorRegistrationForm = () => {
     };
 
     console.log(formData);
-    console.log(doctor);
+    console.log(pharmacist);
 
     const response = await axios.post(
-      "http://localhost:8000/register/doctor",
-      doctor
+      "http://localhost:8000/register/pharmacist",
+      pharmacist
     );
 
-    const doctorData = await json(response);
+    const pharmacistData = await json(response);
 
     if (!response.ok) {
-      setError(doctorData.message);
+      setError(pharmacistData.message);
     } else {
       setError(null);
 
@@ -61,7 +61,7 @@ const DoctorRegistrationForm = () => {
         educationalBackground: "",
       });
 
-      console.log("Doctor Application Submitted Successfully");
+      console.log("Pharmacist Application Submitted Successfully");
     }
   };
 
@@ -144,4 +144,4 @@ const DoctorRegistrationForm = () => {
   );
 };
 
-export default DoctorRegistrationForm;
+export default PharmacistRegistrationForm;

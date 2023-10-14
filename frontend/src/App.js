@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 //pages
 import Home from "./pages/Home";
 import PatientRegisteration from "./pages/PatientRegisteration";
-import DoctorRegisteration from "./pages/DoctorRegisteration";
+import PharmacistRegisteration from "./pages/PharmacistRegisteration";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
             <Route
               exact
               path="/doctorRegisteration"
-              element={<DoctorRegisteration />}
+              element={<PharmacistRegisteration />}
             />
           </Routes>
         </div>

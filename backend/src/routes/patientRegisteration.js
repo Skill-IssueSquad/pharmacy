@@ -4,7 +4,22 @@ const Patient = require("../models/Patient");
 
 //reply to get requests with hello
 router.get("/", (req, res) => {
-  res.json({ msg: "hello" });
+  //fetch all patinets from DB
+  Patient.find()
+    .then((patients) => {
+      res.status(200).json({
+        messgage: " fetched patients successfully",
+        status: true,
+        data: patients,
+      });
+    })
+    .catch((err) => {
+      res.status(400).json({
+        messgage: " Failed to fetch patients.",
+        status: false,
+        data: null,
+      });
+    });
 });
 
 //create one Patient

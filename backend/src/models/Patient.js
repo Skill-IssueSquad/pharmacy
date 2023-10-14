@@ -34,7 +34,7 @@ const patientSchema = new Schema({
     medicines: [
       {
         medicine_id: Schema.Types.ObjectId,
-        ref: "Medicines",
+        //ref: "Medicines",
         quantity: Number,
       },
     ],
@@ -51,7 +51,7 @@ const patientSchema = new Schema({
         medicines: [
           {
             medicine_id: Schema.Types.ObjectId,
-            ref: "Medicines",
+            //ref: "Medicines",
             quantity: Number,
           },
         ],
