@@ -2,6 +2,7 @@ const Admin = require("../models/Admin");
 const Pharmacist = require("../models/Pharmacist");
 const Patient = require("../models/Patient");
 const Medicine = require("../models/Medicines");
+const PharmReq = require("../models/PharmacistRequest");
 
 //Add Admin
 const createAdmin = async (req, res) => {
@@ -232,6 +233,33 @@ const findMedicine = async (req, res) => {
   });
 };
 
+const viewPharmacistRequests = async (req, res) => {
+  try {
+    const requests = await PharmReq.find();
+    if (!requests) {
+      const reply = {
+        success: false,
+        data: null,
+        message: "No requests found",
+      };
+      return res.status(404).json(reply);
+    }
+    const reply = {
+      success: true,
+      data: requests,
+      message: "Requests retrieved successfully",
+    };
+    return res.status(200).json(reply);
+  } catch (error) {
+    const reply = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(reply);
+  }
+};
+
 module.exports = {
   viewAdmins,
   createAdmin,
@@ -242,4 +270,5 @@ module.exports = {
   viewPatientInfo,
   getMedicines,
   findMedicine,
+  viewPharmacistRequests,
 };

@@ -9,6 +9,7 @@ const {
   viewPatientInfo,
   getMedicines,
   findMedicine,
+  viewPharmacistRequests,
 } = require("../controllers/AdminController");
 
 //view and create admin
@@ -23,6 +24,7 @@ router.delete("/removePatient/:username", removePatient);
 //view info
 router.get("/viewPharmacistInfo/:username", viewPharmacistInfo);
 router.get("/viewPatientInfo/:username", viewPatientInfo);
+router.get("/viewPharmacistRequests", viewPharmacistRequests);
 
 //medicine stuff
 router.get("/medicines", getMedicines);
