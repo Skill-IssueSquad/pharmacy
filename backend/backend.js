@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+app.use(cors());
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/PharmReqStaticData", express.static("PharmReqStaticData"));
 
@@ -16,7 +17,6 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.json());
-app.use(cors());
 
 const AdminRouter = require("./src/routes/AdminRouter");
 app.use("/admin", AdminRouter);
