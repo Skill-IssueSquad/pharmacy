@@ -3,7 +3,7 @@ const cors= require('cors')
 
 
 
-const patientRoutes = require('./routes/medicine');
+const patientRoutes = require('./src/routes/medicine');
 
 const express = require('express')
 const app = express()
@@ -17,7 +17,7 @@ const upload = multer({
     dest:'./upload/images'
 })
 
-app.use('/images', express.static('../images'));
+app.use('/images', express.static('./images'));
 
 app.use(cors());
 
