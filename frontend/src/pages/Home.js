@@ -10,7 +10,7 @@ const Home = () => {
         </button>
 
         <button>
-          <a href="/doctorRegisteration"> Doctor Registeration </a>
+          <a href="/pharmacistRegisteration"> Pharmacist Registeration </a>
         </button>
       </div>
     </div>

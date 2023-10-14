@@ -38,10 +38,7 @@ const PharmacistRegistrationForm = () => {
     console.log(formData);
     console.log(pharmacist);
 
-    const response = await axios.post(
-      "http://localhost:8000/register/pharmacist",
-      pharmacist
-    );
+    const response = await fetch("http://localhost:8000/register/pharmacist");
 
     const pharmacistData = await json(response);
 
