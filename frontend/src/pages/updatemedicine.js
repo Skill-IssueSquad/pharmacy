@@ -1,13 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Grid, Typography, TextField, Button } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+} from "@mui/material";
 import Navbar from "../components/Navbar";
+
 function UpdateMedicine() {
   const { medicineId } = useParams();
   const [medicineData, setMedicineData] = useState({});
-  const [isEditing, setIsEditing] = useState(false); // Whether in editing mode
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Use state variables to store the original values
   const [originalMedicineData, setOriginalMedicineData] = useState({});
   const [editedMedicineName, setEditedMedicineName] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
@@ -17,7 +22,6 @@ function UpdateMedicine() {
   const [editedQuantity, setEditedQuantity] = useState("");
 
   useEffect(() => {
-    // Fetch medicine details based on medicineId and update medicineData state
     const fetchMedicineDetails = async () => {
       try {
         const response = await fetch(
@@ -27,11 +31,8 @@ function UpdateMedicine() {
           let data = await response.json();
           data = data.data;
           setMedicineData(data);
-
-          // Store the original values
           setOriginalMedicineData(data);
 
-          // Initialize edited values
           setEditedMedicineName(data.medicineName || "");
           setEditedDescription(data.description || "");
           setEditedMedicinalUsage(data.medicinalUsage || "");
@@ -51,7 +52,6 @@ function UpdateMedicine() {
 
   const handleSave = async () => {
     try {
-      // Prepare an object with edited values
       const updatedData = {
         medicineName: editedMedicineName,
         description: editedDescription,
@@ -61,14 +61,12 @@ function UpdateMedicine() {
         quantity: editedQuantity,
       };
 
-      // Check if edited values are empty, and if so, revert to original values
       for (const key in updatedData) {
         if (updatedData[key] === "") {
           updatedData[key] = originalMedicineData[key];
         }
       }
 
-      // Send updated medicineData to the server for saving
       const response = await fetch(
         `http://localhost:8000/pharmacist/medicines/${medicineId}`,
         {
@@ -81,10 +79,7 @@ function UpdateMedicine() {
       );
 
       if (response.status === 200) {
-        // Handle successful update, e.g., show a success message or redirect
-        setIsEditing(false); // Exit editing mode after saving
-
-        // After saving, update the original values to match the edited values
+        setIsEditing(false);
         setOriginalMedicineData(updatedData);
       } else {
         // Handle error
@@ -95,7 +90,6 @@ function UpdateMedicine() {
   };
 
   const handleInputChange = (field, value) => {
-    // Update the edited values
     if (field === "medicineName") {
       setEditedMedicineName(value);
     } else if (field === "description") {
@@ -119,18 +113,13 @@ function UpdateMedicine() {
           <Typography variant="h4">Update Medicine</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6">Medicine Details</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body2">Medicine Name:</Typography>
+          <Typography variant="h6">Medicine Name:</Typography>
           {isEditing ? (
             <TextField
               label="Medicine Name"
               fullWidth
               value={editedMedicineName}
-              onChange={(e) =>
-                handleInputChange("medicineName", e.target.value)
-              }
+              onChange={(e) => handleInputChange("medicineName", e.target.value)}
             />
           ) : (
             <Typography variant="body2">
@@ -139,7 +128,7 @@ function UpdateMedicine() {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2">Description:</Typography>
+          <Typography variant="h6">Description:</Typography>
           {isEditing ? (
             <TextField
               label="Description"
@@ -154,15 +143,13 @@ function UpdateMedicine() {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2">Medicinal Usage:</Typography>
+          <Typography variant="h6">Medicinal Usage:</Typography>
           {isEditing ? (
             <TextField
               label="Medicinal Usage"
               fullWidth
               value={editedMedicinalUsage}
-              onChange={(e) =>
-                handleInputChange("medicinalUsage", e.target.value)
-              }
+              onChange={(e) => handleInputChange("medicinalUsage", e.target.value)}
             />
           ) : (
             <Typography variant="body2">
@@ -171,7 +158,7 @@ function UpdateMedicine() {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2">Price:</Typography>
+          <Typography variant="h6">Price:</Typography>
           {isEditing ? (
             <TextField
               label="Price"
@@ -187,7 +174,7 @@ function UpdateMedicine() {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2">Sales:</Typography>
+          <Typography variant="h6">Sales:</Typography>
           {isEditing ? (
             <TextField
               label="Sales"
@@ -203,7 +190,7 @@ function UpdateMedicine() {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2">Quantity:</Typography>
+          <Typography variant="h6">Quantity:</Typography>
           {isEditing ? (
             <TextField
               label="Quantity"
