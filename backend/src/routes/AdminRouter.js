@@ -22,8 +22,8 @@ router.delete("/removePharmacist/:username", removePharmacist);
 router.delete("/removePatient/:username", removePatient);
 
 //view info
-router.get("/viewPharmacistInfo/:username", viewPharmacistInfo);
-router.get("/viewPatientInfo/:username", viewPatientInfo);
+router.get("/viewPharmacistInfo/", viewPharmacistInfo);
+router.get("/viewPatientInfo/", viewPatientInfo);
 router.get("/viewPharmacistRequests", viewPharmacistRequests);
 
 //medicine stuff

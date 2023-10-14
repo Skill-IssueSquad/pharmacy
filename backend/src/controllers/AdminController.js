@@ -125,24 +125,22 @@ const removePatient = async (req, res) => {
 };
 
 const viewPharmacistInfo = async (req, res) => {
-  const { username } = req.params;
+  //const { username } = req.params;
 
-  const pharmacist = await Pharmacist.findOne({
-    username: username,
-  })
+  const pharmacists = await Pharmacist.find({})
     .then(() => {
-      if (!pharmacist) {
+      if (!pharmacists) {
         const reply = {
           success: false,
           data: null,
-          message: "No pharmacist found",
+          message: "No pharmacists found",
         };
         return res.status(404).json(reply);
       }
       const reply = {
         success: true,
-        data: pharmacist,
-        message: "Pharmacist retrieved successfully",
+        data: pharmacists,
+        message: "Pharmacists retrieved successfully",
       };
       return res.status(200).json(reply);
     })
@@ -157,24 +155,22 @@ const viewPharmacistInfo = async (req, res) => {
 };
 
 const viewPatientInfo = async (req, res) => {
-  const { username } = req.params;
+  //const { username } = req.params;
 
-  const patient = await Patient.findOne({
-    username: username,
-  })
+  const patients = await Patient.find({})
     .then(() => {
-      if (!patient) {
+      if (!patients) {
         const reply = {
           success: false,
           data: null,
-          message: "No patient found",
+          message: "No patients found",
         };
         return res.status(404).json(reply);
       }
       const reply = {
         success: true,
         data: patient,
-        message: "Patient retrieved successfully",
+        message: "Patients retrieved successfully",
       };
       return res.status(200).json(reply);
     })
