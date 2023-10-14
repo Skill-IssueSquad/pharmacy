@@ -44,7 +44,7 @@ const AddMedicine = () => {
       medicineName,
       description,
       medicinalUsage,
-      activeIngredients,
+      activeIngredients,  // Send the array of activeIngredients
       quantity,
       price,
       sales,
@@ -100,9 +100,11 @@ const AddMedicine = () => {
       <Grid container spacing={3}>
         {isMedicineAdded && (
           <Grid item xs={12}>
-            <Typography variant="successMessage">{successMessage}</Typography>
+            <Typography variant="body1" color="success">
+              {successMessage}
+            </Typography>
           </Grid>
-        )}
+)}
 
         <Grid item xs={12}>
           <Typography variant="h4">Add Medicine</Typography>
