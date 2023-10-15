@@ -4,6 +4,7 @@ import CreateAdminForm from "../components/createAdminForm";
 import ViewAdmins from "../components/viewAdmins";
 
 const Admin = () => {
+  const [temp, setTemp] = useState(0); // to force rerender
   const submitAdmin = async (formData) => {
     try {
       const res = await axios.post(
@@ -12,6 +13,7 @@ const Admin = () => {
       );
       console.log(res.data);
       return { message: res.data.message };
+      setTemp(temp + 1);
     } catch (error) {
       console.log(error);
       return { message: "Something went wrong" };
