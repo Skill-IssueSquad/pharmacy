@@ -12,8 +12,8 @@ const Admin = () => {
         formData
       );
       console.log(res.data);
-      return { message: res.data.message };
       setTemp(temp + 1);
+      return { message: res.data.message };
     } catch (error) {
       console.log(error);
       return { message: "Something went wrong" };
