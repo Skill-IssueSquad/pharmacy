@@ -10,12 +10,16 @@ import Admin from "./pages/Admin";
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
+import PatientRegisteration from "./pages/PatientRegisteration";
+import PharmacistRegisteration from "./pages/PharmacistRegisteration";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={< Home/>} />
+    <div classname="app">
+      <BrowserRouter>
+        <div classname="pages">
+          <Routes>
+            <Route path="/" element={< Home/>} />
         <Route exact path="/patient" element={<PatientHome />} />
         <Route exact path="/pharmacist/medicines" element={<MedicineList />} />
         <Route exact path="/pharmacist/medicines/sales" element={<MedicineSales/>} />
@@ -29,8 +33,22 @@ function App() {
           path="/admin/viewPharmacistRequests"
           element={<ViewPharmReq />}
         />
-      </Routes>
-    </BrowserRouter>
+
+            <Route
+              exact
+              path="/patientRegisteration"
+              element={<PatientRegisteration />}
+            />
+
+            <Route
+              exact
+              path="/pharmacistRegisteration"
+              element={<PharmacistRegisteration />}
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </div>
   );
 }
 

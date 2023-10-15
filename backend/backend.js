@@ -32,3 +32,10 @@ app.use("/admin", AdminRouter);
 ;
 
 app.use("/pharmacist/medicines", medicineRouter);
+require("dotenv").config();
+
+app.use("/register/patient", PatientRegisteration);
+app.use("/register/pharmacist", PharmacistRegisteration);
+
+
+
