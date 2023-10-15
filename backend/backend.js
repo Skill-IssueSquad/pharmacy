@@ -27,4 +27,8 @@ mongoose
 
 app.use(express.json());
 
+const AdminRouter = require("./src/routes/AdminRouter");
+app.use("/admin", AdminRouter);
+;
+
 app.use("/pharmacist/medicines", medicineRouter);

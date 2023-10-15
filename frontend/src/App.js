@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PatientHome from "./pages/patientHome";
@@ -7,6 +6,10 @@ import MedicineSales from './pages/Sales';
 import AddMedicine from './pages/addmedicine';
 import UpdateMedicine from './pages/updatemedicine';
 import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import MedicinesForAdmin from "./pages/MedicinesForAdmin";
+import ViewAccsInfo from "./pages/ViewAccsInfo";
+import ViewPharmReq from "./pages/viewPharmReq";
 
 function App() {
   return (
@@ -18,6 +21,14 @@ function App() {
         <Route exact path="/pharmacist/medicines/sales" element={<MedicineSales/>} />
         <Route exact path="/pharmacist/medicines/addmedicine" element={<AddMedicine/>} />
         <Route exact path="/pharmacist/medicines/updatemedicine/:medicineId" element={<UpdateMedicine/>} />
+        <Route exact path="/admin" element={<Admin />} />
+        <Route exact path="/admin/medicines" element={<MedicinesForAdmin />} />
+        <Route exact path="admin/viewAccounts" element={<ViewAccsInfo />} />
+        <Route
+          exact
+          path="/admin/viewPharmacistRequests"
+          element={<ViewPharmReq />}
+        />
       </Routes>
     </BrowserRouter>
   );
