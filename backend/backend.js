@@ -39,5 +39,5 @@ require("dotenv").config();
 app.use("/register/patient", PatientRegisteration);
 app.use("/register/pharmacist", PharmacistRegisteration);
 
-
+app.use("/medicine", patientRoutes);
 

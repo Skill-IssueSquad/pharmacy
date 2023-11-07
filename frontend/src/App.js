@@ -12,7 +12,8 @@ import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
 import PatientRegisteration from "./pages/PatientRegisteration";
 import PharmacistRegisteration from "./pages/PharmacistRegisteration";
-
+import MultiLevelFilterTable from "./components/test";
+import Cart from "./components/Cart";
 function App() {
   return (
     <div classname="app">
@@ -64,6 +65,18 @@ function App() {
               exact
               path="/pharmacistRegisteration"
               element={<PharmacistRegisteration />}
+            />
+
+
+            <Route
+              exact
+              path="/medicinePatient"
+              element={<MultiLevelFilterTable/>}
+            />
+             <Route
+              exact
+              path="/Cart"
+              element={<Cart/>}
             />
           </Routes>
         </div>

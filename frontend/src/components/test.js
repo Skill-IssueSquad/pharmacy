@@ -10,16 +10,48 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-
+import {Cart} from './Cart';
 const MultiLevelFilterTable = () => {
   const [filter, setFilter] = useState({ medicineName: "", medicinalUsage: "" });
   const [data, setData] = useState([]); // Store the fetched data
   const [sorting, setSorting] = useState({ field: "", order: "" });
-
+  const [getRender, setRender] = useState(false);
+  var userName = "testuser"; 
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
   }, []);
+  const addToCart = (id) => {
+    
+    fetch(`http://localhost:8000/medicine/addToCart/${userName}/${id}/1`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({
+      //   userName: userName,
+      //   medicineId: "616f1a5c1b1b7f2f4c6e8a5f",
+      //   quantity: 1,
+      // }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Success:", data);
+       // alert("Added to cart");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+
+  const viewCart = () => {
+    
+    console.log('Item viewed');
+  };
+
+
+
 
   const fetchMedicines = async () => {
     try {
@@ -77,7 +109,9 @@ const MultiLevelFilterTable = () => {
     "medicinalUsage",
     "activeIngredients",
     "price",
-    "picture"
+    "picture",
+    "Add To Cart",
+    "Status"
   ];
 
   const filteredData = data.filter((item) => {
@@ -89,25 +123,30 @@ const MultiLevelFilterTable = () => {
   });
 
   return (
-    <div>
+    <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
+      <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>
       <TextField
         label="Filter by medicineName"
         name="medicineName"
         value={filter.medicineName}
         onChange={handleFilterChange}
       />
-      <TextField
+      <TextField style={{marginLeft:'50px'}}
         label="Filter by medicinalUsage"
         name="medicinalUsage"
         value={filter.medicinalUsage}
         onChange={handleFilterChange}
       />
+
+      <button style={{marginLeft:'50px'}} onClick={viewCart}><a href="/Cart">View Cart </a></button>
+    </div>
+    <div>
       <TableContainer component={Paper}>
-        <Table>
-          <TableHead sx = {{padding : "32px"}} >
-            <TableRow>
+        <Table style={{ width: '1500px' ,height:'1000px'}}>
+          <TableHead sx = {{padding : "64px"} }>
+            <TableRow >
               {tableHeaders.map((header) => (
-                <TableCell key={header}  sx = {{padding : "32px"}}>
+                <TableCell key={header}  sx = {{padding : "64px"}}>
                   {header}{" "}
                   
                 </TableCell>
@@ -117,10 +156,10 @@ const MultiLevelFilterTable = () => {
           <TableBody>
   {filteredData.map((item) => (
     <TableRow key={item._id["$oid"]}>
-      <TableCell>{item.medicineName}</TableCell>
-      <TableCell>{item.description}</TableCell>
-      <TableCell>{item.medicinalUsage}</TableCell>
-      <TableCell>
+      <TableCell style={{textAlign:'center'}}>{item.medicineName}</TableCell>
+      <TableCell style={{textAlign:'center'}}>{item.description}</TableCell>
+      <TableCell style={{textAlign:'center'}}>{item.medicinalUsage}</TableCell>
+      <TableCell style={{textAlign:'center'}}>
       <ul>
                   {item.activeIngredients.map((ingredient) => (
                     <li key={ingredient._id}>
@@ -131,13 +170,17 @@ const MultiLevelFilterTable = () => {
                 </ul>
                 </TableCell>
 
-      <TableCell>{item.price}</TableCell>
-     <TableCell ><img src = {item.picture } width = "100px"></img></TableCell>
+      <TableCell style={{textAlign:'center'}}>{item.price}</TableCell>
+     <TableCell style={{textAlign:'center'}} ><img src = {item.picture } width = "100px"></img></TableCell>
+     <TableCell style={{ textAlign: 'center' }}>{item.quantity > 0 ? 'Available' : 'Out of Stock'}</TableCell>
+     
+     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
       </TableRow>
   ))}
 </TableBody>
         </Table>
       </TableContainer>
+      </div>
     </div>
   );
 };

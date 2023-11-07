@@ -1,5 +1,7 @@
 const express = require("express");
 const Medicine = require("../models/Medicines");
+const Patient = require("../models/Patient");
+
 const mongoose = require("mongoose");
 
 const AddMedicine = async (req, res) => {
@@ -168,6 +170,141 @@ const getMedicineByMedicalUse = (req, res) => {
   }
 };
 
+// const AddToCart = async (req, res) => {
+
+//   console.log("Masr hena");
+//   const userName = req.params.userName;
+
+//   const medicineId = req.params.medicineId;
+//   const quantity = req.params.quantity;
+//   console.log(userName);
+//   console.log(medicineId);
+//   console.log(quantity);
+//   const medicine = await Medicine.findById({ _id: medicineId }).then((medicine) => {
+
+//     if (medicine) {
+//     //  res.status(200).json(medicine);
+//     console.log('medicine found');
+//     } else {
+//      // res.status(404).json({ error: "Medicine not found" });
+     
+//     }
+//   }).catch((error) => {
+//    // res.status(500).json({ error: "Internal server error" });
+//   });
+
+
+//   const user = await Patient.findOneAndUpdate({ username: userName },{ $push: {'cart.medicines': { medicine_id: medicineId, quantity: quantity } } }).then((patient) => {
+//     if (patient) {
+//       res.status(200).json(patient);
+//     } else {
+//       res.status(404).json({ error: "Patient not found" });
+     
+//     }
+//   }).catch((error) => {
+//     res.status(500).json({ error: "Internal server error" });
+//   });;
+ 
+  
+// };
+
+
+const AddToCart = async (req, res) => {
+
+  const userName = req.params.userName;
+  const medicineId = req.params.medicineId;
+  const quantity = req.params.quantity;
+
+  console.log('userName:', userName);
+  console.log('medicineId:', medicineId);
+  console.log('quantity:', quantity);
+
+  try {
+  
+
+    const medicine = await Medicine.findById({ _id: medicineId });
+
+
+    if (!medicine) {
+      console.log('Medicine not found');
+      return res.status(404).json({ success:false,data:null,message:"Medicine not found"});
+    }
+
+    
+
+
+
+
+
+
+
+    if(medicine.quantity == 0){
+      return res.status(404).json({succes:false,data:null,message:"Medicine is out of stock"});
+    }
+    else{
+    medicine.quantity = medicine.quantity - 1;
+    medicine.sales = medicine.sales+1;
+    await medicine.save();
+    }
+
+    const user = await Patient.findOneAndUpdate(
+      { username: userName },
+      { $push: { 'cart.medicines': { medicine_id: medicineId, quantity: quantity } } },
+      //{ new: true }
+    );
+
+
+
+
+
+
+
+
+    const totalPrice = user.cart.totalPrice + medicine.price * quantity;
+    
+
+    console.log(totalPrice);
+    const netPrice = totalPrice - (totalPrice * 0.05);
+    
+
+    const discount = totalPrice -netPrice;
+
+
+    console.log(netPrice);
+    console.log(discount);
+
+
+
+    // const userTwo = await Patient.findOneAndUpdate(
+    //   { username: userName },
+    //   {$set: { 'cart.totalPrice': totalPrice } },
+    //   {$set:{'cart.discount':discount}},
+    //   {$set:{'cart.netPrice':netPrice}}
+
+
+    // );
+    user.cart.totalPrice = totalPrice;
+    user.cart.netPrice = netPrice;
+    user.cart.discount = discount;
+    await user.save();
+
+    
+    if (user) {
+      console.log('User cart updated:', user.cart);
+      return res.status(200).json(user);
+    } else {
+      console.log('Patient not found');
+      return res.status(404).json({ success:false,data:null,error: "Patient not found" });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ success:false,data:null, error: "Internal server error" });
+  }
+};
+
+
+
+
 module.exports = {
   AddMedicine,
   getMedicines,
@@ -177,4 +314,5 @@ module.exports = {
   getAllMedicine,
   getMedicineByName,
   getMedicineByMedicalUse,
+  AddToCart
 };
