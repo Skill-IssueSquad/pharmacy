@@ -1,23 +1,24 @@
-import React, { useRef, useEffect } from 'react';
-import { FilePond } from 'react-filepond';
+import React from 'react';
+import * as FilePond from 'filepond';
 import 'filepond/dist/filepond.min.css';
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 
-function FileUpload() {
-    const pond = useRef(null);
-  
-    useEffect(() => {
-      // Initialize FilePond with your configurations and plugins
-      pond.current = FilePond.create({
-        allowMultiple: true,
-        // Add other configurations and plugins as needed
-      });
-    }, []);
-  
-    return (
-      <div>
-        <FilePond ref={pond} />
-      </div>
-    );
-  }
-  
-  export default FileUpload;
+
+FilePond.registerPlugin(FilePondPluginFileEncode);
+FilePond.registerPlugin(FilePondPluginImageResize);
+FilePond.registerPlugin(FilePondPluginImagePreview);
+
+
+function filePond() {
+  return (
+    <div>
+            <FilePond allowMultiple={true} />
+
+    </div>
+  );
+}
+
+export default filePond;
