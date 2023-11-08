@@ -45,10 +45,7 @@ const AddMedicine = () => {
   };
 
   const handleSubmit = async () => {
-  //  const uploadedFiles = pond.getFiles();
 
-    // Access the first uploaded file (assuming you allow only one file)
-    //const uploadedFile = uploadedFiles.length > 0 ? uploadedFiles[0].file : null;
     const formData = {
       medicineName,
       description,
@@ -225,15 +222,15 @@ const AddMedicine = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-          <FilePond
-            allowMultiple={false}
-            server="your_backend_endpoint_for_file_upload"
-            onprocessfile={(error, file) => {
-              if (!error) {
-                setImage(file); // Set the uploaded image file
-              }
-            }}
-          />
+      <FilePond
+        allowMultiple={true}
+     
+         onprocessfile={(error, file) => {
+  
+      setImage(file); 
+  }}
+/>
+
         </Grid>
 
 
