@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import filePond from "../components/filePond";
-import ImageUploadForm from '../components/ImageUploadForm'; // Import the ImageUploadForm component
+//import ImageUploadForm from '../components/ImageUploadForm'; // Import the ImageUploadForm component
 
 import {
   Grid,
@@ -215,9 +215,11 @@ const AddMedicine = () => {
           </Button>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-          <ImageUploadForm />
-        </Grid>
+      <div>
+            <label htmlFor="cover">Cover:</label>
+            <input type="file" id="cover" name="cover" className="filepond" />
+            <filepond />
+        </div>
 
     </div>
   );
