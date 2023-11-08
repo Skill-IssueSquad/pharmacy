@@ -11,11 +11,11 @@ FilePond.registerPlugin(FilePondPluginFileEncode);
 FilePond.registerPlugin(FilePondPluginImageResize);
 FilePond.registerPlugin(FilePondPluginImagePreview);
 
+document.body.appendChild(pond.element);
 
 const pond = FilePond.create({
     multiple: true,
     name: 'filepond'
 });
-document.body.appendChild(pond.element);
 
 export default pond;
