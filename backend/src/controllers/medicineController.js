@@ -207,6 +207,40 @@ const getMedicineByMedicalUse = (req, res) => {
  
   
 // };
+const getArrayOfMedicine = async (req, res) => {
+  const getArrayOfMedicineIDS = req.body.cartItems;
+
+  if (!getArrayOfMedicineIDS || getArrayOfMedicineIDS.length === 0) {
+    console.log("EMPTY Cart");
+    res.status(200).json([]);
+    return;
+  }
+
+  try {
+    const medicines = await Promise.all(
+      getArrayOfMedicineIDS.map(async (element) => {
+        const medicine = await Medicine.findOne({ _id: element.medicine_id });
+
+        if (medicine) {
+          return medicine;
+        } else {
+          return null;
+        }
+      })
+    );
+
+    const foundMedicines = medicines.filter((medicine) => medicine !== null);
+
+    if (foundMedicines.length > 0) {
+      res.status(200).json(foundMedicines);
+    } else {
+      res.status(404).json({ error: "Medicines not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 
 const AddToCart = async (req, res) => {
@@ -247,31 +281,50 @@ const AddToCart = async (req, res) => {
     await medicine.save();
     }
 
-    const user = await Patient.findOneAndUpdate(
-      { username: userName },
-      { $push: { 'cart.medicines': { medicine_id: medicineId, quantity: quantity } } },
-      //{ new: true }
+    // const user = await Patient.findOneAndUpdate(
+    //   { username: userName },
+    //   { $push: { 'cart.medicines': { medicine_id: medicineId, quantity: quantity } } },
+    //   //{ new: true }
+    // );
+
+    const user = await Patient.findOne({ username: userName });
+
+    const medicineIndex = user.cart.medicines.findIndex(
+      (medicine) => medicine.medicine_id.toString() === medicineId
     );
 
+    console.log(medicineIndex)
+    if (medicineIndex !== -1) {
+      // Medicine is in the cart, decrement the quantity
+      if (user.cart.medicines[medicineIndex].quantity >= 1) {
+        user.cart.medicines[medicineIndex].quantity += 1;
+        console.log(medicineIndex )
+      } 
+    } else {
+      // Medicine is not in the cart, add it
+      console.log(medicineIndex )
+
+      user.cart.medicines.push({ medicine_id: medicineId, quantity: 1 });
+    }
+
+
+    await user.save();
 
 
 
 
-
-
-
-    const totalPrice = user.cart.totalPrice + medicine.price * quantity;
+    // const totalPrice = user.cart.totalPrice + medicine.price * quantity;
     
 
-    console.log(totalPrice);
-    const netPrice = totalPrice - (totalPrice * 0.05);
+    // console.log(totalPrice);
+    // const netPrice = totalPrice - (totalPrice * 0.05);
     
 
-    const discount = totalPrice -netPrice;
+    // const discount = totalPrice -netPrice;
 
 
-    console.log(netPrice);
-    console.log(discount);
+    // console.log(netPrice);
+    // console.log(discount);
 
 
 
@@ -282,10 +335,10 @@ const AddToCart = async (req, res) => {
     //   {$set:{'cart.netPrice':netPrice}}
 
 
-    // );
-    user.cart.totalPrice = totalPrice;
-    user.cart.netPrice = netPrice;
-    user.cart.discount = discount;
+    // // );
+    // user.cart.totalPrice = totalPrice;
+    // user.cart.netPrice = netPrice;
+    // user.cart.discount = discount;
     await user.save();
 
     
@@ -314,5 +367,6 @@ module.exports = {
   getAllMedicine,
   getMedicineByName,
   getMedicineByMedicalUse,
-  AddToCart
+  AddToCart,
+  getArrayOfMedicine
 };

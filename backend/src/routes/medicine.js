@@ -20,4 +20,7 @@ router.get('/searchByName/:name?' , medicineController.getMedicineByName)
 router.get('/searchByMedial_use/:medical_use?' , medicineController.getMedicineByMedicalUse)
 
 router.post('/addToCart/:userName/:medicineId/:quantity' , medicineController.AddToCart);
+
+router.post('/getArrayMedicinesByID',medicineController.getArrayOfMedicine);
+
 module.exports = router;
