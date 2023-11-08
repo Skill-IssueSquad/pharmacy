@@ -15,9 +15,9 @@ import PharmacistRegisteration from "./pages/PharmacistRegisteration";
 
 function App() {
   return (
-    <div classname="app">
+    <div className="app">
       <BrowserRouter>
-        <div classname="pages">
+        <div className="pages">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route exact path="/patient" element={<PatientHome />} />
