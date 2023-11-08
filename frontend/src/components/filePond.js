@@ -6,16 +6,20 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 
-
 FilePond.registerPlugin(FilePondPluginFileEncode);
 FilePond.registerPlugin(FilePondPluginImageResize);
 FilePond.registerPlugin(FilePondPluginImagePreview);
-
-document.body.appendChild(pond.element);
 
 const pond = FilePond.create({
     multiple: true,
     name: 'filepond'
 });
+
+
+FilePond.setOptions({stylePanelAspectRatio: 150/100,
+imageResizeTargetWidth:100,
+imageResizeTargetHeight:150
+})
+document.body.appendChild(pond.element);
 
 export default pond;
