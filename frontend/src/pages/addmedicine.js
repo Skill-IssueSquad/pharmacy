@@ -213,6 +213,11 @@ const AddMedicine = () => {
           </Button>
         </Grid>
       </Grid>
+      <div>
+      {/* Add a specific container element for FilePond */}
+      <div id="filepond-container"></div>
+      {/* Rest of your AddMedicine component */}
+    </div>
     </div>
   );
 };
