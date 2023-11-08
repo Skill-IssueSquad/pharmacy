@@ -12,13 +12,9 @@ FilePond.registerPlugin(FilePondPluginImageResize);
 FilePond.registerPlugin(FilePondPluginImagePreview);
 
 
-function filePond() {
-  return (
-    <div>
-            <FilePond allowMultiple={true} />
+const pond = FilePond.create({
+    multiple: true,
+    name: 'filepond'
+});
 
-    </div>
-  );
-}
-
-export default filePond;
+export default pond;
