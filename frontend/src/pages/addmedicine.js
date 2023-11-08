@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import filePond from "../components/filePond";
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
 //import ImageUploadForm from '../components/ImageUploadForm'; // Import the ImageUploadForm component
 
 import {
@@ -28,6 +29,8 @@ const AddMedicine = () => {
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
   const [sales, setSales] = useState(0);
+  const [image, setImage] = useState(0);
+
   const [isMedicineAdded, setIsMedicineAdded] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -42,6 +45,10 @@ const AddMedicine = () => {
   };
 
   const handleSubmit = async () => {
+  //  const uploadedFiles = pond.getFiles();
+
+    // Access the first uploaded file (assuming you allow only one file)
+    //const uploadedFile = uploadedFiles.length > 0 ? uploadedFiles[0].file : null;
     const formData = {
       medicineName,
       description,
@@ -50,6 +57,7 @@ const AddMedicine = () => {
       quantity,
       price,
       sales,
+      image,
     };
 
     const validationErrors = {};
@@ -111,6 +119,7 @@ const AddMedicine = () => {
         <Grid item xs={12}>
           <Typography variant="h4">Add Medicine</Typography>
         </Grid>
+        
         <Grid item xs={12}>
           <TextField
             label="Medicine Name"
@@ -215,11 +224,18 @@ const AddMedicine = () => {
           </Button>
         </Grid>
       </Grid>
-      <div>
-            <label htmlFor="cover">Cover:</label>
-            <input type="file" id="cover" name="cover" className="filepond" />
-            <filepond />
-        </div>
+      <Grid item xs={12}>
+          <FilePond
+            allowMultiple={false}
+            server="your_backend_endpoint_for_file_upload"
+            onprocessfile={(error, file) => {
+              if (!error) {
+                setImage(file); // Set the uploaded image file
+              }
+            }}
+          />
+        </Grid>
+
 
     </div>
   );
