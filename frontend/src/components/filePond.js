@@ -15,11 +15,10 @@ const pond = FilePond.create({
     name: 'filepond'
 });
 
-
-FilePond.setOptions({stylePanelAspectRatio: 150/100,
-imageResizeTargetWidth:100,
-imageResizeTargetHeight:150
-})
-document.body.appendChild(pond.element);
+FilePond.setOptions({
+    stylePanelAspectRatio: 150/100,
+    imageResizeTargetWidth: 100,
+    imageResizeTargetHeight: 150
+});
 
 export default pond;
