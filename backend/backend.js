@@ -8,6 +8,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
+const patientCart = require("./src/routes/Patient");
 
 //for iamages
 const multer = require("multer");
@@ -40,4 +41,6 @@ app.use("/register/patient", PatientRegisteration);
 app.use("/register/pharmacist", PharmacistRegisteration);
 
 app.use("/medicine", patientRoutes);
+
+app.use("/patient",patientCart);
 
