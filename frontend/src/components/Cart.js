@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { useNavigate } from 'react-router-dom';
+const MyContext = React.createContext();
+
+
 const Cart = () => {
   var userName = "testuser";
   const [cartItems, setCartItems] = useState([]);
@@ -106,25 +111,21 @@ const Cart = () => {
             })
             .then((data) => {
               // Here, you have the specific medicines, and you can update your component state accordingly
-              console.log("Omar: "+data.data.medicines);
-             setCartItems(data.data.medicines);
+            console.log("Omar: "+data.data.medicines);
+
+            setCartItems(data.data.medicines);
+            //fetchMedicines(cartItems);
+            console.log('Medicines:', medicines);
+
              return cartItems;
             })
             .catch((error) => console.error('Error Deleting medicine from Cart:', error));
            // removeQuantity(id);
           }
+        
           
-       
-      
-       
 
 
-
-
-
-
-         
-          
           else{
 
           
@@ -138,18 +139,43 @@ const Cart = () => {
         // setCartItems([]);
          setCartItems(updatedCartItems);
           return updatedCartItems;
-        }
-   
-
-    
-     
-    
+          }
   };
 
 
 
 
 
+  const removeItemFromCart =(id)=>{
+
+     fetch('http://localhost:8000/patient/removeMedicineFromCart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userName, medicineId: id }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error('Network response was not ok');
+              }
+            })
+            .then((data) => {
+              // Here, you have the specific medicines, and you can update your component state accordingly
+            console.log("Omar: "+data.data.medicines);
+
+            setCartItems(data.data.medicines);
+            //fetchMedicines(cartItems);
+            console.log('Medicines:', medicines);
+
+             return cartItems;
+            })
+            .catch((error) => console.error('Error Deleting medicine from Cart:', error));
+           // removeQuantity(id);
+          }
+  
 
 
 
@@ -185,6 +211,11 @@ const Cart = () => {
 
   }, []);
 
+  const navigate = useNavigate();
+
+  const navigateToCheckout = (cartItems ,medicines) => {
+    navigate('/Checkout', { state: { data: cartItems , medicines: medicines} });
+  };
 
 
   useEffect(() => {
@@ -206,7 +237,6 @@ const Cart = () => {
       })
       .then((medicineOutputs) => {
         // Here, you have the specific medicines, and you can update your component state accordingly
-        console.log('Medicines:', medicines);
         setMedicines(medicineOutputs);
       })
       .catch((error) => console.error('Error fetching medicines:', error));
@@ -258,6 +288,7 @@ const Cart = () => {
 // console.log(cartItems);
   var i = 0;
   return (
+    <MyContext.Provider value={cartItems}>
     <div>
       <h2>Cart Items</h2>
       <table>
@@ -273,7 +304,8 @@ const Cart = () => {
           </tr>
         </thead>
         <tbody>
-          {medicines&&medicines.map((item) => (
+          {medicines.length==cartItems.length&&medicines.map((item) => (
+            
             <tr key={item.id}>
               <td>{item.medicineName}</td>
               <td>{item.description}</td>
@@ -290,11 +322,17 @@ const Cart = () => {
               <td>
                 <img src={item.photo} alt={item.name} width="100" />
               </td>
+              <td> <button onClick={()=> removeItemFromCart(item._id)} >Remove from cart</button></td>
             </tr>
           ))}
+          
         </tbody>
       </table>
+      <div> 
+          <button onClick={()=>navigateToCheckout(cartItems , medicines)}>Checkout</button>
+        </div>
     </div>
+    </MyContext.Provider>
   );
 };
 

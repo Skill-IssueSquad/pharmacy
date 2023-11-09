@@ -14,6 +14,8 @@ import PatientRegisteration from "./pages/PatientRegisteration";
 import PharmacistRegisteration from "./pages/PharmacistRegisteration";
 import MultiLevelFilterTable from "./components/test";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+
 function App() {
   return (
     <div classname="app">
@@ -77,6 +79,11 @@ function App() {
               exact
               path="/Cart"
               element={<Cart/>}
+            />
+              <Route
+              exact
+              path="/Checkout"
+              element={<Checkout/>}
             />
           </Routes>
         </div>
