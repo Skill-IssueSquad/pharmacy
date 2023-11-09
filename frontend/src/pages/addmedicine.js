@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
+import axios from 'axios'; // Import axios
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 //import ImageUploadForm from '../components/ImageUploadForm'; // Import the ImageUploadForm component
@@ -29,7 +30,7 @@ const AddMedicine = () => {
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
   const [sales, setSales] = useState(0);
-  const [image, setImage] = useState(0);
+  const [image, setImage] = useState();
 
   const [isMedicineAdded, setIsMedicineAdded] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -45,8 +46,7 @@ const AddMedicine = () => {
   };
 
   const handleSubmit = async () => {
-
-    const formData = {
+   /* const formData = {
       medicineName,
       description,
       medicinalUsage,
@@ -54,12 +54,33 @@ const AddMedicine = () => {
       quantity,
       price,
       sales,
-      image,
-    };
+    };*/
+    const formData = new FormData();
+    formData.append('medicineName', medicineName);
+    formData.append('description', description);
+    formData.append('medicinalUsage', medicinalUsage);
+    formData.append('activeIngredients', JSON.stringify(activeIngredients));
+    formData.append('quantity', quantity);
+    formData.append('price', price);
+    formData.append('sales', sales);
+    formData.append('image', image);
+    console.log(medicineName)
+    /*const jsonData = {
+      medicineName,
+      description,
+      medicinalUsage,
+      activeIngredients,  // Send the array of activeIngredients
+      quantity,
+      price,
+      sales,
+    };*/
+  
+    // Append the JSON data as a field in FormData
+    //formData.append('jsonData', JSON.stringify(jsonData));
 
     const validationErrors = {};
 
-    if (!medicineName) {
+    /*if (!medicineName) {
       validationErrors.medicineName = "Medicine Name is required";
     }
 
@@ -67,20 +88,27 @@ const AddMedicine = () => {
       setErrors(validationErrors);
       return;
     }
-
+*/
     try {
-      const response = await fetch(
+      console.log("HERE")
+
+      /*const response = await fetch(
         "http://localhost:8000/pharmacist/medicines",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: (jsonData),
         }
-      );
+      );*/
+      //console.log(jsonData)
 
-      if (response.status === 201) {
+      axios.post('http://localhost:8000/pharmacist/medicines', formData )
+      .then(res =>{})
+      .catch(er => console.log(er))
+
+      /*if (response.status === 201) {
         setIsMedicineAdded(true);
         setSuccessMessage("Medicine added successfully");
         setMedicineName("");
@@ -95,7 +123,7 @@ const AddMedicine = () => {
         setErrors({});
       } else {
         // Handle errors, e.g., show an error message
-      }
+      }*/
     } catch (error) {
       // Handle network or other errors
     }
@@ -216,22 +244,16 @@ const AddMedicine = () => {
           />
         </Grid>
         <Grid item xs={12}>
+        <input type="file" onChange={(e)=>setImage(e.target.files[0])}/>
+        </Grid>
+        <Grid item xs={12}>
           <Button variant="contained" color="primary" onClick={handleSubmit}>
             Add Medicine
           </Button>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-      <FilePond
-        allowMultiple={true}
-     
-         onprocessfile={(error, file) => {
-  
-      setImage(file); 
-  }}
-/>
+    
 
-        </Grid>
 
 
     </div>

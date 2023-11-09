@@ -2,22 +2,40 @@ const express = require("express");
 const Medicine = require("../models/Medicines");
 const mongoose = require("mongoose");
 
+
+
 const AddMedicine = async (req, res) => {
   const {
     medicineName,
     description,
     medicinalUsage,
-    activeIngredients,
+   // activeIngredients,
     quantity,
     price,
     sales,
     isArchived,
     requiresPrescription,
   } = req.body;
-  let picture = "";
-  if (req.file != undefined)
-    picture = `http://localhost:8000/images/${req.file.filename}`;
+  const activeIngredients = JSON.parse(req.body.activeIngredients);
+
+  let picture = req.nameFile;
+  console.log("HERE5"+req.body.medicineName)
+  console.log("HERE5"+req.body.description)
+  console.log("HERE5"+req.body.medicinalUsage)
+  console.log("HERE5"+req.body.activeIngredients)
+  console.log("HERE5"+req.body.quantity)
+  console.log("HERE5"+req.body.price)
+  console.log("HERE5"+req.body.sales)
+  console.log("HERE5"+req.body.isArchived)
+  console.log("HERE5"+req.body.requiresPrescription)
+  console.log("HERE5"+picture)
+
+
+
+  //if (req.file != undefined)
+    //picture = `http://localhost:8000/images/${req.file.filename}`;
   try {
+    console.log("HERE4")
     const newMedicine = await Medicine.create({
       medicineName,
       description,
@@ -37,10 +55,14 @@ const AddMedicine = async (req, res) => {
         message: "Medicine created successfully",
         data: newMedicine,
       });
+      console.log("HERE6"+newMedicine)
+
   } catch (error) {
+
     res.status(400).json({ success: false, error: error.message, data: null });
   }
 };
+
 
 const getMedicines = async (req, res) => {
   try {
