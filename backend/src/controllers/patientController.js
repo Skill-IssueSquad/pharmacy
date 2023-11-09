@@ -27,7 +27,38 @@ const getCart = async (req,res) =>{
 
 }
 
+
+const removeMedicine = async(req,res) =>{
+    const{userName,medicineId} = req.body;
+    console.log(userName, medicineId);
+  
+    try{
+        
+
+        const patient = await Patient.findOne({username:userName});
+        if(patient != null){
+            
+
+            const cart = patient.cart.medicines;
+            const newCart = cart.filter((medicine) => medicine.medicine_id != medicineId);
+            patient.cart.medicines = newCart;
+            await patient.save();
+
+            return res.status(200).json({success: true , message: "Medicine removed" , data: patient.cart})
+
+
+
+        }
+        else{
+            return res.status(404).json({success: false , message: "Patient not found" , data: null})
+
+        }
+    }
+    catch(error){
+        return res.status(500).json({success: false , message: error.message , data: null});
+    }
+}
 module.exports = {
-    getCart
+    getCart,removeMedicine
   };
   

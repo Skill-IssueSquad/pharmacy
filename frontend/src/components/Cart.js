@@ -1,9 +1,160 @@
 import React, { useState, useEffect } from 'react';
-
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 const Cart = () => {
-  
-  
+  var userName = "testuser";
   const [cartItems, setCartItems] = useState([]);
+  const [medicines, setMedicines] = useState([]);
+
+  const addQuantity = (id) => {
+   
+    fetch(`http://localhost:8000/medicine/addToCart/${userName}/${id}/1`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({
+      //   userName: userName,
+      //   medicineId: "616f1a5c1b1b7f2f4c6e8a5f",
+      //   quantity: 1,
+      // }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Success:", data);
+        
+        // const index = cartItems.findIndex((item) => item.medicine_id === id);
+
+        // console.log("index: "+index);
+        // cartItems[index].quantity += 1;
+        // setCartItems(cartItems);
+
+
+
+
+      
+
+          const updatedCartItems = [...cartItems];
+          const index = updatedCartItems.findIndex((item) => item.medicine_id === id);
+          const indexM = medicines.findIndex((item) => item._id === id);
+
+          if(medicines[indexM].quantity <= updatedCartItems[index].quantity)
+          {
+            alert("Out of stock");
+            
+            return updatedCartItems;
+          }
+          else{
+
+          
+
+
+          if (index !== -1) {
+            console.log(updatedCartItems[index].quantity);
+            updatedCartItems[index].quantity += 1;
+            console.log(updatedCartItems[index].quantity);
+          }
+        // setCartItems([]);
+         setCartItems(updatedCartItems);
+          return updatedCartItems;
+        }
+   
+
+    
+       // alert("Added to cart");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+
+  const removeQuantity = (id) => {
+   
+ 
+        // const index = cartItems.findIndex((item) => item.medicine_id === id);
+
+        // console.log("index: "+index);
+        // cartItems[index].quantity += 1;
+        // setCartItems(cartItems);
+
+
+
+
+      
+
+          const updatedCartItems = [...cartItems];
+          const index = updatedCartItems.findIndex((item) => item.medicine_id === id);
+
+          console.log(index);
+          if( updatedCartItems[index].quantity === 1)
+          {
+       
+           fetch('http://localhost:8000/patient/removeMedicineFromCart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userName, medicineId: id }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error('Network response was not ok');
+              }
+            })
+            .then((data) => {
+              // Here, you have the specific medicines, and you can update your component state accordingly
+              console.log("Omar: "+data.data.medicines);
+             setCartItems(data.data.medicines);
+             return cartItems;
+            })
+            .catch((error) => console.error('Error Deleting medicine from Cart:', error));
+           // removeQuantity(id);
+          }
+          
+       
+      
+       
+
+
+
+
+
+
+         
+          
+          else{
+
+          
+
+
+          if (index !== -1) {
+            console.log(updatedCartItems[index].quantity);
+            updatedCartItems[index].quantity -= 1;
+            console.log(updatedCartItems[index].quantity);
+          }
+        // setCartItems([]);
+         setCartItems(updatedCartItems);
+          return updatedCartItems;
+        }
+   
+
+    
+     
+    
+  };
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
 
@@ -34,7 +185,6 @@ const Cart = () => {
 
   }, []);
 
-  const [medicines, setMedicines] = useState([]);
 
 
   useEffect(() => {
@@ -129,7 +279,13 @@ const Cart = () => {
               <td>{item.description}</td>
               <td>{item.medicinalUsage}</td>
               <td>{item.price}</td>
-              <td>{cartItems[i].quantity}</td>
+            <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>                
+                <td>{cartItems[i].quantity}</td>
+              
+                <AddIcon  disabled={item.quantity === cartItems[i].quantity } onClick={() => addQuantity(item._id)}  ></AddIcon>
+                <RemoveIcon  onClick={()=> removeQuantity(item._id)} disabled={cartItems[i].quantity === 0}></RemoveIcon>
+                
+              </div>
               <td>{cartItems[i++].quantity*item.price}</td>
               <td>
                 <img src={item.photo} alt={item.name} width="100" />

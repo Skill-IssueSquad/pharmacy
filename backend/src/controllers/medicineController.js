@@ -209,9 +209,9 @@ const getMedicineByMedicalUse = (req, res) => {
 // };
 const getArrayOfMedicine = async (req, res) => {
   const getArrayOfMedicineIDS = req.body.cartItems;
-
+//console.log("ArrayIds: "+getArrayOfMedicineIDS);
   if (!getArrayOfMedicineIDS || getArrayOfMedicineIDS.length === 0) {
-    console.log("EMPTY Cart");
+    //console.log("EMPTY Cart");
     res.status(200).json([]);
     return;
   }
@@ -275,11 +275,11 @@ const AddToCart = async (req, res) => {
     if(medicine.quantity == 0){
       return res.status(404).json({succes:false,data:null,message:"Medicine is out of stock"});
     }
-    else{
-    medicine.quantity = medicine.quantity - 1;
-    medicine.sales = medicine.sales+1;
-    await medicine.save();
-    }
+    // else{
+    // // medicine.quantity = medicine.quantity - 1;
+    // // medicine.sales = medicine.sales+1;
+    // //await medicine.save();
+    // }
 
     // const user = await Patient.findOneAndUpdate(
     //   { username: userName },
