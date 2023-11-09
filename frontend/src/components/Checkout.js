@@ -52,7 +52,17 @@ const Checkout = () => {
   const total = () =>{
 
   }
-
+  const formatAddress = (addressObject) => {
+    const parts = [];
+  
+    if (addressObject.streetName) parts.push(`Street Number: ${addressObject.streetName}`);
+    if (addressObject.propertyNumber) parts.push(`Property Number: ${addressObject.propertyNumber}`);
+    if (addressObject.floorNumber) parts.push(`Floor Number: ${addressObject.floorNumber}`);
+    if (addressObject.apartmentNumber) parts.push(`Apartment Number: ${addressObject.apartmentNumber}`);
+    if (addressObject.extraLandmarks) parts.push(`Extra Landmarks: ${addressObject.extraLandmarks}`);
+  
+    return parts.join(', ');
+  };
   
   const handleEditAddressSave = () => {
     const newAddressObject = {
@@ -65,11 +75,18 @@ const Checkout = () => {
 
     // You can use newAddressObject for your logic, and update the state or perform any other actions as needed.
 
-    if (Object.values(newAddressObject).some(value => value.trim() !== '')) {
-      setAddressList([...addressList, newAddressObject]);
-      setSelectedAddress(newAddressObject);
-    }
 
+   
+
+
+    if (
+      Object.values(newAddressObject)
+        .slice(0, -1) // Exclude the last field (landmark)
+        .every((value) => value.trim() !== '') && 
+        !addressList.includes(newAddressObject)
+    ) {
+      setAddressList([...addressList, newAddressObject]);
+    }
     // Clear the input fields after saving
     setStreetName('');
     setPropertyNumber('');
@@ -99,6 +116,7 @@ const Checkout = () => {
               label="Name"
               variant="outlined"
               value={name}
+              
               onChange={(e) => setName(e.target.value)}
             />
           </Grid>
@@ -109,6 +127,7 @@ const Checkout = () => {
               variant="outlined"
               type="email"
               value={email}
+              
               onChange={(e) => setEmail(e.target.value)}
             />
           </Grid>
@@ -120,10 +139,11 @@ const Checkout = () => {
                 id="address"
                 value={selectedAddress}
                 onChange={(e) => setSelectedAddress(e.target.value)}
+                
               >
                 {addressList.map((addr, index) => (
                   <MenuItem key={index} value={addr}>
-                    {addr}
+                    {formatAddress(addr)}
                   </MenuItem>
                 ))}
               </Select>
@@ -156,56 +176,78 @@ const Checkout = () => {
         </Button>
       </form>
       <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
-        <DialogTitle>Edit/Add Address</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            label="street name"
-            variant="outlined"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-          />
-            <TextField
-            fullWidth
-            label="property number"
-            variant="outlined"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="floor number"
-            variant="outlined"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="apartment num"
-            variant="outlined"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="Extra landmarks"
-            variant="outlined"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEditDialog(false)} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleEditAddressSave} color="primary">
-            Use once
-          </Button>
-          <Button onClick={handleEditAddressSave} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DialogTitle>Edit/Add Address</DialogTitle>
+      <DialogContent>
+    <TextField
+      fullWidth
+      label="Street Name"
+      variant="outlined"
+      value={streetName}
+      required
+      onChange={(e) => setStreetName(e.target.value)}
+      error={streetName.trim() === ''} // Add error state
+     
+    />
+    <TextField
+      fullWidth
+      label="Property Number"
+      variant="outlined"
+      value={propertyNumber}
+      required
+      onChange={(e) => setPropertyNumber(e.target.value)}
+      error={propertyNumber.trim() === ''} // Add error state
+    />
+    <TextField
+      fullWidth
+      label="Floor Number"
+      variant="outlined"
+      value={floorNumber}
+      required
+      onChange={(e) => setFloorNumber(e.target.value)}
+      error={floorNumber.trim() === ''} // Add error state
+    />
+    <TextField
+      fullWidth
+      label="Apartment Number"
+      variant="outlined"
+      value={apartmentNumber}
+      required
+      onChange={(e) => setApartmentNumber(e.target.value)}
+      error={apartmentNumber.trim() === ''} // Add error state
+    />
+    <TextField
+      fullWidth
+      label="Extra Landmarks"
+      variant="outlined"
+      value={extraLandmarks}
+      onChange={(e) => setExtraLandmarks(e.target.value)}
+    />
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenEditDialog(false)} color="secondary">
+      Cancel
+    </Button>
+    <Button
+      onClick={handleEditAddressSave}
+      color="primary"
+      disabled={
+        !streetName.trim() || !propertyNumber.trim() || !floorNumber.trim() || !apartmentNumber.trim()
+      }
+    >
+      Use once
+    </Button>
+    <Button
+      onClick={handleEditAddressSave}
+      color="primary"
+      disabled={
+        !streetName.trim() || !propertyNumber.trim() || !floorNumber.trim() || !apartmentNumber.trim()
+      }
+    >
+      Save
+    </Button>
+  </DialogActions>
+</Dialog>
+
     </Container>
   );
 };
