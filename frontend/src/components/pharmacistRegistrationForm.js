@@ -3,7 +3,7 @@ import axios from "axios";
 import { json } from "react-router-dom";
 
 const PharmacistRegistrationForm = () => {
-  const [formData, setFormData] = useState({
+ /* const [formData, setFormData] = useState({
     username: "",
     realName: "",
     password: "",
@@ -13,18 +13,41 @@ const PharmacistRegistrationForm = () => {
     affiliatedHospital: "",
     educationalBackground: "",
   });
+*/
+  const [username, setUsername] = useState("");
+  const [realName, setRealName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [hourlyRate, setHourlyRate] = useState("");
+  const [affiliatedHospital, setAffiliatedHospital] = useState("");
+  const [educationalBackground, setEducationalBackground] = useState("");
+  const [image, setImage] = useState();
+
   const [error, setError] = useState(null);
-  const handleChange = (e) => {
+ /* const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-  };
+  };*/
 
   const handleSubmit = async (e) => {
+
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('realName', realName);
+    formData.append('password', password);
+    formData.append('email', email);
+    formData.append('dateOfBirth', dateOfBirth);
+    formData.append('hourlyRate', hourlyRate);
+    formData.append('affiliatedHospital', affiliatedHospital);
+    formData.append('educationalBackground', educationalBackground);
+    formData.append('image', image);
+
     e.preventDefault();
-    const pharmacist = {
+    /*const pharmacist = {
       username: formData.username,
       name: formData.realName,
       password: formData.password,
@@ -34,13 +57,13 @@ const PharmacistRegistrationForm = () => {
       affiliatedHospital: formData.affiliatedHospital,
       educationalBackground: formData.educationalBackground,
     };
-
+*/
     console.log(formData);
-    console.log(pharmacist);
+   // console.log(pharmacist);
 
     const response = await axios.post(
       "http://localhost:8000/register/pharmacist",
-      pharmacist
+      formData
     );
 
     if (!response) {
@@ -48,16 +71,15 @@ const PharmacistRegistrationForm = () => {
     } else {
       setError(null);
 
-      setFormData({
-        username: "",
-        realName: "",
-        password: "",
-        email: "",
-        dateOfBirth: "",
-        hourlyRate: "",
-        affiliatedHospital: "",
-        educationalBackground: "",
-      });
+      setUsername("");
+      setRealName("");
+      setPassword("");
+      setEmail("");
+      setDateOfBirth("")
+      setHourlyRate("");
+      setAffiliatedHospital("");
+      setEducationalBackground("");
+      setImage(null);
 
       console.log("Pharmacist Application Submitted Successfully");
     }
@@ -70,8 +92,9 @@ const PharmacistRegistrationForm = () => {
         <input
           type="text"
           name="username"
-          value={formData.username}
-          onChange={handleChange}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+
         />
       </div>
       <div>
@@ -79,8 +102,8 @@ const PharmacistRegistrationForm = () => {
         <input
           type="text"
           name="realName"
-          value={formData.realName}
-          onChange={handleChange}
+          value={realName}
+          onChange={(e) => setRealName(e.target.value)}
         />
       </div>
       <div>
@@ -88,8 +111,8 @@ const PharmacistRegistrationForm = () => {
         <input
           type="password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <div>
@@ -97,8 +120,8 @@ const PharmacistRegistrationForm = () => {
         <input
           type="email"
           name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div>
@@ -106,8 +129,8 @@ const PharmacistRegistrationForm = () => {
         <input
           type="date"
           name="dateOfBirth"
-          value={formData.dateOfBirth}
-          onChange={handleChange}
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value)}
         />
       </div>
       <div>
@@ -115,8 +138,8 @@ const PharmacistRegistrationForm = () => {
         <input
           type="number"
           name="hourlyRate"
-          value={formData.hourlyRate}
-          onChange={handleChange}
+          value={hourlyRate}
+          onChange={(e) => setHourlyRate(e.target.value)}
         />
       </div>
       <div>
@@ -124,8 +147,8 @@ const PharmacistRegistrationForm = () => {
         <input
           type="text"
           name="affiliatedHospital"
-          value={formData.affiliatedHospital}
-          onChange={handleChange}
+          value={affiliatedHospital}
+          onChange={(e) => setAffiliatedHospital(e.target.value)}
         />
       </div>
       <div>
@@ -133,9 +156,12 @@ const PharmacistRegistrationForm = () => {
         <input
           type="text"
           name="educationalBackground"
-          value={formData.educationalBackground}
-          onChange={handleChange}
+          value={educationalBackground}
+          onChange={(e) => setEducationalBackground(e.target.value)}
         />
+      </div>
+      <div>
+      <input type="file" onChange={(e)=>setImage(e.target.files[0])}/>
       </div>
       <button type="submit">Submit</button>
     </form>

@@ -90,7 +90,7 @@ const AddMedicine = () => {
     }
 */
     try {
-      console.log("HERE")
+     // console.log("HERE")
 
       /*const response = await fetch(
         "http://localhost:8000/pharmacist/medicines",

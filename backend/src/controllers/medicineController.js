@@ -18,8 +18,8 @@ const AddMedicine = async (req, res) => {
   } = req.body;
   const activeIngredients = JSON.parse(req.body.activeIngredients);
 
-  let picture = req.nameFile;
-  console.log("HERE5"+req.body.medicineName)
+  let picture = "http://localhost:8000/images/"+req.nameFile;
+ /* console.log("HERE5"+req.body.medicineName)
   console.log("HERE5"+req.body.description)
   console.log("HERE5"+req.body.medicinalUsage)
   console.log("HERE5"+req.body.activeIngredients)
@@ -28,14 +28,14 @@ const AddMedicine = async (req, res) => {
   console.log("HERE5"+req.body.sales)
   console.log("HERE5"+req.body.isArchived)
   console.log("HERE5"+req.body.requiresPrescription)
-  console.log("HERE5"+picture)
+  console.log("HERE5"+picture)*/
 
 
 
   //if (req.file != undefined)
     //picture = `http://localhost:8000/images/${req.file.filename}`;
   try {
-    console.log("HERE4")
+    //console.log("HERE4")
     const newMedicine = await Medicine.create({
       medicineName,
       description,
@@ -55,7 +55,7 @@ const AddMedicine = async (req, res) => {
         message: "Medicine created successfully",
         data: newMedicine,
       });
-      console.log("HERE6"+newMedicine)
+      //console.log("HERE6"+newMedicine)
 
   } catch (error) {
 

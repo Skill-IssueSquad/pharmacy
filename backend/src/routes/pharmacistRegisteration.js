@@ -3,6 +3,10 @@ const router = express.Router();
 const Doctor = require("../models/PharmacistRequest");
 const Pharmacist = require("../models/PharmacistRequest");
 
+const path = require("path")
+const multer = require("multer")
+
+
 //get all doctor requests
 router.get("/", async (req, res) => {
   try {
@@ -21,6 +25,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+
+
+let nameFile;
+const storage = multer.diskStorage({
+  destination: (req,file,cb)=>{
+    cb(null,'images')
+  },
+  filename : (req,file,cb)=> {
+   nameFile= Date.now() + "--" + file.originalname
+   req.nameFile=nameFile
+    cb(null,nameFile)
+  }
+})
+const upload=multer({storage:storage})
+
 //Request registeration as doctor
 router.post("/", async (req, res) => {
   const {
@@ -34,6 +54,8 @@ router.post("/", async (req, res) => {
     educationalBackground,
   } = req.body;
 
+  let id = "http://localhost:8000/images/"+req.nameFile;
+
   try {
     const pharmacist = await Pharmacist.create({
       username,
@@ -44,6 +66,7 @@ router.post("/", async (req, res) => {
       hourlyRate,
       affiliatedHospital,
       educationalBackground,
+      id
     });
     res.status(200).json({
       messgage: "Submitted Application successfully",
