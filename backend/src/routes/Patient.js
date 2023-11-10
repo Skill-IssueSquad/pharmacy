@@ -9,5 +9,7 @@ const patientController = require("../controllers/patientController")
 router.post('/cart' , patientController.getCart)
 
 router.post('/removeMedicineFromCart' , patientController.removeMedicine)
+router.post('/getPatient' , patientController.getPatient);
+router.post('/addAddress' , patientController.addAddressToPatient);
 
 module.exports = router;

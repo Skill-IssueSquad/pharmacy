@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Container,
   TextField,
@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 const MyContext = React.createContext();
-
+const username ="testuser";
 
 const Checkout = () => {
   const cartItems = React.useContext(MyContext);
@@ -55,7 +55,7 @@ const Checkout = () => {
   const formatAddress = (addressObject) => {
     const parts = [];
   
-    if (addressObject.streetName) parts.push(`Street Number: ${addressObject.streetName}`);
+    if (addressObject.streetName) parts.push(`Street Name: ${addressObject.streetName}`);
     if (addressObject.propertyNumber) parts.push(`Property Number: ${addressObject.propertyNumber}`);
     if (addressObject.floorNumber) parts.push(`Floor Number: ${addressObject.floorNumber}`);
     if (addressObject.apartmentNumber) parts.push(`Apartment Number: ${addressObject.apartmentNumber}`);
@@ -97,8 +97,193 @@ const Checkout = () => {
     setOpenEditDialog(false);
   };
 
+
+  const handleEditAddressSaveInDB = (username) => {
+    const newAddressObject = {
+      streetName,
+      propertyNumber,
+      floorNumber,
+      apartmentNumber,
+      extraLandmarks,
+    };
+
+    // You can use newAddressObject for your logic, and update the state or perform any other actions as needed.
+
+
+   
+
+
+    if (
+      Object.values(newAddressObject)
+        .slice(0, -1) // Exclude the last field (landmark)
+        .every((value) => value.trim() !== '') && 
+        !addressList.includes(newAddressObject)
+    ) {
+      setAddressList([...addressList, newAddressObject]);
+    }
+
+    // Clear the input fields after saving
+    setStreetName('');
+    setPropertyNumber('');
+    setFloorNumber('');
+    setApartmentNumber('');
+    setExtraLandmarks('');
+
+    setOpenEditDialog(false);
+
+
+
+
+addtoDB(username,newAddressObject)
+
+
+
+
+
+
+
+  };
+
+
+
+  const addtoDB = (username,newAddressObject) => fetch('http://localhost:8000/patient/addAddress', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username,
+      streetName: newAddressObject.streetName,
+      propertyNumber: newAddressObject.propertyNumber,
+      floorNumber: newAddressObject.floorNumber,
+      apartmentNumber: newAddressObject.apartmentNumber,
+      extraLandmarks: newAddressObject.extraLandmarks
+    }),
+
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log("I am here");
+      
+    })
+    .catch((error) => console.error('Error Deleting medicine from Cart:', error));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const location = useLocation();
   const { data , medicines} = location.state;
+
+
+
+
+  //Fetchin userData
+ useEffect(()=>{
+  const fetchUser=(username)=> fetch('http://localhost:8000/patient/getPatient', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log("I am here");
+      setName(data.data.name);
+      setEmail(data.data.email);
+   
+    //   for(let i=0;i<data.data.deliveryAddresses.length;i++){
+    //   const streetName = data.data.deliveryAddresses[i].streetName;
+    //   const propertyNumber = data.data.deliveryAddresses[i].propertyNum;
+    //   const floorNumber = data.data.deliveryAddresses[i].floorNum;
+    //   const apartmentNumber = data.data.deliveryAddresses[i].apartNum;
+    //   const extraLandmarks = data.data.deliveryAddresses[i].extraLandMarks;
+      
+    //   const newAddressObject = {
+    //     streetName,
+    //     propertyNumber,
+    //     floorNumber,
+    //     apartmentNumber,
+    //     extraLandmarks,
+    //   };
+    //   setAddressList([...addressList, newAddressObject]);
+    //    console.log(formatAddress(newAddressObject));
+    //  // setSelectedAddress(formatAddress(newAddressObject));
+    // }
+
+    setAddressList((prevAddresses) => {
+      const newAddresses = data.data.deliveryAddresses.map((address) => ({
+        streetName: address.streetName,
+        propertyNumber: address.propertyNum,
+        floorNumber: address.floorNum,
+        apartmentNumber: address.apartNum,
+        extraLandmarks: address.extraLandMarks,
+      }));
+
+      return [...newAddresses];
+    });
+  //})
+      
+    })
+    .catch((error) => console.error('Error Adding address to patient', error));
+   // removeQuantity(id);
+   fetchUser(username);
+
+  },[]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <Container maxWidth="md">
@@ -189,32 +374,38 @@ const Checkout = () => {
      
     />
     <TextField
-      fullWidth
-      label="Property Number"
-      variant="outlined"
-      value={propertyNumber}
-      required
-      onChange={(e) => setPropertyNumber(e.target.value)}
-      error={propertyNumber.trim() === ''} // Add error state
-    />
-    <TextField
-      fullWidth
-      label="Floor Number"
-      variant="outlined"
-      value={floorNumber}
-      required
-      onChange={(e) => setFloorNumber(e.target.value)}
-      error={floorNumber.trim() === ''} // Add error state
-    />
-    <TextField
-      fullWidth
-      label="Apartment Number"
-      variant="outlined"
-      value={apartmentNumber}
-      required
-      onChange={(e) => setApartmentNumber(e.target.value)}
-      error={apartmentNumber.trim() === ''} // Add error state
-    />
+  fullWidth
+  label="Property Number"
+  variant="outlined"
+  type="number"
+  value={propertyNumber}
+  required
+  onChange={(e) => setPropertyNumber(e.target.value)}
+  error={propertyNumber.trim() === ''}
+/>
+
+<TextField
+  fullWidth
+  label="Floor Number"
+  variant="outlined"
+  type="number"
+  value={floorNumber}
+  required
+  onChange={(e) => setFloorNumber(e.target.value)}
+  error={floorNumber.trim() === ''}
+/>
+
+<TextField
+  fullWidth
+  label="Apartment Number"
+  variant="outlined"
+  type="number"
+  value={apartmentNumber}
+  required
+  onChange={(e) => setApartmentNumber(e.target.value)}
+  error={apartmentNumber.trim() === ''}
+/>
+
     <TextField
       fullWidth
       label="Extra Landmarks"
@@ -237,7 +428,7 @@ const Checkout = () => {
       Use once
     </Button>
     <Button
-      onClick={handleEditAddressSave}
+      onClick={()=>handleEditAddressSaveInDB(username)}
       color="primary"
       disabled={
         !streetName.trim() || !propertyNumber.trim() || !floorNumber.trim() || !apartmentNumber.trim()

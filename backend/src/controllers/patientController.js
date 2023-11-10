@@ -58,7 +58,79 @@ const removeMedicine = async(req,res) =>{
         return res.status(500).json({success: false , message: error.message , data: null});
     }
 }
+
+const getPatient = async (req,res) =>{
+    const { username } = req.body;
+    try{
+        const patient = await Patient.findOne({username:username})
+        if(patient != null){
+            return res.status(200).json({success: true , message: "Patient returened" , data: patient})
+        }
+        else{
+            return res.status(404).json({success: false , message: "Patient not found" , data: null})
+
+        }
+    }
+    catch (error) {
+        const reply = {
+          success: false,
+          data: null,
+          message: error.message,
+        };
+        return res.status(500).json(reply);
+      }
+
+}
+
+//add address to patient
+const addAddressToPatient = async (req,res) =>{
+    console.log("ana in");
+    const { username,streetName,propertyNumber,FloorNumber,ApartmentNumber,ExtraLandmarks } = req.body;
+    try{
+        
+        const patient = await Patient.findOne({username:username})
+        if(patient == null){
+            return res.status(404).json({success: false , message: "Patient not found" , data: null})
+        }
+        else{
+            console.log("ana in address");
+
+              const address = {
+                streetName: streetName,
+                propertyNum: propertyNumber,
+                floorNum: FloorNumber,
+                apartNum: ApartmentNumber,
+                extraLandMarks: ExtraLandmarks
+              };
+              
+           patient.deliveryAddresses.push(address);
+           await patient.save();
+
+           return res.status(200).json({success: true , message: "Patient  found" , data: patient})
+
+           
+           
+        }
+    }
+    catch (error) {
+        const reply = {
+          success: false,
+          data: null,
+          message: error.message,
+        };
+        return res.status(500).json(reply);
+      }
+
+}
+
+
+
+
+
+
+
+
 module.exports = {
-    getCart,removeMedicine
+    getCart,removeMedicine,getPatient,addAddressToPatient
   };
   
