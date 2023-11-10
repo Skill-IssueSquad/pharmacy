@@ -95,6 +95,9 @@ const addAddressToPatient = async (req,res) =>{
         else{
             console.log("ana in address");
 
+
+
+
               const address = {
                 streetName: streetName,
                 propertyNum: propertyNumber,
@@ -102,7 +105,7 @@ const addAddressToPatient = async (req,res) =>{
                 apartNum: ApartmentNumber,
                 extraLandMarks: ExtraLandmarks
               };
-              
+
            patient.deliveryAddresses.push(address);
            await patient.save();
 

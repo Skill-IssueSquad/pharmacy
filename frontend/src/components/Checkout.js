@@ -15,17 +15,27 @@ import {
   InputLabel,
   Input,
 } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { json, useLocation } from 'react-router-dom';
 const MyContext = React.createContext();
 const username ="testuser";
 
 const Checkout = () => {
+
+  
+  const location = useLocation();
+  const { data , medicines} = location.state;
+
+
+  // const cart =()=>{return json.stringify(data)};
+  // const medicineInCart=() =>{return json.stringify(medicines)};
+
+
   const cartItems = React.useContext(MyContext);
   console.log(cartItems);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [newAddress, setNewAddress] = useState('');
-  //const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(0);
   const [addressList, setAddressList] = useState([
     '123 Main St, City',
     '456 Elm St, Town',
@@ -49,9 +59,7 @@ const Checkout = () => {
     setOpenEditDialog(true);
   };
 
-  const total = () =>{
 
-  }
   const formatAddress = (addressObject) => {
     const parts = [];
   
@@ -155,9 +163,9 @@ addtoDB(username,newAddressObject)
       username,
       streetName: newAddressObject.streetName,
       propertyNumber: newAddressObject.propertyNumber,
-      floorNumber: newAddressObject.floorNumber,
-      apartmentNumber: newAddressObject.apartmentNumber,
-      extraLandmarks: newAddressObject.extraLandmarks
+      FloorNumber: newAddressObject.floorNumber,
+      ApartmentNumber: newAddressObject.apartmentNumber,
+      ExtraLandmarks: newAddressObject.extraLandmarks
     }),
 
   })
@@ -198,8 +206,6 @@ addtoDB(username,newAddressObject)
 
 
 
-  const location = useLocation();
-  const { data , medicines} = location.state;
 
 
 
@@ -268,8 +274,23 @@ addtoDB(username,newAddressObject)
 
 
 
-
-
+  useEffect(() => {
+    const calculateTotalCost = () => {
+      let total = 0;
+  
+      // Assuming cart and medicineInCart are state variables
+      console.log("cart: "+data.length)
+      for (let i = 0; i < data.length; i++) {
+        total = total + data[i].quantity * medicines[i].price;
+       
+      }
+      setTotal(total);
+      return total;
+    };
+  
+    calculateTotalCost();
+  }, [data, medicines]); // Ensure that the dependency array includes all dependencies
+  
 
 
 
