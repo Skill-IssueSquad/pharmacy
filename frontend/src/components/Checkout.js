@@ -16,6 +16,10 @@ import {
   Input,
 } from '@mui/material';
 import { json, useLocation } from 'react-router-dom';
+
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { useNavigate } from 'react-router-dom';
+
 const MyContext = React.createContext();
 const username ="testuser";
 
@@ -25,6 +29,11 @@ const Checkout = () => {
   const location = useLocation();
   const { data , medicines} = location.state;
 
+  // const navigate = useNavigate();
+
+  // const navigateToOrderDetails = (Order ,username) => {
+  //   navigate('/orderDetails', { state: { Order: Order , username: username,cart:data,medicines:medicines} });
+  // };
 
   // const cart =()=>{return json.stringify(data)};
   // const medicineInCart=() =>{return json.stringify(medicines)};
@@ -49,6 +58,9 @@ const Checkout = () => {
   const [floorNumber, setFloorNumber] = useState('');
   const [apartmentNumber, setApartmentNumber] = useState('');
   const [extraLandmarks, setExtraLandmarks] = useState('');
+  //setIsPlaceOrderDisabled
+  const [IsPlaceOrderDisabled, setIsPlaceOrderDisabled] = useState('');
+
 
   const handleCheckout = () => {
     // Your checkout logic here
@@ -152,6 +164,15 @@ addtoDB(username,newAddressObject)
 
   };
 
+  // const Order = {
+  //   username:username,
+  //     status: "pending",
+  //       date : new Date(),
+  //       cart : data,
+  //       discount :0 ,
+  //       netPrice : total ,
+  //       deliveryAddress : selectedAddress
+  // }
 
 
   const addtoDB = (username,newAddressObject) => fetch('http://localhost:8000/patient/addAddress', {
@@ -185,10 +206,50 @@ addtoDB(username,newAddressObject)
 
 
 
+    const addOrdertoDB = (username) =>{
+      const Order = {
+        username:username,
+          status: "pending",
+            date : new Date(),
+            cart : data,
+            discount :0 ,
+            netPrice : total ,
+            deliveryAddress : selectedAddress
+      }
+    fetch('http://localhost:8000/patient/addOrder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username : username,
+        status: "pending",
+        date : new Date(),
+        cart : data,
+        discount :0 ,
+        netPrice : total ,
+        deliveryAddress : selectedAddress
 
+      }),
+  
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then((data) => {
+        console.log("I am here");
 
-
-
+        //navigateToOrderDetails(Order,username);
+        
+      })
+      .catch((error) => console.error('Error Deleting medicine from Cart:', error));
+  
+    };
+      
 
 
 
@@ -298,6 +359,15 @@ addtoDB(username,newAddressObject)
 
 
 
+  useEffect(() => {
+    setIsPlaceOrderDisabled(
+      !name.trim() ||
+      selectedAddress==="" ||
+      !email.trim() 
+    );
+  }, [name,selectedAddress,email]);
+
+
 
 
 
@@ -308,9 +378,6 @@ addtoDB(username,newAddressObject)
 
   return (
     <Container maxWidth="md">
-        <p>Received data: {JSON.stringify(data)}</p>
-        <p>Received data: {JSON.stringify(medicines)}</p>
-
       <Typography variant="h4" align="center" gutterBottom>
         Checkout
       </Typography>
@@ -319,6 +386,7 @@ addtoDB(username,newAddressObject)
           <Grid item xs={12}>
             <TextField
               fullWidth
+              required
               label="Name"
               variant="outlined"
               value={name}
@@ -329,6 +397,7 @@ addtoDB(username,newAddressObject)
           <Grid item xs={12}>
             <TextField
               fullWidth
+              required
               label="Email"
               variant="outlined"
               type="email"
@@ -342,6 +411,7 @@ addtoDB(username,newAddressObject)
               <InputLabel id="address-label">Delivery Address</InputLabel>
               <Select
                 labelId="address-label"
+                required
                 id="address"
                 value={selectedAddress}
                 onChange={(e) => setSelectedAddress(e.target.value)}
@@ -375,7 +445,9 @@ addtoDB(username,newAddressObject)
         <Button
           variant="contained"
           color="primary"
-          onClick={handleCheckout}
+          disabled={IsPlaceOrderDisabled}
+
+          onClick={()=>addOrdertoDB(username)}
           style={{ marginTop: 16 }}
         >
           Place Order
