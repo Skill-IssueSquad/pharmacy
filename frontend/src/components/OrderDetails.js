@@ -132,6 +132,8 @@ const OrderDetails = () => {
 
   const formatAddress = (addressObject) => {
     const parts = [];
+    if (addressObject.propertyNumber) parts.push(`Street Name: ${addressObject.streetName}`);
+
     if (addressObject.propertyNumber) parts.push(`Property Number: ${addressObject.propertyNumber}`);
     if (addressObject.floorNumber) parts.push(`Floor Number: ${addressObject.floorNumber}`);
     if (addressObject.apartmentNumber) parts.push(`Apartment Number: ${addressObject.apartmentNumber}`);

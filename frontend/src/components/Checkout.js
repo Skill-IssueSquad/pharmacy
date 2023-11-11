@@ -46,9 +46,7 @@ const Checkout = () => {
   const [newAddress, setNewAddress] = useState('');
   const [total, setTotal] = useState(0);
   const [addressList, setAddressList] = useState([
-    '123 Main St, City',
-    '456 Elm St, Town',
-    // Add more predefined addresses
+    
   ]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -402,6 +400,7 @@ addtoDB(username,newAddressObject)
               variant="outlined"
               type="email"
               value={email}
+              disabled
               
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -444,7 +443,7 @@ addtoDB(username,newAddressObject)
           
           <Grid  style={{ marginTop: 16 ,marginLeft:18}}>
           <div>
-        <input type="radio" id="Payment" name="paymentMethod" value="Cash On Delivery" />
+        <input type="radio" id="Payment" name="paymentMethod" value="Cash On Delivery"  checked/>
         <label for="Payment"> Cash On Delivery</label>
         
         <input type="radio" id="Paymentx" name="paymentMethod" value="Pay Using Stripe" style={{ marginLeft:15}}/>
