@@ -85,7 +85,14 @@ const OrderDetails = () => {
 
 
 
+//   <checkbox>
+//   <input type="checkbox" id="Payment" name="COD" value="Cash On Delivery" />
+//   <label for="COD"> Cash On Delivery</label>
+  
+//   <input type="checkbox" id="Payment" name="UST" value="Pay Using Stripe" />
+//   <label for="UST"> Pay using Stripe</label>
 
+// </checkbox>
 
 
 
@@ -201,6 +208,8 @@ const OrderDetails = () => {
           ))}
         </Select>
       </FormControl>
+
+ 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

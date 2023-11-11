@@ -441,7 +441,19 @@ addtoDB(username,newAddressObject)
               value={total}
             />
           </Grid>
+          
+          <Grid  style={{ marginTop: 16 ,marginLeft:18}}>
+          <div>
+        <input type="radio" id="Payment" name="paymentMethod" value="Cash On Delivery" />
+        <label for="Payment"> Cash On Delivery</label>
+        
+        <input type="radio" id="Paymentx" name="paymentMethod" value="Pay Using Stripe" style={{ marginLeft:15}}/>
+        <label for="Paymentx"> Pay using Stripe</label>
+
+      </div>
+          </Grid>
         </Grid>
+      
         <Button
           variant="contained"
           color="primary"
