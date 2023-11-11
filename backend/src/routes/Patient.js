@@ -13,6 +13,7 @@ router.post('/getPatient' , patientController.getPatient);
 router.post('/addAddress' , patientController.addAddressToPatient);
 router.post('/addOrder' , patientController.addOrderToPatient);
 
+router.post('/deleteOrder' , patientController.deleteOrder);
 
 
 module.exports = router;

@@ -20,7 +20,7 @@ const OrderDetails = () => {
   const [medicines, setMedicines] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const username = "testuser";
-  let  fetchUser=()=>{};
+  let  fetchUser=(username)=>{};
   useEffect(() => {
      fetchUser = (username) => {
       fetch('http://localhost:8000/patient/getPatient', {
@@ -70,7 +70,25 @@ const OrderDetails = () => {
     };
 
     fetchUser(username);
-  }, [username]);
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchMedicines = (orderData) => {
@@ -131,12 +149,35 @@ const OrderDetails = () => {
 
 
 
-
   const DeleteOrder = (username) => {
 
+    const id = selectedOrder.id;
+    console.log("The id:",id );
+    fetch('http://localhost:8000/patient/deleteOrder', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        orderID: id
+      
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Success:", data);
+       
+        window.location.reload();
+
+        // alert("Added to cart");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
 
-  }
+  }
   return (
     <Container maxWidth="md">
       <Typography variant="h4" align="center" gutterBottom>

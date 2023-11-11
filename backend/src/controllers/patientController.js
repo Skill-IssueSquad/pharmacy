@@ -186,12 +186,37 @@ const addOrderToPatient = async (req,res) =>{
 
 
 
+const deleteOrder = async (req,res)=>{
 
+
+    const{username,orderID} = req.body;
+
+  try{
+    const patient = await Patient.findOne({username:username});
+  
+    if(patient == null){
+        return res.status(404).json({success: false , message: "Patient not found" , data: null})
+    }
+    else{
+  
+        const orders = patient.orders;
+        const newOrders = orders.filter((order) => order._id != orderID);
+        patient.orders = newOrders;
+        await patient.save();
+  
+        console.log(patient);
+        return res.status(200).json({success: true , message: "Order removed" , data: patient.orders})
+    }
+  }
+  catch(error){
+    return res.status(500).json({success: false , message: error.message , data: null});
+  }
+  }
 
 
 
 
 module.exports = {
-    getCart,removeMedicine,getPatient,addAddressToPatient,addOrderToPatient
+    getCart,removeMedicine,getPatient,addAddressToPatient,addOrderToPatient,deleteOrder
   };
   
