@@ -214,7 +214,11 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const navigateToCheckout = (cartItems ,medicines) => {
-    navigate('/Checkout', { state: { data: cartItems , medicines: medicines} });
+    if(cartItems.length> 0)
+      navigate('/Checkout', { state: { data: cartItems , medicines: medicines} });
+    else{
+      alert("Cart is empty");
+    }
   };
 
 

@@ -15,7 +15,7 @@ import {
   InputLabel,
   Input,
 } from '@mui/material';
-import { json, useLocation } from 'react-router-dom';
+import { Navigate, json, useLocation } from 'react-router-dom';
 
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { useNavigate } from 'react-router-dom';
@@ -23,17 +23,18 @@ import { useNavigate } from 'react-router-dom';
 const MyContext = React.createContext();
 const username ="testuser";
 
-const Checkout = () => {
 
+const Checkout = () => {
+  const navigate = useNavigate();
   
   const location = useLocation();
   const { data , medicines} = location.state;
 
   // const navigate = useNavigate();
 
-  // const navigateToOrderDetails = (Order ,username) => {
-  //   navigate('/orderDetails', { state: { Order: Order , username: username,cart:data,medicines:medicines} });
-  // };
+   const navigateToOrderDetails = () => {
+     navigate('/orderDetails', { state: {} });
+   };
 
   // const cart =()=>{return json.stringify(data)};
   // const medicineInCart=() =>{return json.stringify(medicines)};
@@ -202,7 +203,30 @@ addtoDB(username,newAddressObject)
     .catch((error) => console.error('Error Deleting medicine from Cart:', error));
 
 
+const clearCart = (username)=>{
+  fetch('http://localhost:8000/patient/clearCart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username
+    }),
 
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log("I am here");
+      
+    })
+    .catch((error) => console.error('Error Deleting medicine from Cart:', error));
+}
 
     const addOrdertoDB = (username) =>{
       const Order = {
@@ -240,8 +264,8 @@ addtoDB(username,newAddressObject)
       })
       .then((data) => {
         console.log("I am here");
-
-        //navigateToOrderDetails(Order,username);
+        clearCart(username);
+        navigateToOrderDetails();
         
       })
       .catch((error) => console.error('Error Deleting medicine from Cart:', error));
