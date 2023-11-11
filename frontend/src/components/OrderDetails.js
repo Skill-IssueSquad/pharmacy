@@ -3,25 +3,9 @@ import { Container, Typography, Table, TableBody, TableCell, TableContainer, Tab
 import { json, useLocation } from 'react-router-dom';
 const OrderDetails = () => {
   // Sample data structure, replace this with actual order data
-  const [order, setOrder] = useState({
-    id: '1',
-    status: 'completed',
-    date: '2023-11-09T10:30:00Z', // Sample date string
-    cart: [
-      { medicineName: 'Medicine 1', quantity: 2, price: 10 },
-      { medicineName: 'Medicine 2', quantity: 1, price: 15 },
-    ],
-    discount: 5,
-    netPrice: 25,
-    deliveryAddress: {
-      streetName: '123 Main St',
-      propertyNumber: '456',
-      floorNumber: '2',
-      apartmentNumber: 'C',
-      extraLandmarks: 'Near Park',
-    },
-  });
+  const [order, setOrder] = useState([]);
 
+  const[Medicines,setMedicines]=useState([]);
 const username = "testuser";
 
 
@@ -102,15 +86,16 @@ useEffect(() => {
           },
           discount: fetchedOrder.discount,
           netPrice: fetchedOrder.netPrice,
-          // deliveryAddress: {
-          //   streetName: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.streetName : '',
-          //   propertyNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.propertyNum : '',
-          //   floorNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.floorNum : '',
-          //   apartmentNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.apartNum : '',
-          //   extraLandmarks: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.extraLandMarks : '',
-          // },
+          deliveryAddress: {
+            streetName: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.streetName : '',
+            propertyNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.propertyNum : '',
+            floorNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.floorNum : '',
+            apartmentNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.apartNum : '',
+            extraLandmarks: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.extraLandMarks : '',
+          },
         }));
 
+        console.log(fetchedOrders);
         // Assuming setOrders is a function to update the state with the fetched orders
         setOrder(fetchedOrders);
       }
@@ -118,6 +103,7 @@ useEffect(() => {
     .catch((error) => console.error('Error adding address to patient', error));
 
   fetchUser(username);
+  console.log(order);
 }, []);
 
 
@@ -153,8 +139,8 @@ console.log(addressObject.streeName);
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  return (
-    <Container maxWidth="md">
+  /*return  (
+    < Container maxWidth="md">
       <Typography variant="h4" align="center" gutterBottom>
         Order Details
       </Typography>
@@ -165,6 +151,7 @@ console.log(addressObject.streeName);
         <Table>
           <TableHead>
             <TableRow>
+
               <TableCell>Order Number</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Date</TableCell>
@@ -174,11 +161,15 @@ console.log(addressObject.streeName);
           </TableHead>
           <TableBody>
             <TableRow>
+              {order.map((order,index)=>(
+
+              <TableRow key={index}>
               <TableCell>{order.id}</TableCell>
               <TableCell>{order.status}</TableCell>
               <TableCell>{formatDate(order.date)}</TableCell>
               <TableCell>{order.discount}</TableCell>
               <TableCell>{order.netPrice}</TableCell>
+              )}
             </TableRow>
           </TableBody>
         </Table>
@@ -201,9 +192,9 @@ console.log(addressObject.streeName);
             </TableRow>
           </TableHead>
           <TableBody>
-            {order.cart.map((item, index) => (
+            {order[0].cart.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.medicineName}</TableCell>
+              <TableCell>{item.medicineName}</TableCell>
                 <TableCell>{item.quantity}</TableCell>
                 <TableCell>{item.price}</TableCell>
                 <TableCell>{item.quantity * item.price}</TableCell>
@@ -215,5 +206,152 @@ console.log(addressObject.streeName);
     </Container>
   );
 };
+*/
+useEffect(() => {
+  const fetchMedicines = (orderData) => {
+    
+    const allMedicines = [];
 
+    
+    orderData.forEach((orderItem) => {
+      
+       const cartItems = orderItem.cart.medicines.map((medicine) => ({ medicine_id: medicine.medicine_id }));
+
+      console.log("Fuck You:" +cartItems.length);
+     
+      fetch('http://localhost:8000/medicine/getArrayMedicinesByID', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartItems }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Network response was not ok');
+          }
+        })
+        .then((medicineOutputs) => {
+          
+          allMedicines.push(medicineOutputs);
+        })
+        .catch((error) => console.error('Error fetching medicines:', error));
+    });
+
+
+    setMedicines(allMedicines);
+  };
+
+  fetchMedicines(order);
+}, [order]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return (
+  <Container maxWidth="md">
+    <Typography variant="h4" align="center" gutterBottom>
+      Order Details
+    </Typography>
+    <Typography variant="h6" gutterBottom>
+      Order Information
+    </Typography>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Order Number</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Discount</TableCell>
+            <TableCell>Net Price</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {order.map((orderItem, index) => (
+            <TableRow key={index}>
+              <TableCell>{orderItem.id}</TableCell>
+              <TableCell>{orderItem.status}</TableCell>
+              <TableCell>{formatDate(orderItem.date)}</TableCell>
+              <TableCell>{orderItem.discount}</TableCell>
+              <TableCell>{orderItem.netPrice}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+    <Typography variant="h6" style={{ marginTop: 20 }} gutterBottom>
+      Delivery Address
+    </Typography>
+    {order.map((orderItem, index) => (
+      <Typography key={index}>
+       {console.log(orderItem)}
+    {formatAddress(orderItem.deliveryAddress)} 
+      </Typography>
+    ))}
+    <Typography variant="h6" style={{ marginTop: 20 }} gutterBottom>
+      Order Items
+    </Typography>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Order Number</TableCell>
+            <TableCell>Medicine Name</TableCell>
+            <TableCell>Quantity</TableCell>
+            <TableCell>Price</TableCell>
+            <TableCell>Total Price</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {order.map((orderItem, orderIndex) =>
+            orderItem.cart.medicines.map((item, itemIndex) => (
+              <TableRow key={`${orderIndex}-${itemIndex}`}>
+                <TableCell>{orderItem.id}</TableCell>
+                <TableCell>{item.medicine_id}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                {/* Assuming you have a price property in your medicine object */}
+                <TableCell>{/* item.price */}</TableCell>
+                <TableCell>{/* item.quantity * item.price */}</TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </Container>
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 export default OrderDetails;
