@@ -305,18 +305,18 @@ const Cart = () => {
               <th style={tableHeaderStyle}>Quantity</th>
               <th style={tableHeaderStyle}>Total Price</th>
               <th style={tableHeaderStyle}>Photo</th>
-              <th style={tableHeaderStyle}>Action</th>
+              <th style={{...tableHeaderStyle,textAlign:'left'}}>Action</th>
             </tr>
           </thead>
           <tbody>
             {medicines.length === cartItems.length &&
               medicines.map((item, index) => (
                 <tr key={item.id} style={index % 2 === 0 ? tableRowStyleEven : tableRowStyleOdd}>
-                  <td style={tableCellStyle}>{item.medicineName}</td>
-                  <td style={tableCellStyle}>{item.description}</td>
-                  <td style={tableCellStyle}>{item.medicinalUsage}</td>
-                  <td style={tableCellStyle}>{item.price}</td>
-                  <td style={tableCellStyle}>
+               <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.medicineName}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.description}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.medicinalUsage}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.price}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {cartItems[index].quantity}
                       <AddIcon
@@ -331,12 +331,13 @@ const Cart = () => {
                       ></RemoveIcon>
                     </div>
                   </td>
-                  <td style={tableCellStyle}>{cartItems[index].quantity * item.price}</td>
-                  <td style={tableCellStyle}>
+                 
+                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{cartItems[index].quantity * item.price}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                     <img src={item.photo} alt={item.name} width="100" />
                   </td>
-                  <td style={tableCellStyle}>
-                    <button onClick={() => removeItemFromCart(item._id)} style={removeButtonStyle}>
+                  <td style={{...tableCellStyle}}>
+                   <button onClick={() => removeItemFromCart(item._id)} style={{ ...removeButtonStyle }}>
                       Remove
                     </button>
                   </td>
@@ -361,6 +362,7 @@ const tableHeaderStyle = {
   backgroundColor: '#f2f2f2',
   padding: '12px',
   borderBottom: '1px solid #ddd',
+  
 };
 
 const tableRowStyleOdd = {
@@ -387,7 +389,8 @@ const removeButtonStyle = {
   padding: '8px 12px',
   border: 'none',
   borderRadius: '4px',
-  cursor: 'pointer',
+  cursor: 'pointer'
+ 
 };
 
 const checkoutButtonStyle = {

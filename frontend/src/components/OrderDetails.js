@@ -14,6 +14,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import {  json } from 'react-router-dom';
 
 const OrderDetails = () => {
   const [order, setOrder] = useState([]);
@@ -64,9 +65,12 @@ const OrderDetails = () => {
             }));
 
             setOrder(fetchedOrders);
+         
+            
+            
           }
         })
-        .catch((error) => console.error('Error adding address to patient', error));
+        .catch((error) => console.error('Error adding order to patient', error));
     };
 
     fetchUser(username);
@@ -125,6 +129,8 @@ const OrderDetails = () => {
       });
 
       setMedicines(allMedicines);
+      setSelectedOrder(order[order.length - 1]);
+
     };
 
     fetchMedicines(order);
@@ -268,12 +274,16 @@ const OrderDetails = () => {
             {selectedOrder &&
               selectedOrder.cart.medicines.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell>{item.medicine_id}</TableCell>
+
+<TableCell>{medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.medicineName}</TableCell>
+
+
                   <TableCell>{item.quantity}</TableCell>
                   {/* Assuming you have a price property in your medicine object */}
-                  <TableCell>{/* item.price */}</TableCell>
+                  <TableCell>{medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price}</TableCell>
+
                   {/* Assuming you have a price property in your medicine object */}
-                  <TableCell>{/* item.quantity * item.price */}</TableCell>
+                  <TableCell>{(medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price)*item.quantity}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
