@@ -16,4 +16,6 @@ router.post('/addOrder' , patientController.addOrderToPatient);
 router.post('/deleteOrder' , patientController.deleteOrder);
 
 router.post('/clearCart',patientController.clearCart);
+router.post('/saveCart',patientController.saveCart);
+
 module.exports = router;
