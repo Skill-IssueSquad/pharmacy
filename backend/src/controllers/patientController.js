@@ -167,6 +167,13 @@ const addOrderToPatient = async (req,res) =>{
            patient.orders.push(order);
            await patient.save();
 
+
+           for(let i = 0;i<cart.length;i++){
+            const medicine = await Medicine.findOne({_id:cart[i].medicine_id});
+            medicine.quantity = medicine.quantity - cart[i].quantity < 0 ? 0 : medicine.quantity - cart[i].quantity;
+            await medicine.save();
+           }
+
            return res.status(200).json({success: true , message: "Patient  found" , data: patient})
 
            
@@ -249,14 +256,20 @@ const deleteOrder = async (req,res)=>{
       }
       else{
   
-          patient.cart = cart;
-          await patient.save();
+        // const newMedicines = cart.medicines;
+        // for(let i = 0;i<newMedicines.length;i++){
+        //   patient.cart.medicines.find((medicine) => medicine.medicine_id == newMedicines[i].medicine_id).quantity += newMedicines[i].quantity;
+
+        patient.cart = cart;
+        await patient.save();
+
   
-    
-        
-          return res.status(200).json({success: true , message: "Cart Saved" , data: patient.cart})
+      
+        return res.status(200).json({success: true , message: "Cart Saved" , data: patient.cart})
+        }
+         
       }
-    }
+    
     catch(error){
       return res.status(500).json({success: false , message: error.message , data: null});
     }
