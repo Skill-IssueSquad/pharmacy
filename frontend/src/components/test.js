@@ -16,11 +16,93 @@ const MultiLevelFilterTable = () => {
   const [data, setData] = useState([]); // Store the fetched data
   const [sorting, setSorting] = useState({ field: "", order: "" });
   const [getRender, setRender] = useState(false);
-  var userName = "testuser"; 
+  const [hashMap, setHashMap] = useState({});
+
+  const [cart, setCart] = useState({
+    medicines: [],
+    totalPrice: 0,
+    discount: 0,
+    netPrice: 0,
+  });  var userName = "testuser"; 
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
   }, []);
+
+
+
+  const updateHashMap = (key, value) => {
+    setHashMap((prevHashMap) => {
+      const updatedHashMap = { ...prevHashMap };
+
+      updatedHashMap[key] = value
+      // if (updatedHashMap.hasOwnProperty(key)) {
+      //   updatedHashMap[key] += value;
+      // } else {
+      //   updatedHashMap[key] = value;
+      // }
+
+      return updatedHashMap;
+    });
+  };
+
+  const saveCart = (id) => {
+    setCart((prevCart) => {
+      const totalPrice = calculateTotalPrice(prevCart.medicines);
+      console.log("The Fucking total: " + totalPrice);
+  
+      const netPrice = totalPrice - prevCart.discount;
+  
+
+      prevCart.totalPrice =totalPrice;
+      prevCart.netPrice = netPrice;
+      return {
+        ...prevCart
+    
+      };
+    });
+  
+    // Now, if you log `cart` here, it will reflect the updated state
+    console.log(cart);
+    SaveCartToDB(userName,cart);
+  };
+
+
+
+  const SaveCartToDB = (username,cart) => fetch('http://localhost:8000/patient/saveCart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username,
+      cart
+      
+    }),
+
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      //console.log("I am here");
+      
+    })
+    .catch((error) => console.error('Error Saving Cart to the Database :', error));
+
+
+
+
+
+
+
+
+
+
 
   const handleInput = (event, itemId, maxQuantity) => {
     const inputElement = event.target;
@@ -36,35 +118,73 @@ const MultiLevelFilterTable = () => {
   
     // Update the input value
     inputElement.value = enteredValue;
-  
+    
+    updateHashMap(itemId,enteredValue);
+    
     // You can store or handle the entered value and itemId as needed
     // For example, you might want to update the corresponding item in your state.
     // handleItemQuantityChange(itemId, enteredValue);
   };
 
 
+  
   const addToCart = (id) => {
-    
-    fetch(`http://localhost:8000/medicine/addToCart/${userName}/${id}/1`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // body: JSON.stringify({
-      //   userName: userName,
-      //   medicineId: "616f1a5c1b1b7f2f4c6e8a5f",
-      //   quantity: 1,
-      // }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Success:", data);
-       // alert("Added to cart");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    const existingMedicineIndex = cart.medicines.findIndex(
+      (medicine) => medicine.medicine_id === id
+    );
+  
+    if (existingMedicineIndex !== -1) {
+      // If the medicine already exists in the cart, update its quantity
+      const updatedMedicines = [...cart.medicines];
+      updatedMedicines[existingMedicineIndex].quantity += hashMap[id];
+
+      setCart((prevCart) => ({
+        ...prevCart,
+        medicines: updatedMedicines,
+      }));
+    } else {
+      // If the medicine is not in the cart, add it as a new entry
+      const newMedicine = {
+        medicine_id: id,
+        quantity: hashMap[id],
+      };
+
+      setCart((prevCart) => ({
+        ...prevCart,
+        medicines: [...prevCart.medicines, newMedicine],
+      }));
+    }
+
+    // Calculate totalPrice, netPrice, and update the state
+   // const totalPrice = calculateTotalPrice(cart.medicines);
+    //const netPrice = totalPrice - 0;
+
+    setCart((prevCart) => ({
+      ...prevCart
+      
+    }));
   };
+
+
+
+  const calculateTotalPrice = (medicines) => {
+    console.log("ana hna");
+    return medicines.reduce((total, medicine) => {
+      console.log("Hna ya medicine ya negm:" +medicine.medicine_id);
+      // You need to fetch the actual price of the medicine from your data
+      const medicinePrice = data.find((item) => item._id === medicine.medicine_id)?.price || 0;
+      console.log(medicinePrice);
+      console.log(hashMap[medicine.medicine_id]);
+      return total + hashMap[medicine.medicine_id] * medicinePrice;
+    }, 0);
+  }
+
+
+
+
+
+
+
 
 
   const viewCart = () => {
@@ -162,6 +282,8 @@ const MultiLevelFilterTable = () => {
       />
 
       <button style={{marginLeft:'50px'}} onClick={viewCart}><a href="/Cart">View Cart </a></button>
+      <button style={{marginLeft:'50px'}} onClick={saveCart}>Save Cart </button>
+
     </div>
     <div>
       <TableContainer component={Paper}>
@@ -203,7 +325,7 @@ const MultiLevelFilterTable = () => {
     name="quantity"
     min="0"
     max={item.quantity}
-    onInput={(e) => handleInput(e, item.id, item.quantity)}
+    onInput={(e) => handleInput(e, item._id, item.quantity)}
   />
 </TableCell>     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
       </TableRow>

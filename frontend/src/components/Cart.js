@@ -293,51 +293,109 @@ const Cart = () => {
   var i = 0;
   return (
     <MyContext.Provider value={cartItems}>
-    <div>
-      <h2>Cart Items</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Medicine Name</th>
-            <th>Description</th>
-            <th>Medical Use</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total Price</th>
-            <th>Photo</th>
-          </tr>
-        </thead>
-        <tbody>
-          {medicines.length==cartItems.length&&medicines.map((item) => (
-            
-            <tr key={item.id}>
-              <td>{item.medicineName}</td>
-              <td>{item.description}</td>
-              <td>{item.medicinalUsage}</td>
-              <td>{item.price}</td>
-            <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>                
-                <td>{cartItems[i].quantity}</td>
-              
-                <AddIcon  disabled={item.quantity === cartItems[i].quantity } onClick={() => addQuantity(item._id)}  ></AddIcon>
-                <RemoveIcon  onClick={()=> removeQuantity(item._id)} disabled={cartItems[i].quantity === 0}></RemoveIcon>
-                
-              </div>
-              <td>{cartItems[i++].quantity*item.price}</td>
-              <td>
-                <img src={item.photo} alt={item.name} width="100" />
-              </td>
-              <td> <button onClick={()=> removeItemFromCart(item._id)} >Remove from cart</button></td>
+      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <h2>Cart Items</h2>
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+          <thead>
+            <tr>
+              <th style={tableHeaderStyle}>Medicine Name</th>
+              <th style={tableHeaderStyle}>Description</th>
+              <th style={tableHeaderStyle}>Medical Use</th>
+              <th style={tableHeaderStyle}>Price</th>
+              <th style={tableHeaderStyle}>Quantity</th>
+              <th style={tableHeaderStyle}>Total Price</th>
+              <th style={tableHeaderStyle}>Photo</th>
+              <th style={tableHeaderStyle}>Action</th>
             </tr>
-          ))}
-          
-        </tbody>
-      </table>
-      <div> 
-          <button onClick={()=>navigateToCheckout(cartItems , medicines)}>Checkout</button>
+          </thead>
+          <tbody>
+            {medicines.length === cartItems.length &&
+              medicines.map((item, index) => (
+                <tr key={item.id} style={index % 2 === 0 ? tableRowStyleEven : tableRowStyleOdd}>
+                  <td style={tableCellStyle}>{item.medicineName}</td>
+                  <td style={tableCellStyle}>{item.description}</td>
+                  <td style={tableCellStyle}>{item.medicinalUsage}</td>
+                  <td style={tableCellStyle}>{item.price}</td>
+                  <td style={tableCellStyle}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {cartItems[index].quantity}
+                      <AddIcon
+                        disabled={item.quantity === cartItems[index].quantity}
+                        onClick={() => addQuantity(item._id)}
+                        style={iconStyle}
+                      ></AddIcon>
+                      <RemoveIcon
+                        onClick={() => removeQuantity(item._id)}
+                        disabled={cartItems[index].quantity === 0}
+                        style={iconStyle}
+                      ></RemoveIcon>
+                    </div>
+                  </td>
+                  <td style={tableCellStyle}>{cartItems[index].quantity * item.price}</td>
+                  <td style={tableCellStyle}>
+                    <img src={item.photo} alt={item.name} width="100" />
+                  </td>
+                  <td style={tableCellStyle}>
+                    <button onClick={() => removeItemFromCart(item._id)} style={removeButtonStyle}>
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button onClick={() => navigateToCheckout(cartItems, medicines)} style={checkoutButtonStyle}>
+            Checkout
+          </button>
         </div>
-    </div>
+      </div>
     </MyContext.Provider>
   );
 };
 
 export default Cart;
+
+// Styles
+const tableHeaderStyle = {
+  backgroundColor: '#f2f2f2',
+  padding: '12px',
+  borderBottom: '1px solid #ddd',
+};
+
+const tableRowStyleOdd = {
+  backgroundColor: '#f9f9f9',
+};
+
+const tableRowStyleEven = {
+  backgroundColor: '#ffffff',
+};
+
+const tableCellStyle = {
+  padding: '12px',
+  borderBottom: '1px solid #ddd',
+};
+
+const iconStyle = {
+  cursor: 'pointer',
+  marginLeft: '5px',
+};
+
+const removeButtonStyle = {
+  backgroundColor: '#ff6666',
+  color: '#ffffff',
+  padding: '8px 12px',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+};
+
+const checkoutButtonStyle = {
+  backgroundColor: '#4CAF50',
+  color: '#ffffff',
+  padding: '12px 20px',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontSize: '16px',
+};
