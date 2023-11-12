@@ -1,20 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const Doctor = require("../models/PharmacistRequest");
-const Pharmacist = require("../models/PharmacistRequest");
+const PharmacistRequest = require("../models/PharmacistRequest");
 
 const path = require("path")
 const multer = require("multer")
 
 
 //get all doctor requests
-router.get("/", async (req, res) => {
+router.get("/",async (req, res) => {
   try {
-    const pharmacists = await Pharmacist.find();
+    const pharmacistRequest = await PharmacistRequest.find();
     res.status(200).json({
       messgage: " got all pharmacist requests successfully",
       status: true,
-      data: pharmacists,
+      data: pharmacistRequest,
     });
   } catch (err) {
     res.status(400).json({
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 
 
 
-let nameFile;
+/*let nameFile;
 const storage = multer.diskStorage({
   destination: (req,file,cb)=>{
     cb(null,'images')
@@ -39,10 +39,39 @@ const storage = multer.diskStorage({
     cb(null,nameFile)
   }
 })
-const upload=multer({storage:storage})
+const upload=multer({storage:storage})*/
+
+/*// Define multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    const nameFile = Date.now() + '--' + file.originalname;
+    req.nameFile = nameFile;
+    cb(null, nameFile);
+  },
+});*/
+
+let nameFiles = [];
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'documents');
+  },
+  filename: (req, file, cb) => {
+    const nameFile = Date.now() + "--" + file.originalname;
+    nameFiles.push(nameFile);
+    req.nameFiles=nameFiles
+    cb(null, nameFile);
+  },
+});
+
+// Initialize multer with the defined storage
+const upload = multer({ storage: storage });
+
 
 //Request registeration as doctor
-router.post("/", async (req, res) => {
+router.post("/", upload.array('documents', 3),async (req, res) => {
   const {
     username,
     name,
@@ -53,11 +82,38 @@ router.post("/", async (req, res) => {
     affiliatedHospital,
     educationalBackground,
   } = req.body;
+  console.log(req.nameFiles)
+  console.log(req.body)
 
-  let id = "http://localhost:8000/images/"+req.nameFile;
+  let personalId = "http://localhost:8000/documents/"+req.nameFiles[0];
+  let pharmacyDegree = "http://localhost:8000/documents/"+req.nameFiles[1];
+  let workingLicense = "http://localhost:8000/documents/"+req.nameFiles[2];
+  nameFiles=[]
+  console.log("after: "+nameFiles)
+
+  let documents = 
+  [
+    {
+      documentType: 'pdf',
+      documentName: 'personalId',
+      documentUrl: personalId,
+    },
+    {
+      documentType: 'pdf',
+      documentName: 'pharmacyDegree',
+      documentUrl: pharmacyDegree,
+    },
+    {
+      documentType: 'pdf',
+      documentName: 'workingLicense',
+      documentUrl: workingLicense,
+    },
+
+    
+  ]
 
   try {
-    const pharmacist = await Pharmacist.create({
+    const pharmacistRequest = await PharmacistRequest.create({
       username,
       name,
       email,
@@ -66,14 +122,28 @@ router.post("/", async (req, res) => {
       hourlyRate,
       affiliatedHospital,
       educationalBackground,
-      id
+      documents
     });
     res.status(200).json({
       messgage: "Submitted Application successfully",
       status: true,
-      data: pharmacist,
+      data: pharmacistRequest,
     });
   } catch (err) {
+    console.error('Error creating pharmacist request:', err);
+
+    /*console.log(username)
+    console.log(name)
+    console.log(email)
+    console.log(password)
+    console.log(dateOfBirth)
+    console.log(hourlyRate)
+    console.log(affiliatedHospital)
+    console.log(educationalBackground)
+    console.log(documents)
+*/
+
+
     res.status(400).json({
       messgage: " Failed to submit request.",
       status: false,

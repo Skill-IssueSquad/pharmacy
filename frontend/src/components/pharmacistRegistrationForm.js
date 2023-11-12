@@ -5,7 +5,7 @@ import { json } from "react-router-dom";
 const PharmacistRegistrationForm = () => {
  /* const [formData, setFormData] = useState({
     username: "",
-    realName: "",
+    name: "",
     password: "",
     email: "",
     dateOfBirth: "",
@@ -15,14 +15,17 @@ const PharmacistRegistrationForm = () => {
   });
 */
   const [username, setUsername] = useState("");
-  const [realName, setRealName] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
   const [affiliatedHospital, setAffiliatedHospital] = useState("");
   const [educationalBackground, setEducationalBackground] = useState("");
-  const [image, setImage] = useState();
+  const [personalId, setPersonalId] = useState();
+  const [pharmacyDegree, setPharmacyDegree] = useState();
+  const [workingLicense, setWorkingLicense] = useState();
+
 
   const [error, setError] = useState(null);
  /* const handleChange = (e) => {
@@ -33,23 +36,38 @@ const PharmacistRegistrationForm = () => {
     });
   };*/
 
+  const handlePersonalIdChange = (e) => {
+    setPersonalId(e.target.files[0]);
+  };
+
+  const handlePharmacyDegreeChange = (e) => {
+    setPharmacyDegree(e.target.files[0]);
+  };
+
+  const handleWorkingLicenseChange = (e) => {
+    setWorkingLicense(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
 
     const formData = new FormData();
     formData.append('username', username);
-    formData.append('realName', realName);
+    formData.append('name', name);
     formData.append('password', password);
     formData.append('email', email);
     formData.append('dateOfBirth', dateOfBirth);
     formData.append('hourlyRate', hourlyRate);
     formData.append('affiliatedHospital', affiliatedHospital);
     formData.append('educationalBackground', educationalBackground);
-    formData.append('image', image);
+    formData.append('documents', personalId);
+    formData.append('documents', pharmacyDegree);
+    formData.append('documents', workingLicense);
+
 
     e.preventDefault();
     /*const pharmacist = {
       username: formData.username,
-      name: formData.realName,
+      name: formData.name,
       password: formData.password,
       email: formData.email,
       dateOfBirth: formData.dateOfBirth,
@@ -58,32 +76,55 @@ const PharmacistRegistrationForm = () => {
       educationalBackground: formData.educationalBackground,
     };
 */
-    console.log(formData);
-   // console.log(pharmacist);
+console.log(username)
+console.log(name)
+console.log(email)
+console.log(password)
+console.log(dateOfBirth)
+console.log(hourlyRate)
+console.log(affiliatedHospital)
+console.log(educationalBackground)
+console.log(personalId) 
+console.log(pharmacyDegree)  
+console.log(workingLicense)  
 
-    const response = await axios.post(
+
+//console.log(id)   
+ // console.log(pharmacist);
+
+    /*const response = await axios.post(
       "http://localhost:8000/register/pharmacist",
       formData
     );
+    console.log(response)
+*/
+try {
+  const response = await axios.post('http://localhost:8000/register/pharmacist', formData);
 
-    if (!response) {
-      setError(response.message);
-    } else {
-      setError(null);
+  // If submission is successful, reset the form fields
+  setUsername("");
+  setName("");
+  setPassword("");
+  setEmail("");
+  setDateOfBirth("");
+  setHourlyRate("");
+  setAffiliatedHospital("");
+  setEducationalBackground("");
+  setPersonalId(null);
+  setPharmacyDegree(null);
+  setWorkingLicense(null);
+  e.target["pid"].value = [];
+  e.target["pharmDegree"].value = [];
+  e.target["workingLicense"].value = [];
 
-      setUsername("");
-      setRealName("");
-      setPassword("");
-      setEmail("");
-      setDateOfBirth("")
-      setHourlyRate("");
-      setAffiliatedHospital("");
-      setEducationalBackground("");
-      setImage(null);
 
-      console.log("Pharmacist Application Submitted Successfully");
-    }
-  };
+  
+
+  console.log("Pharmacist Application Submitted Successfully");
+} catch (error) {
+  console.log(error);
+}
+};
 
   return (
     <form onSubmit={handleSubmit}>
@@ -101,9 +142,9 @@ const PharmacistRegistrationForm = () => {
         <label>Real Name</label>
         <input
           type="text"
-          name="realName"
-          value={realName}
-          onChange={(e) => setRealName(e.target.value)}
+          name="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div>
@@ -161,7 +202,16 @@ const PharmacistRegistrationForm = () => {
         />
       </div>
       <div>
-      <input type="file" onChange={(e)=>setImage(e.target.files[0])}/>
+        PersonalId:
+      <input type="file" name="pid" onChange={handlePersonalIdChange}/>
+      </div>
+      <div>
+        Pharmacy Degree:
+      <input type="file"  name="pharmDegree" onChange={handlePharmacyDegreeChange}/>
+      </div>
+      <div>
+        Working License: 
+      <input type="file" name="workingLicense" onChange={handleWorkingLicenseChange}/>
       </div>
       <button type="submit">Submit</button>
     </form>

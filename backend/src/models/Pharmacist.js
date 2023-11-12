@@ -25,10 +25,7 @@ const pharmacistSchema = new Schema({
   affiliationHospital: String,
   educationalBackground: String,
   walletBalance: Number,
-  id: String,
- /* PharmacyDegree: String,
-  workingLiscense: String,
-*/
+ 
 });
 
 const Pharmacist = mongoose.model("Pharmacist", pharmacistSchema);
