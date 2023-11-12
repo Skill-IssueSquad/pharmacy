@@ -21,6 +21,28 @@ const MultiLevelFilterTable = () => {
     // Fetch the data when the component mounts
     fetchMedicines();
   }, []);
+
+  const handleInput = (event, itemId, maxQuantity) => {
+    const inputElement = event.target;
+    let enteredValue = parseInt(inputElement.value, 10);
+  
+    // Check if the entered value is a number
+    if (isNaN(enteredValue)) {
+      enteredValue = 0;
+    }
+  
+    // Ensure the entered value is within the specified range
+    enteredValue = Math.max(0, Math.min(enteredValue, maxQuantity));
+  
+    // Update the input value
+    inputElement.value = enteredValue;
+  
+    // You can store or handle the entered value and itemId as needed
+    // For example, you might want to update the corresponding item in your state.
+    // handleItemQuantityChange(itemId, enteredValue);
+  };
+
+
   const addToCart = (id) => {
     
     fetch(`http://localhost:8000/medicine/addToCart/${userName}/${id}/1`, {
@@ -110,8 +132,9 @@ const MultiLevelFilterTable = () => {
     "activeIngredients",
     "price",
     "picture",
-    "Add To Cart",
-    "Status"
+    "Status",
+    "Quantity",
+    "Add To Cart"
   ];
 
   const filteredData = data.filter((item) => {
@@ -173,8 +196,16 @@ const MultiLevelFilterTable = () => {
       <TableCell style={{textAlign:'center'}}>{item.price}</TableCell>
      <TableCell style={{textAlign:'center'}} ><img src = {item.picture } width = "100px"></img></TableCell>
      <TableCell style={{ textAlign: 'center' }}>{item.quantity > 0 ? 'Available' : 'Out of Stock'}</TableCell>
-     
-     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
+     <TableCell style={{ textAlign: 'center' }}>
+  <input
+    type="number"
+    id={`quantity-${item.id}`} // Use a unique identifier, like item.id
+    name="quantity"
+    min="0"
+    max={item.quantity}
+    onInput={(e) => handleInput(e, item.id, item.quantity)}
+  />
+</TableCell>     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
       </TableRow>
   ))}
 </TableBody>
