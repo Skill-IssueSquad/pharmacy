@@ -76,7 +76,8 @@ const MultiLevelFilterTable = () => {
     },
     body: JSON.stringify({
       username,
-      cart
+      cart,
+      data
       
     }),
 
@@ -130,12 +131,15 @@ const MultiLevelFilterTable = () => {
   
   const addToCart = (id) => {
 
-    
+  console.log(hashMap[id]);
+    if(hashMap[id] === undefined || hashMap[id] === 0)
+    return;
     const existingMedicineIndex = cart.medicines.findIndex(
       (medicine) => medicine.medicine_id === id
     );
   
     if (existingMedicineIndex !== -1) {
+      
       // If the medicine already exists in the cart, update its quantity
       const updatedMedicines = [...cart.medicines];
       updatedMedicines[existingMedicineIndex].quantity += hashMap[id];
