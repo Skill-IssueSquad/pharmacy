@@ -14,132 +14,105 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import {  json } from 'react-router-dom';
+import { json } from 'react-router-dom';
 
 const OrderDetails = () => {
   const [order, setOrder] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const username = "testuser";
-  let  fetchUser=(username)=>{};
-  useEffect(() => {
-     fetchUser = (username) => {
-      fetch('http://localhost:8000/patient/getPatient', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Network response was not ok');
-          }
-        })
-        .then((data) => {
-          if (data.data.orders && data.data.orders.length > 0) {
-            const fetchedOrders = data.data.orders.map((fetchedOrder) => ({
-              id: fetchedOrder._id,
-              status: fetchedOrder.status,
-              date: fetchedOrder.date,
-              cart: {
-                medicines: fetchedOrder.cart.medicines.map((medicine) => ({
-                  medicine_id: medicine.medicine_id,
-                  quantity: medicine.quantity,
-                })),
-                totalPrice: fetchedOrder.cart.totalPrice,
-                discount: fetchedOrder.cart.discount,
-                netPrice: fetchedOrder.cart.netPrice,
-              },
-              discount: fetchedOrder.discount,
-              netPrice: fetchedOrder.netPrice,
-              deliveryAddress: {
-                streetName: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.streetName : '',
-                propertyNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.propertyNum : '',
-                floorNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.floorNum : '',
-                apartmentNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.apartNum : '',
-                extraLandmarks: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.extraLandMarks : '',
-              },
-            }));
-
-            setOrder(fetchedOrders);
-         
-            
-            
-          }
-        })
-        .catch((error) => console.error('Error adding order to patient', error));
-    };
-
-    fetchUser(username);
-  }, []);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   <checkbox>
-//   <input type="checkbox" id="Payment" name="COD" value="Cash On Delivery" />
-//   <label for="COD"> Cash On Delivery</label>
-  
-//   <input type="checkbox" id="Payment" name="UST" value="Pay Using Stripe" />
-//   <label for="UST"> Pay using Stripe</label>
-
-// </checkbox>
-
-
-
 
   useEffect(() => {
-    const fetchMedicines = (orderData) => {
-      const allMedicines = [];
-
-      orderData.forEach((orderItem) => {
-        const cartItems = orderItem.cart.medicines.map((medicine) => ({ medicine_id: medicine.medicine_id }));
-
-        fetch('http://localhost:8000/medicine/getArrayMedicinesByID', {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/patient/getPatient', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ cartItems }),
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Network response was not ok');
-            }
-          })
-          .then((medicineOutputs) => {
-            allMedicines.push(medicineOutputs);
-          })
-          .catch((error) => console.error('Error fetching medicines:', error));
-      });
+          body: JSON.stringify({ username }),
+        });
 
-      setMedicines(allMedicines);
-      setSelectedOrder(order[order.length - 1]);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
+        const data = await response.json();
+
+        if (data.data.orders && data.data.orders.length > 0) {
+          const fetchedOrders = data.data.orders.map((fetchedOrder) => ({
+            id: fetchedOrder._id,
+            status: fetchedOrder.status,
+            date: fetchedOrder.date,
+            cart: {
+              medicines: fetchedOrder.cart.medicines.map((medicine) => ({
+                medicine_id: medicine.medicine_id,
+                quantity: medicine.quantity,
+              })),
+              totalPrice: fetchedOrder.cart.totalPrice,
+              discount: fetchedOrder.cart.discount,
+              netPrice: fetchedOrder.cart.netPrice,
+            },
+            discount: fetchedOrder.discount,
+            netPrice: fetchedOrder.netPrice,
+            deliveryAddress: {
+              streetName: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.streetName : '',
+              propertyNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.propertyNum : '',
+              floorNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.floorNum : '',
+              apartmentNumber: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.apartNum : '',
+              extraLandmarks: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.extraLandMarks : '',
+            },
+          }));
+
+          setOrder(fetchedOrders);
+          setSelectedOrder(fetchedOrders[fetchedOrders.length - 1]);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     };
 
-    fetchMedicines(order);
+    fetchUser();
+  }, [username]);
+
+  useEffect(() => {
+    const fetchMedicines = async (orderData) => {
+      const allMedicines = [];
+
+      for (const orderItem of orderData) {
+        const cartItems = orderItem.cart.medicines.map((medicine) => ({ medicine_id: medicine.medicine_id }));
+
+        try {
+          const response = await fetch('http://localhost:8000/medicine/getArrayMedicinesByID', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cartItems }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const medicineOutputs = await response.json();
+          allMedicines.push(medicineOutputs);
+        } catch (error) {
+          console.error('Error fetching medicines:', error);
+        }
+      }
+
+      setMedicines(allMedicines);
+    };
+
+    if (order.length > 0) {
+      fetchMedicines(order);
+    }
   }, [order]);
 
   const formatAddress = (addressObject) => {
     const parts = [];
     if (addressObject.propertyNumber) parts.push(`Street Name: ${addressObject.streetName}`);
-
     if (addressObject.propertyNumber) parts.push(`Property Number: ${addressObject.propertyNumber}`);
     if (addressObject.floorNumber) parts.push(`Floor Number: ${addressObject.floorNumber}`);
     if (addressObject.apartmentNumber) parts.push(`Apartment Number: ${addressObject.apartmentNumber}`);
@@ -157,42 +130,39 @@ const OrderDetails = () => {
     const orderId = event.target.value;
     const selected = order.find((orderItem) => orderItem.id === orderId);
     setSelectedOrder(selected);
-
-    // Fetch user again to get the updated orders based on the selected order
-    fetchUser(username);
   };
 
+  const DeleteOrder = async () => {
+    if (selectedOrder) {
+      try {
+        const response = await fetch('http://localhost:8000/patient/deleteOrder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+            orderID: selectedOrder.id,
+          }),
+        });
 
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-  const DeleteOrder = (username) => {
-
-    const id = selectedOrder.id;
-    console.log("The id:",id );
-    fetch('http://localhost:8000/patient/deleteOrder', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        orderID: id
-      
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Success:", data);
-       
+        const data = await response.json();
+        console.log('Success:', data);
         window.location.reload();
+      } catch (error) {
+        console.error('Error deleting order:', error);
+      }
+    }
+  };
 
-        // alert("Added to cart");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  if (!medicines || medicines.length === 0) {
+    return <p>Loading medicines...</p>;
+  }
 
-
-  }
   return (
     <Container maxWidth="md">
       <Typography variant="h4" align="center" gutterBottom>
@@ -217,7 +187,6 @@ const OrderDetails = () => {
         </Select>
       </FormControl>
 
- 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -233,17 +202,17 @@ const OrderDetails = () => {
           <TableBody>
             {order.map((orderItem, index) => (
               <TableRow key={index}>
-              {orderItem.id === selectedOrder?.id ? (
-                <>
-                  <TableCell>{orderItem.id}</TableCell>
-                  <TableCell>{orderItem.status}</TableCell>
-                  <TableCell>{formatDate(orderItem.date)}</TableCell>
-                  <TableCell>{orderItem.discount}</TableCell>
-                  <TableCell>{orderItem.netPrice}</TableCell>
-                  <TableCell><button onClick={() => DeleteOrder(username)}>Cancel Order</button></TableCell>
-                </>
-              ) : null}
-            </TableRow>
+                {orderItem.id === selectedOrder?.id ? (
+                  <>
+                    <TableCell>{orderItem.id}</TableCell>
+                    <TableCell>{orderItem.status}</TableCell>
+                    <TableCell>{formatDate(orderItem.date)}</TableCell>
+                    <TableCell>{orderItem.discount}</TableCell>
+                    <TableCell>{orderItem.netPrice}</TableCell>
+                    <TableCell><button onClick={DeleteOrder}>Cancel Order</button></TableCell>
+                  </>
+                ) : null}
+              </TableRow>
             ))}
           </TableBody>
         </Table>
@@ -265,7 +234,6 @@ const OrderDetails = () => {
             <TableRow>
               <TableCell>Medicine ID</TableCell>
               <TableCell>Quantity</TableCell>
-              {/* Assuming you have a price property in your medicine object */}
               <TableCell>Price</TableCell>
               <TableCell>Total Price</TableCell>
             </TableRow>
@@ -274,16 +242,16 @@ const OrderDetails = () => {
             {selectedOrder &&
               selectedOrder.cart.medicines.map((item, index) => (
                 <TableRow key={index}>
-
-<TableCell>{medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.medicineName}</TableCell>
-
-
+                  <TableCell>
+                    {medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.medicineName || 'N/A'}
+                  </TableCell>
                   <TableCell>{item.quantity}</TableCell>
-                  {/* Assuming you have a price property in your medicine object */}
-                  <TableCell>{medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price}</TableCell>
-
-                  {/* Assuming you have a price property in your medicine object */}
-                  <TableCell>{(medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price)*item.quantity}</TableCell>
+                  <TableCell>
+                    {medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price || 0}
+                  </TableCell>
+                  <TableCell>
+                    {(medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price || 0) * item.quantity || 0}
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
