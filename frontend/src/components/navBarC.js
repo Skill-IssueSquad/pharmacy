@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Home', 'Cart', 'Orders'];
+const pages = ['Home', 'Cart', 'Orders','Change Password'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -124,6 +124,9 @@ let navigate = useNavigate();
                     url = "/Cart/"
                 } else if (page === "Orders") {   
                     url = "/orderDetails/"
+                }
+                else if (page === "Change Password") {
+                    url = "/medicinePatient/"
                 }
                 return(
               <Button
