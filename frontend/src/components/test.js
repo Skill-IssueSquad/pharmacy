@@ -332,7 +332,7 @@ const MultiLevelFilterTable = () => {
      <TableCell style={{ textAlign: 'center' }}>
   <input
     type="number"
-    id={`quantity-${item.id}`} // Use a unique identifier, like item.id
+    id={`quantity-${item.id}`} 
     name="quantity"
     min="0"
     max={item.quantity}

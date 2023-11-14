@@ -334,7 +334,7 @@ const Cart = () => {
                  
                   <td style={{ ...tableCellStyle, textAlign: 'center' }}>{cartItems[index].quantity * item.price}</td>
                   <td style={{ ...tableCellStyle, textAlign: 'center' }}>
-                    <img src={item.photo} alt={item.name} width="100" />
+                    <img src={item.picture} alt={item.name} width="100" />
                   </td>
                   <td style={{...tableCellStyle}}>
                    <button onClick={() => removeItemFromCart(item._id)} style={{ ...removeButtonStyle }}>
