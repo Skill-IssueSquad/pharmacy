@@ -401,8 +401,11 @@ const clearCart = (username)=>{
 
 
   return (
-    <Container maxWidth="md">
+    <div>
       <ResponsiveAppBar/>
+    
+    <Container maxWidth="md">
+      
       <Typography variant="h4" align="center" gutterBottom>
         Checkout
       </Typography>
@@ -570,6 +573,7 @@ const clearCart = (username)=>{
 </Dialog>
 
     </Container>
+    </div>
   );
 };
 

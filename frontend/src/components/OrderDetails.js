@@ -34,13 +34,13 @@ const OrderDetails = () => {
           },
           body: JSON.stringify({ username }),
         });
-
+  
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
+  
         const data = await response.json();
-
+  
         if (data.data.orders && data.data.orders.length > 0) {
           const fetchedOrders = data.data.orders.map((fetchedOrder) => ({
             id: fetchedOrder._id,
@@ -65,7 +65,7 @@ const OrderDetails = () => {
               extraLandmarks: fetchedOrder.deliveryAddress ? fetchedOrder.deliveryAddress.extraLandMarks : '',
             },
           }));
-
+  
           setOrder(fetchedOrders);
           setSelectedOrder(fetchedOrders[fetchedOrders.length - 1]);
         }
@@ -73,9 +73,20 @@ const OrderDetails = () => {
         console.error('Error fetching user data:', error);
       }
     };
-
-    fetchUser();
+  
+    const fetchData = async () => {
+      try {
+        await Promise.race([fetchUser(), new Promise(resolve => setTimeout(resolve, 10000))]);
+      } catch (error) {
+        console.error('Request timed out or failed. Proceeding without data.');
+      }
+    };
+  
+    // Call the fetchData function
+    fetchData();
   }, [username]);
+  
+  
 
   useEffect(() => {
     const fetchMedicines = async (orderData) => {
@@ -161,9 +172,9 @@ const OrderDetails = () => {
     }
   };
 
-  if (!medicines || medicines.length === 0) {
-    return <p>Loading Orders...</p>;
-  }
+  // if (!medicines || medicines.length === 0) {
+  //   return <p>Loading Orders...</p>;
+  // }
 
   return (
     <div>
