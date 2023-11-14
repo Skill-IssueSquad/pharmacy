@@ -2,22 +2,21 @@
 const express = require('express');
 
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
+const path = require("path")
+const multer = require("multer")
 
-
-
-const fileStorageEngine = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "./images"); //important this is a direct path fron our current file to storage location
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + "--" + file.originalname);
-    },
-  });
-  
-
-  const upload = multer({ storage: fileStorageEngine });
+let nameFile;
+const storage = multer.diskStorage({
+  destination: (req,file,cb)=>{
+    cb(null,'images')
+  },
+  filename : (req,file,cb)=> {
+   nameFile= Date.now() + "--" + file.originalname
+   req.nameFile=nameFile
+    cb(null,nameFile)
+  }
+})
+const upload=multer({storage:storage})
 
 
 
