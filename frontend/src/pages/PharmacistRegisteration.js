@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PharmacistRegisterationForm from "../components/pharmacistRegistrationForm";
+import PharmacistRegistrationForm from "../components/pharmacistRegistrationForm";
 import axios from "axios";
 import { json } from "react-router-dom";
 
@@ -33,7 +33,7 @@ const PharmacistRegisteration = () => {
     <div className="main page">
       <h1>Pharmacist Registeration</h1>
 
-      <PharmacistRegisterationForm />
+      <PharmacistRegistrationForm />
 
       <div>
         {pharmacists &&

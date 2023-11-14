@@ -10,22 +10,28 @@ import Admin from "./pages/Admin";
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
+
 import PatientRegisteration from "./pages/Home/PatientRegisteration";
 import PharmacistRegisteration from "./pages/Home/PharmacistRegisteration";
+import MultiLevelFilterTable from "./components/test";
+import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+import OrderDetails from "./components/OrderDetails";
+import navBarC from "./components/navBarC";
 import Login from "./pages/Home/Login";
 import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
 
-
 function App() {
   return (
-    <div classname="app">
+    <div className="app">
       <BrowserRouter>
-        <div classname="pages">
+        <div className="pages">
           <Routes>
           <Route path="/" element={<Login />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/ResetPassword" element={<ResetPassword />} />
+           
             <Route path="/PharmacistRegisteration" element={<PharmacistRegisteration/>} />
             <Route path="/PatientRegisteration" element={<PatientRegisteration/>} />
             <Route exact path="/patient" element={<PatientHome />} />
@@ -61,6 +67,36 @@ function App() {
               path="/admin/viewPharmacistRequests"
               element={<ViewPharmReq />}
             />
+
+
+            
+
+
+            <Route
+              exact
+              path="/medicinePatient"
+             
+              element={<MultiLevelFilterTable/>}
+            />
+             <Route
+              exact
+              path="/Cart"
+              element={<Cart/>}
+            />
+              <Route
+              exact
+              path="/Checkout"
+              element={<Checkout/>}
+            />
+
+
+             <Route
+              exact
+              path="/orderDetails"
+              element={<OrderDetails/>}
+            />
+            
+
           </Routes>
         </div>
       </BrowserRouter>

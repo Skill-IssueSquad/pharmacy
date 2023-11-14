@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const {authAdmin, authPharmacist, authPharmacistRequest ,authPatient} = require("./src/middleware/Authentication");
 const accountRouter = require("./src/routes/AccountRouter");
+const patientCart = require("./src/routes/Patient");
 
 
 //for iamages
@@ -43,8 +44,13 @@ require("dotenv").config();
 app.use("/register/patient", PatientRegisteration);
 app.use("/register/pharmacist", PharmacistRegisteration);
 
+
 app.use("/pharmacistRequest", authPharmacistRequest,pharmacistRequestRouter)
 
 app.use("/account", accountRouter);
 
+app.use("/medicine", patientRoutes);
+
+
+app.use("/patient",patientCart);
 
