@@ -25,7 +25,14 @@ const pharmacistSchema = new Schema({
   affiliationHospital: String,
   educationalBackground: String,
   walletBalance: Number,
- 
+
+  otp: {
+    type: String,
+  },
+  otpExpiry: {
+    type: Date,
+  }
+
 });
 
 const Pharmacist = mongoose.model("Pharmacist", pharmacistSchema);
