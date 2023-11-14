@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {Cart} from './Cart';
+import ResponsiveAppBar from './navBarC'
 const MultiLevelFilterTable = () => {
   const [filter, setFilter] = useState({ medicineName: "", medicinalUsage: "" });
   const [data, setData] = useState([]); // Store the fetched data
@@ -227,6 +228,7 @@ const MultiLevelFilterTable = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
+   
     setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   };
 
@@ -277,6 +279,8 @@ const MultiLevelFilterTable = () => {
   });
 
   return (
+    <div>
+     <ResponsiveAppBar/> 
     <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
       <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>
       <TextField
@@ -292,7 +296,7 @@ const MultiLevelFilterTable = () => {
         onChange={handleFilterChange}
       />
 
-      <button style={{marginLeft:'50px'}} onClick={viewCart}><a href="/Cart">View Cart </a></button>
+     <button style={{marginLeft:'50px'}} onClick={viewCart}><a href="/Cart">View Cart </a></button> 
       <button style={{marginLeft:'50px'}} onClick={saveCart}>Save Cart </button>
 
     </div>
@@ -337,6 +341,8 @@ const MultiLevelFilterTable = () => {
     min="0"
     max={item.quantity}
     onInput={(e) => handleInput(e, item._id, item.quantity)}
+    value={hashMap[item._id] || ""}
+
   />
 </TableCell>     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
       </TableRow>
@@ -345,6 +351,7 @@ const MultiLevelFilterTable = () => {
         </Table>
       </TableContainer>
       </div>
+    </div>
     </div>
   );
 };

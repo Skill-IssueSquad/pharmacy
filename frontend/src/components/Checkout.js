@@ -1,4 +1,6 @@
 import React, { useState,useEffect } from 'react';
+import ResponsiveAppBar from './navBarC'
+
 import {
   Container,
   TextField,
@@ -400,6 +402,7 @@ const clearCart = (username)=>{
 
   return (
     <Container maxWidth="md">
+      <ResponsiveAppBar/>
       <Typography variant="h4" align="center" gutterBottom>
         Checkout
       </Typography>

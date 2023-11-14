@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ResponsiveAppBar from './navBarC'
+
 import {
   Container,
   Typography,
@@ -160,11 +162,15 @@ const OrderDetails = () => {
   };
 
   if (!medicines || medicines.length === 0) {
-    return <p>Loading medicines...</p>;
+    return <p>Loading Orders...</p>;
   }
 
   return (
+    <div>
+            <ResponsiveAppBar/>
+
     <Container maxWidth="md">
+      
       <Typography variant="h4" align="center" gutterBottom>
         Order Details
       </Typography>
@@ -258,6 +264,7 @@ const OrderDetails = () => {
         </Table>
       </TableContainer>
     </Container>
+    </div>
   );
 };
 

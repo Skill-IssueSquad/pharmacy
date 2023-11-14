@@ -3,6 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { useNavigate } from 'react-router-dom';
+import ResponsiveAppBar from './navBarC'
 const MyContext = React.createContext();
 
 
@@ -292,6 +293,9 @@ const Cart = () => {
 // console.log(cartItems);
   var i = 0;
   return (
+    <div>
+
+<ResponsiveAppBar/>
     <MyContext.Provider value={cartItems}>
       <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
         <h2>Cart Items</h2>
@@ -351,7 +355,9 @@ const Cart = () => {
           </button>
         </div>
       </div>
+     
     </MyContext.Provider>
+    </div>
   );
 };
 

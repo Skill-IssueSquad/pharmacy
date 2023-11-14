@@ -16,6 +16,7 @@ import MultiLevelFilterTable from "./components/test";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import OrderDetails from "./components/OrderDetails";
+import navBarC from "./components/navBarC";
 function App() {
   return (
     <div classname="app">
@@ -73,6 +74,7 @@ function App() {
             <Route
               exact
               path="/medicinePatient"
+             
               element={<MultiLevelFilterTable/>}
             />
              <Route
