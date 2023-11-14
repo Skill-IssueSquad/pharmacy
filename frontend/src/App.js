@@ -21,6 +21,8 @@ import navBarC from "./components/navBarC";
 import Login from "./pages/Home/Login";
 import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
+import ChangePassword from "./pages/ChangePassword";
+
 
 function App() {
   return (
@@ -31,7 +33,7 @@ function App() {
           <Route path="/" element={<Login />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/ResetPassword" element={<ResetPassword />} />
-           
+           <Route path="/ChangePassword" element={<ChangePassword />} />
             <Route path="/PharmacistRegisteration" element={<PharmacistRegisteration/>} />
             <Route path="/PatientRegisteration" element={<PatientRegisteration/>} />
             <Route exact path="/patient" element={<PatientHome />} />
