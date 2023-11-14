@@ -9,6 +9,17 @@ const adminSchema = new Schema({
     unique: true,
   },
   password: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  otp: {
+    type: String,
+  },
+  otpExpiry: {
+    type: Date,
+  }
 });
 
 const Admin = mongoose.model("Admin", adminSchema);

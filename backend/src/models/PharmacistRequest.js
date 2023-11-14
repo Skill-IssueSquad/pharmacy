@@ -59,6 +59,12 @@ const pharmacistRequestSchema = new Schema({
       },
     },
   ],
+  otp: {
+    type: String,
+  },
+  otpExpiry: {
+    type: Date,
+  }
 });
 
 const PharmacistRequest = mongoose.model(

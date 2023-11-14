@@ -10,8 +10,12 @@ import Admin from "./pages/Admin";
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
-import PatientRegisteration from "./pages/PatientRegisteration";
-import PharmacistRegisteration from "./pages/PharmacistRegisteration";
+import PatientRegisteration from "./pages/Home/PatientRegisteration";
+import PharmacistRegisteration from "./pages/Home/PharmacistRegisteration";
+import Login from "./pages/Home/Login";
+import ForgotPassword from "./pages/Home/ForgotPassword";
+import ResetPassword from "./pages/Home/ResetPassword";
+
 
 function App() {
   return (
@@ -19,7 +23,11 @@ function App() {
       <BrowserRouter>
         <div classname="pages">
           <Routes>
-            <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
+            <Route path="/ResetPassword" element={<ResetPassword />} />
+            <Route path="/PharmacistRegisteration" element={<PharmacistRegisteration/>} />
+            <Route path="/PatientRegisteration" element={<PatientRegisteration/>} />
             <Route exact path="/patient" element={<PatientHome />} />
             <Route
               exact
@@ -52,18 +60,6 @@ function App() {
               exact
               path="/admin/viewPharmacistRequests"
               element={<ViewPharmReq />}
-            />
-
-            <Route
-              exact
-              path="/patientRegisteration"
-              element={<PatientRegisteration />}
-            />
-
-            <Route
-              exact
-              path="/pharmacistRegisteration"
-              element={<PharmacistRegisteration />}
             />
           </Routes>
         </div>
