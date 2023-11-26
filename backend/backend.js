@@ -28,7 +28,7 @@ app.use(cors());
 mongoose
   .connect(process.env.DATABASE_URL, { useNewUrlParser: true })
   .then(() => {
-    app.listen(8000, () => console.log("Server Started"));
+    app.listen(process.env.PORT, () => console.log("Server Started"));
   })
   .catch((err) => console.log(err));
 
