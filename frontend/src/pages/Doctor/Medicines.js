@@ -11,7 +11,13 @@ import Button from "@mui/material/Button";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Cart } from "../../components/Cart";
+
 const MultiLevelFilterTable = () => {
+  const params = new URLSearchParams(window.location.search);
+  const prescriptionID = params.get("prescriptionID");
+  const appID = params.get("appID");
+  console.log(prescriptionID);
+  console.log(appID);
   const [filter, setFilter] = useState({
     medicineName: "",
     medicinalUsage: "",
@@ -20,6 +26,7 @@ const MultiLevelFilterTable = () => {
   const [sorting, setSorting] = useState({ field: "", order: "" });
   const [getRender, setRender] = useState(false);
   const [hashMap, setHashMap] = useState({});
+  const [message, setMessage] = useState("");
 
   const [cart, setCart] = useState({
     medicines: [],
@@ -31,7 +38,24 @@ const MultiLevelFilterTable = () => {
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
+    setMedicinesStatus();
   }, []);
+
+  const setMedicinesStatus = async () => {
+    const response = await fetch(
+      "http://localhost:8000/doctor/getMedicinesStatus",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          appID,
+        }),
+      }
+    );
+    const json = await response.json();
+  };
 
   const updateHashMap = (key, value) => {
     setHashMap((prevHashMap) => {
@@ -89,21 +113,21 @@ const MultiLevelFilterTable = () => {
       );
 
   const handleInput = (event, itemId, maxQuantity) => {
-    const inputElement = event.target;
-    let enteredValue = parseInt(inputElement.value, 10);
+    // const inputElement = event.target;
+    // let enteredValue = parseInt(inputElement.value, 10);
 
-    // Check if the entered value is a number
-    if (isNaN(enteredValue)) {
-      enteredValue = 0;
-    }
+    // // Check if the entered value is a number
+    // if (isNaN(enteredValue)) {
+    //   enteredValue = 0;
+    // }
 
-    // Ensure the entered value is within the specified range
-    enteredValue = Math.max(0, Math.min(enteredValue, 9999));
+    // // Ensure the entered value is within the specified range
+    // enteredValue = Math.max(0, Math.min(enteredValue, 9999));
 
-    // Update the input value
-    inputElement.value = enteredValue;
+    // // Update the input value
+    // inputElement.value = enteredValue;
 
-    updateHashMap(itemId, enteredValue);
+    updateHashMap(itemId, event.target.value);
 
     // You can store or handle the entered value and itemId as needed
     // For example, you might want to update the corresponding item in your state.
@@ -147,10 +171,6 @@ const MultiLevelFilterTable = () => {
         medicines: [...prevCart.medicines, newMedicine],
       }));
     }
-
-    // Calculate totalPrice, netPrice, and update the state
-    // const totalPrice = calculateTotalPrice(cart.medicines);
-    //const netPrice = totalPrice - 0;
 
     setCart((prevCart) => ({
       ...prevCart,
@@ -229,10 +249,6 @@ const MultiLevelFilterTable = () => {
 
   const tableHeaders = [
     "medicineName",
-    "description",
-    "medicinalUsage",
-    "activeIngredients",
-    "price",
     "picture",
     "Status",
     "Dosage",
@@ -248,7 +264,29 @@ const MultiLevelFilterTable = () => {
   });
 
   const handelSumitToPharmacy = async () => {};
-  const handelAddToThePrescription = async () => {};
+  const handelAddToThePrescription = async (medicine) => {
+    const id = medicine._id;
+    const dose = hashMap[id];
+    if (dose === undefined || dose === 0) return;
+    console.log(medicine);
+    console.log(dose);
+    const response = await fetch(
+      "http://localhost:8000/doctor/addToPrescription",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          appID,
+          medicineName: medicine.medicineName,
+          dose,
+        }),
+      }
+    );
+    const json = await response.json();
+    setMessage(json.message);
+  };
   return (
     <div>
       <br />
@@ -273,13 +311,6 @@ const MultiLevelFilterTable = () => {
             value={filter.medicineName}
             onChange={handleFilterChange}
           />
-          <TextField
-            style={{ marginLeft: "50px" }}
-            label="Filter by medicinalUsage"
-            name="medicinalUsage"
-            value={filter.medicinalUsage}
-            onChange={handleFilterChange}
-          />
 
           <button
             style={{ marginLeft: "50px" }}
@@ -289,6 +320,7 @@ const MultiLevelFilterTable = () => {
           </button>
         </div>
         <div>
+          <h3 style={{ textAlign: "center" }}>{message}</h3>
           <TableContainer component={Paper}>
             <Table style={{ width: "1500px", height: "1000px" }}>
               <TableHead sx={{ padding: "64px" }}>
@@ -307,27 +339,6 @@ const MultiLevelFilterTable = () => {
                       {item.medicineName}
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      {item.description}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {item.medicinalUsage}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      <ul>
-                        {item.activeIngredients.map((ingredient) => (
-                          <li key={ingredient._id}>
-                            <p>Ingredient Name: {ingredient.ingredientName}</p>
-                            <p>
-                              Ingredient Amount: {ingredient.ingredientAmount}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {item.price}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
                       <img src={item.picture} width="100px"></img>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
@@ -335,18 +346,16 @@ const MultiLevelFilterTable = () => {
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
                       <input
-                        type="number"
+                        type="text"
                         id={`quantity-${item.id}`}
                         name="quantity"
-                        min="0"
-                        max="9999"
                         onInput={(e) => handleInput(e, item._id, item.quantity)}
                         value={hashMap[item._id] || ""}
                       />
                     </TableCell>{" "}
                     <TableCell style={{ textAlign: "center" }}>
                       <button
-                        onClick={() => handelAddToThePrescription(item._id)}
+                        onClick={(e) => handelAddToThePrescription(item)}
                         disabled={item.quantity === 0}
                       >
                         Add to the prescription
