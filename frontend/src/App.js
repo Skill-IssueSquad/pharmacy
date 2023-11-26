@@ -22,6 +22,7 @@ import Login from "./pages/Home/Login";
 import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
+import PharmacistRegistrationForm from "./components/pharmacistRegistrationForm";
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/ResetPassword" element={<ResetPassword />} />
            <Route path="/ChangePassword" element={<ChangePassword />} />
-            <Route path="/PharmacistRegisteration" element={<PharmacistRegisteration/>} />
+            <Route path="/PharmacistRegisteration" element={<PharmacistRegistrationForm/>} />
             <Route path="/PatientRegisteration" element={<PatientRegisteration/>} />
             <Route exact path="/patient" element={<PatientHome />} />
             <Route

@@ -35,17 +35,20 @@ mongoose
 app.use(express.json());
 
 const AdminRouter = require("./src/routes/AdminRouter");
-app.use("/admin", authAdmin, AdminRouter);
+//app.use("/admin", authAdmin, AdminRouter);
+app.use("/admin", AdminRouter);
 ;
 
-app.use("/pharmacist/medicines", authPharmacist,  medicineRouter);
+//app.use("/pharmacist/medicines", authPharmacist,  medicineRouter);
+app.use("/pharmacist/medicines",   medicineRouter);
 require("dotenv").config();
 
 app.use("/register/patient", PatientRegisteration);
 app.use("/register/pharmacist", PharmacistRegisteration);
 
 
-app.use("/pharmacistRequest", authPharmacistRequest,pharmacistRequestRouter)
+//app.use("/pharmacistRequest", authPharmacistRequest,pharmacistRequestRouter)
+app.use("/pharmacistRequest",pharmacistRequestRouter)
 
 app.use("/account", accountRouter);
 
