@@ -44,7 +44,7 @@ const PatientRegisterationForm = () => {
     console.log(patient);
 
     const response = await axios.post(
-      "http://localhost:8000/register/patient",
+      "http://localhost:8001/register/patient",
       patient
     );
 

@@ -66,7 +66,7 @@ export default function DataTable() {
       try {
         // Fetch data from the database
         const response = await axios.get(
-          "http://localhost:8000/admin/viewPharmacistRequests"
+          "http://localhost:8001/admin/viewPharmacistRequests"
         );
         const json = response.data.data;
         console.log("here is the fetched data (after get):");

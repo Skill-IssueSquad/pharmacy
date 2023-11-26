@@ -25,7 +25,7 @@ function UpdateMedicine() {
     const fetchMedicineDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/pharmacist/medicines/${medicineId}`
+          `http://localhost:8001/pharmacist/medicines/${medicineId}`
         );
         if (response.status === 200) {
           let data = await response.json();
@@ -68,7 +68,7 @@ function UpdateMedicine() {
       }
 
       const response = await fetch(
-        `http://localhost:8000/pharmacist/medicines/${medicineId}`,
+        `http://localhost:8001/pharmacist/medicines/${medicineId}`,
         {
           method: "PATCH",
           headers: {

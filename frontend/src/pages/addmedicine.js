@@ -90,7 +90,7 @@ const AddMedicine = () => {
      // console.log("HERE")
 
       /*const response = await fetch(
-        "http://localhost:8000/pharmacist/medicines",
+        "http://localhost:8001/pharmacist/medicines",
         {
           method: "POST",
           headers: {
@@ -102,7 +102,7 @@ const AddMedicine = () => {
       //console.log(jsonData)
 
       try{
-        const response= axios.post('http://localhost:8000/pharmacist/medicines', formData )
+        const response= axios.post('http://localhost:8001/pharmacist/medicines', formData )
         setIsMedicineAdded(true);
         setSuccessMessage("Medicine added successfully");
         setMedicineName("");

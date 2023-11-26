@@ -7,7 +7,7 @@ const PatientRegisteration = () => {
 
   useEffect(() => {
     const fetchpatients = async () => {
-      const response = await fetch("http://localhost:8000/register/patient");
+      const response = await fetch("http://localhost:8001/register/patient");
       const data = await response.json();
 
       if (response.ok) {

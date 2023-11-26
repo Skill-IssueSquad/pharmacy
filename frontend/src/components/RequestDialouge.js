@@ -71,7 +71,7 @@ export default function CustomizedDialogs({ rows, username }) {
         <DialogContent dividers>
           {text && text.map((data, index) => <p>{data}</p>)}
           {console.log("hi")}
-          <PDFViewer pdfUrl="http://localhost:8000/PharmReqStaticData/test.pdf" />
+          <PDFViewer pdfUrl="http://localhost:8001/PharmReqStaticData/test.pdf" />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>

@@ -93,13 +93,13 @@ console.log(workingLicense)
  // console.log(pharmacist);
 
     /*const response = await axios.post(
-      "http://localhost:8000/register/pharmacist",
+      "http://localhost:8001/register/pharmacist",
       formData
     );
     console.log(response)
 */
 try {
-  const response = await axios.post('http://localhost:8000/register/pharmacist', formData);
+  const response = await axios.post('http://localhost:8001/register/pharmacist', formData);
 
   // If submission is successful, reset the form fields
   setUsername("");

@@ -70,7 +70,7 @@ const MultiLevelFilterTable = () => {
 
 
 
-  const SaveCartToDB = (username,cart) => fetch('http://localhost:8000/patient/saveCart', {
+  const SaveCartToDB = (username,cart) => fetch('http://localhost:8001/patient/saveCart', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ const MultiLevelFilterTable = () => {
   const fetchMedicines = async () => {
     try {
       console.log("HERE:");
-      const response = await fetch("http://localhost:8000/medicine");
+      const response = await fetch("http://localhost:8001/medicine");
       console.log("Response status:", response.status);
 
       if (!response.ok) {
