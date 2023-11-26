@@ -5,7 +5,7 @@ const SearchComponent = ({ updateFilteredMedicines }) => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/medicine/searchByName/${searchQuery}`);
+      const response = await fetch(`http://localhost:8001/medicine/searchByName/${searchQuery}`);
       
       if (!response.ok) {
         throw new Error("Failed to fetch filtered data");

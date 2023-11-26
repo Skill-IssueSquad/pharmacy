@@ -14,7 +14,7 @@ const Cart = () => {
 
   const addQuantity = (id) => {
    
-    fetch(`http://localhost:8000/medicine/addToCart/${userName}/${id}/1`, {
+    fetch(`http://localhost:8001/medicine/addToCart/${userName}/${id}/1`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const Cart = () => {
           if( updatedCartItems[index].quantity === 1)
           {
        
-           fetch('http://localhost:8000/patient/removeMedicineFromCart', {
+           fetch('http://localhost:8001/patient/removeMedicineFromCart', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const Cart = () => {
 
   const removeItemFromCart =(id)=>{
 
-     fetch('http://localhost:8000/patient/removeMedicineFromCart', {
+     fetch('http://localhost:8001/patient/removeMedicineFromCart', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ const Cart = () => {
 
 
     // Fetch cart items when the component mounts
-    fetch('http://localhost:8000/patient/cart', requestOptions)
+    fetch('http://localhost:8001/patient/cart', requestOptions)
       .then((response) => { if (response.ok) {
         return response.json();
       } else {
@@ -226,7 +226,7 @@ const Cart = () => {
   useEffect(() => {
   const fetchMedicines = (cartItems) => {
     // Send a request to your server with the list of medicine IDs
-    fetch('http://localhost:8000/medicine/getArrayMedicinesByID', {
+    fetch('http://localhost:8001/medicine/getArrayMedicinesByID', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ const Cart = () => {
 // // const fetchMedicines = async () => {
 // //     try {
 // //       console.log("HERE:");
-// //       const response = await fetch("http://localhost:8000/medicine");
+// //       const response = await fetch("http://localhost:8001/medicine");
 // //       console.log("Response status:", response.status);
 
 // //       if (!response.ok) {
@@ -270,7 +270,7 @@ const Cart = () => {
 // //   };
 // const fetchMedicines = (medicineIds) => {
 //     // Send a request to your server with the list of medicine IDs
-//     fetch('http://localhost:8000/medicines', {
+//     fetch('http://localhost:8001/medicines', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',

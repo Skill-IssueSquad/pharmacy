@@ -27,7 +27,7 @@ const OrderDetails = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch('http://localhost:8000/patient/getPatient', {
+        const response = await fetch('http://localhost:8001/patient/getPatient', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const OrderDetails = () => {
         const cartItems = orderItem.cart.medicines.map((medicine) => ({ medicine_id: medicine.medicine_id }));
 
         try {
-          const response = await fetch('http://localhost:8000/medicine/getArrayMedicinesByID', {
+          const response = await fetch('http://localhost:8001/medicine/getArrayMedicinesByID', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ const OrderDetails = () => {
   const DeleteOrder = async () => {
     if (selectedOrder) {
       try {
-        const response = await fetch('http://localhost:8000/patient/deleteOrder', {
+        const response = await fetch('http://localhost:8001/patient/deleteOrder', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

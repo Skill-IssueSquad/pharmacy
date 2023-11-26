@@ -176,7 +176,7 @@ addtoDB(username,newAddressObject)
   // }
 
 
-  const addtoDB = (username,newAddressObject) => fetch('http://localhost:8000/patient/addAddress', {
+  const addtoDB = (username,newAddressObject) => fetch('http://localhost:8001/patient/addAddress', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ addtoDB(username,newAddressObject)
 
 
 const clearCart = (username)=>{
-  fetch('http://localhost:8000/patient/clearCart', {
+  fetch('http://localhost:8001/patient/clearCart', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ const clearCart = (username)=>{
             netPrice : total ,
             deliveryAddress : selectedAddress
       }
-    fetch('http://localhost:8000/patient/addOrder', {
+    fetch('http://localhost:8001/patient/addOrder', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ const clearCart = (username)=>{
 
   //Fetchin userData
  useEffect(()=>{
-  const fetchUser=(username)=> fetch('http://localhost:8000/patient/getPatient', {
+  const fetchUser=(username)=> fetch('http://localhost:8001/patient/getPatient', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

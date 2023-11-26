@@ -26,7 +26,7 @@ const MedicineSales = () => {
   const [dummyData, setDummyData] = useState([]);
   const [page, setPage] = useState(0); // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page
-  const { medicines } = useAxios('http://localhost:8000/pharmacist/medicines');
+  const { medicines } = useAxios('http://localhost:8001/pharmacist/medicines');
 
   // Update dummyData with fetched data whenever medicinesResponse changes
   useEffect(() => {

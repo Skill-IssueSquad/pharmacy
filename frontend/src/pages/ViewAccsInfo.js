@@ -10,7 +10,7 @@ const ViewAccsInfo = () => {
     console.log(username);
     try {
       const removedPatient = await axios.delete(
-        `http://localhost:8000/admin/removePatient/${username}`
+        `http://localhost:8001/admin/removePatient/${username}`
       );
       console.log("Here is the removed patient:");
       console.log(removedPatient);
@@ -24,7 +24,7 @@ const ViewAccsInfo = () => {
   const removePharmacist = async (username) => {
     try {
       const removedPharmacist = await axios.delete(
-        `http://localhost:8000/admin/removePharmacist/${username}`
+        `http://localhost:8001/admin/removePharmacist/${username}`
       );
       console.log("Here is the removed pharmacist:");
       console.log(removedPharmacist);
@@ -51,7 +51,7 @@ const ViewAccsInfo = () => {
           "walletBalance",
           "Remove",
         ]}
-        API_GET_URL={"http://localhost:8000/admin/viewPatientInfo/"}
+        API_GET_URL={"http://localhost:8001/admin/viewPatientInfo/"}
         removeFunc={removePatient}
       />
       <h2>Viewing Pharmacist Accounts </h2>
@@ -68,7 +68,7 @@ const ViewAccsInfo = () => {
           "hourlyRate",
           "Remove",
         ]}
-        API_GET_URL={"http://localhost:8000/admin/viewPharmacistInfo"}
+        API_GET_URL={"http://localhost:8001/admin/viewPharmacistInfo"}
         removeFunc={removePharmacist}
       />
     </div>

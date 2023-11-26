@@ -9,7 +9,7 @@ const PharmacistRegisteration = () => {
     const fetchPharmacists = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/register/pharmacist"
+          "http://localhost:8001/register/pharmacist"
         );
 
         if (response) {

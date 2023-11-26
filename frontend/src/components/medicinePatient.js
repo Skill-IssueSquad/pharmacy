@@ -9,7 +9,7 @@ const MedicinePatients = ({ medicines }) => {
 
       const fetchMedicines = async () => {
         try {
-          const response = await fetch('http://localhost:8000/medicine');
+          const response = await fetch('http://localhost:8001/medicine');
           console.log('Response status:', response.status);
           console.log('Response status:', response);
 

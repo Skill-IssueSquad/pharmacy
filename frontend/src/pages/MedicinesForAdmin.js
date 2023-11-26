@@ -23,7 +23,7 @@ const MedicinesForAdmin = () => {
   const [Data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { medicines } = useAxios("http://localhost:8000/admin/medicines");
+  const { medicines } = useAxios("http://localhost:8001/admin/medicines");
 
   // Update Data with fetched data whenever medicinesResponse changes
   useEffect(() => {
