@@ -23,8 +23,6 @@ const MultiLevelFilterTable = () => {
     medicinalUsage: "",
   });
   const [data, setData] = useState([]); // Store the fetched data
-  const [sorting, setSorting] = useState({ field: "", order: "" });
-  const [getRender, setRender] = useState(false);
   const [hashMap, setHashMap] = useState({});
   const [message, setMessage] = useState("");
 
@@ -152,6 +150,7 @@ const MultiLevelFilterTable = () => {
     "Dose",
     "Dose Given",
     "Add to the prescription",
+    "Remove from the prescription",
   ];
 
   const filteredData = data.filter((item) => {
@@ -190,6 +189,32 @@ const MultiLevelFilterTable = () => {
         if (item._id === medicine._id) {
           item.givenDose = dose;
           hashMap[item._id] = "";
+        }
+      });
+      setData(updatedData);
+    }
+    setMessage(json.message);
+  };
+  const handelRemoveFromThePrescription = async (medicine) => {
+    const response = await fetch(
+      "http://localhost:8000/doctor/removeFromPrescription",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          appID,
+          medicineName: medicine.medicineName,
+        }),
+      }
+    );
+    const json = await response.json();
+    if (json.success) {
+      const updatedData = [...data];
+      updatedData.map((item) => {
+        if (item._id === medicine._id) {
+          item.givenDose = "";
         }
       });
       setData(updatedData);
@@ -271,6 +296,14 @@ const MultiLevelFilterTable = () => {
                         disabled={item.quantity === 0}
                       >
                         Add to the prescription
+                      </button>
+                    </TableCell>
+                    <TableCell style={{ textAlign: "center" }}>
+                      <button
+                        onClick={(e) => handelRemoveFromThePrescription(item)}
+                        disabled={item.givenDose === ""}
+                      >
+                        Remove from the prescription
                       </button>
                     </TableCell>
                   </TableRow>
