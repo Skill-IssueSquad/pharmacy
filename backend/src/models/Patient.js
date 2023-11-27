@@ -41,7 +41,7 @@ const patientSchema = new Schema({
     mobileNumber: String,
     relationToPatient: {
       type: String,
-      enum: ["wife", "husband", "son", "daughter"],
+      enum: ["wife", "husband", "son", "daughter", "relative"],
     },
   },
   cart: {
@@ -90,7 +90,7 @@ const patientSchema = new Schema({
   },
   otpExpiry: {
     type: Date,
-  }
+  },
 });
 
 const Patient = mongoose.model("Patient", patientSchema);

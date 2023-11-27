@@ -13,18 +13,31 @@ const submitPrescriptionToPharmacy = async (req, res) => {
     var message = "";
     console.log(patientPharmacy);
     if (!patientPharmacy) {
-      //   patientPharmacy = new Patient({
-      //     username: username,
-      //     name: patientClinic.name,
-      //     email: patientClinic.email,
-      //     password: patientClinic.password,
-      //     dateOfBirth: patientClinic.dateOfBirth,
-      //     gender: patientClinic.gender,
-      //     mobileNumber: patientClinic.mobileNumber,
-      //     walletBalance: patientClinic.walletBalance,
-      //     deliveryAddresses: patientClinic.deliveryAddresses,
-      //     emergencyContact: patientClinic.emergencyContact,
-      //   });
+      patientPharmacy = new Patient({
+        username: username,
+        name: patientClinic.name,
+        email: patientClinic.email,
+        password: patientClinic.password,
+        dateOfBirth: patientClinic.dateOfBirth,
+        gender: patientClinic.gender,
+        mobileNumber: patientClinic.mobileNumber,
+        walletBalance: patientClinic.walletBalance,
+        deliveryAddresses: [],
+        emergencyContact: {
+          fullName: patientClinic.emergencyContact.fullName,
+          mobileNumber: patientClinic.emergencyContact.mobileNumber,
+          relationToPatient: "relative",
+        },
+        cart: {
+          medicines: [],
+          totalPrice: 0,
+          discount: 0,
+          netPrice: 0,
+        },
+        orders: [],
+        otp: patientClinic.otp,
+        otpExpiry: patientClinic.otpExpiry,
+      });
 
       return res.status(200).json({ message: "Patient not found" });
     }
