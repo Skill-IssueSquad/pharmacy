@@ -60,7 +60,7 @@ const MultiLevelFilterTable = () => {
       if (json.data != null) {
         updatedData.map((item) => {
           json.data.map((medicine) => {
-            if (medicine.medicineName === item.medicineName) {
+            if (medicine._id === item.medicineID) {
               //updateHashMap(item._id, medicine.dose);
               item.givenDose = medicine.dose;
             }
@@ -196,6 +196,7 @@ const MultiLevelFilterTable = () => {
           appID,
           medicineName: medicine.medicineName,
           dose,
+          medicineID: id,
         }),
       }
     );
@@ -231,7 +232,7 @@ const MultiLevelFilterTable = () => {
         },
         body: JSON.stringify({
           appID,
-          medicineName: medicine.medicineName,
+          medicineID: medicine._id,
         }),
       }
     );
