@@ -60,7 +60,7 @@ const MultiLevelFilterTable = () => {
       if (json.data != null) {
         updatedData.map((item) => {
           json.data.map((medicine) => {
-            if (medicine._id === item.medicineID) {
+            if (medicine.medicineID === item._id) {
               //updateHashMap(item._id, medicine.dose);
               item.givenDose = medicine.dose;
             }
@@ -167,6 +167,13 @@ const MultiLevelFilterTable = () => {
   });
 
   const handelSubmitToPharmacy = async () => {
+    const myMedicines = [];
+    data.map((item) => {
+      if (item.givenDose !== "") {
+        myMedicines.push(item);
+      }
+    });
+    console.log(myMedicines);
     const response = await fetch("/doctor/createPatient", {
       method: "POST",
       headers: {
@@ -174,6 +181,7 @@ const MultiLevelFilterTable = () => {
       },
       body: JSON.stringify({
         appID,
+        myMedicines,
       }),
     });
     const json = await response.json();
@@ -236,6 +244,7 @@ const MultiLevelFilterTable = () => {
         }),
       }
     );
+    console.log("*****************************************", medicine._id);
     const json = await response.json();
     if (json.success) {
       const updatedData = [...data];

@@ -1,18 +1,21 @@
 const Patient = require("../models/Patient");
-
+const Medicine = require("../models/Medicines");
 const submitPrescriptionToPharmacy = async (req, res) => {
   try {
-    const { appID } = req.body;
+    const { appID, myMedicines } = req.body;
     const response = await fetch(
       `http://localhost:8000/doctor/getPatient/${appID}`
     );
     const resData = await response.json();
-    const patientClinic = resData.data;
+    const patientClinic = resData.data.patient;
+    const discount = resData.data.discount / 100;
     const username = patientClinic.username;
     var patientPharmacy = await Patient.findOne({ username: username });
     var message = "";
-    console.log(patientPharmacy);
+    var hadNoAccount = false;
+    //console.log(patientPharmacy);
     if (!patientPharmacy) {
+      hadNoAccount = true;
       patientPharmacy = new Patient({
         username: username,
         name: patientClinic.name,
@@ -38,11 +41,56 @@ const submitPrescriptionToPharmacy = async (req, res) => {
         otp: patientClinic.otp,
         otpExpiry: patientClinic.otpExpiry,
       });
-
-      return res.status(200).json({ message: "Patient not found" });
     }
+    const medicines = [];
+    for (let i = 0; i < myMedicines.length; i++) {
+      // console.log(myMedicines[i]);
+      console.log(myMedicines[i]._id);
+      medicines.push({
+        medicine_id: myMedicines[i]._id,
+        quantity: 1,
+      });
+    }
+    const totalPrice = myMedicines.reduce(
+      (total, medicine) => total + medicine.price,
+      0
+    );
+    const netPrice = totalPrice - totalPrice * discount;
+    if (hadNoAccount) {
+      patientPharmacy.cart = {
+        medicines,
+        totalPrice,
+        discount,
+        netPrice,
+      };
+    } else {
+      for (let i = 0; i < medicines.length; i++) {
+        let found = patientPharmacy.cart.medicines.find(
+          (med) => med.medicine_id === medicines[i]._id
+        );
+
+        if (found) {
+          found.quantity += 1;
+        } else {
+          patientPharmacy.cart.medicines.push({ ...medicines[i], quantity: 1 });
+        }
+      }
+
+      patientPharmacy.cart.totalPrice = patientPharmacy.cart.medicines.reduce(
+        (total, medicine) => total + medicine.price * medicine.quantity,
+        0
+      );
+      patientPharmacy.cart.discount = discount;
+      patientPharmacy.cart.netPrice =
+        patientPharmacy.cart.totalPrice -
+        patientPharmacy.cart.totalPrice * patientPharmacy.cart.discount;
+    }
+
+    await patientPharmacy.save();
     const send = {
-      message: resData.message,
+      success: true,
+      data: patientPharmacy,
+      message: "Prescription submitted successfully",
     };
     res.status(200).json(send);
   } catch (error) {
