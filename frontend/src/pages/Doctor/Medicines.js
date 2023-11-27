@@ -166,7 +166,19 @@ const MultiLevelFilterTable = () => {
     );
   });
 
-  const handelSumitToPharmacy = async () => {};
+  const handelSubmitToPharmacy = async () => {
+    const response = await fetch("/doctor/createPatient", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        appID,
+      }),
+    });
+    const json = await response.json();
+    setMessage(json.message);
+  };
   const handelAddToThePrescription = async (medicine) => {
     const id = medicine._id;
     const dose = hashMap[id];
@@ -271,7 +283,7 @@ const MultiLevelFilterTable = () => {
 
           <button
             style={{ marginLeft: "50px" }}
-            onClick={handelSumitToPharmacy}
+            onClick={handelSubmitToPharmacy}
           >
             <a>Submit to the Pharmacy</a>
           </button>

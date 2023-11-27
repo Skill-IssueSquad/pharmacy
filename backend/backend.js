@@ -5,6 +5,7 @@ const medicineRouter = require("./src/routes/medicines");
 const PatientRegisteration = require("./src/routes/patientRegisteration");
 const PharmacistRegisteration = require("./src/routes/pharmacistRegisteration");
 const pharmacistRequestRouter = require("./src/routes/PharmacistRequestRouter");
+const doctorRouter = require("./src/routes/DoctorRouter");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -56,3 +57,5 @@ app.use("/account", accountRouter);
 app.use("/medicine", patientRoutes);
 
 app.use("/patient", patientCart);
+
+app.use("/doctor", doctorRouter);
