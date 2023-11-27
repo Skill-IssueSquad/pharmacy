@@ -38,10 +38,10 @@ const MultiLevelFilterTable = () => {
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
-    setMedicinesStatus();
+    // setMedicinesStatus();
   }, []);
 
-  const setMedicinesStatus = async () => {
+  const setMedicinesStatus = async (tmpData) => {
     const response = await fetch(
       "http://localhost:8000/doctor/getMedicinesStatus",
       {
@@ -55,6 +55,34 @@ const MultiLevelFilterTable = () => {
       }
     );
     const json = await response.json();
+    console.log(json);
+    const updatedData = [...tmpData];
+    console.log("The data inside updating is : ", updatedData);
+    if (json.success) {
+      if (json.data != null) {
+        updatedData.map((item) => {
+          json.data.map((medicine) => {
+            if (medicine.medicineName === item.medicineName) {
+              //updateHashMap(item._id, medicine.dose);
+              item.givenDose = medicine.dose;
+            }
+          });
+        });
+        updatedData.map((item) => {
+          if (item.givenDose === undefined) {
+            item.givenDose = "";
+          }
+        });
+      } else {
+        updatedData.map((item) => {
+          item.givenDose = "";
+        });
+      }
+      setData(updatedData);
+      console.log("The data after updating is : ", data);
+    } else {
+      setMessage(json.message);
+    }
   };
 
   const updateHashMap = (key, value) => {
@@ -66,51 +94,6 @@ const MultiLevelFilterTable = () => {
       return updatedHashMap;
     });
   };
-
-  const saveCart = (id) => {
-    setCart((prevCart) => {
-      const totalPrice = calculateTotalPrice(prevCart.medicines);
-      console.log("The Fucking total: " + totalPrice);
-
-      const netPrice = totalPrice - prevCart.discount;
-
-      prevCart.totalPrice = totalPrice;
-      prevCart.netPrice = netPrice;
-      return {
-        ...prevCart,
-      };
-    });
-
-    // Now, if you log `cart` here, it will reflect the updated state
-    console.log(cart);
-    SaveCartToDB(userName, cart);
-  };
-
-  const SaveCartToDB = (username, cart) =>
-    fetch("http://localhost:8001/patient/saveCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        cart,
-        data,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Network response was not ok");
-        }
-      })
-      .then((data) => {
-        //console.log("I am here");
-      })
-      .catch((error) =>
-        console.error("Error Saving Cart to the Database :", error)
-      );
 
   const handleInput = (event, itemId, maxQuantity) => {
     // const inputElement = event.target;
@@ -134,66 +117,6 @@ const MultiLevelFilterTable = () => {
     // handleItemQuantityChange(itemId, enteredValue);
   };
 
-  const addToCart = (id) => {
-    console.log(hashMap[id]);
-    if (hashMap[id] === undefined || hashMap[id] === 0) return;
-    const existingMedicineIndex = cart.medicines.findIndex(
-      (medicine) => medicine.medicine_id === id
-    );
-
-    if (existingMedicineIndex !== -1) {
-      // If the medicine already exists in the cart, update its quantity
-      const updatedMedicines = [...cart.medicines];
-      updatedMedicines[existingMedicineIndex].quantity += hashMap[id];
-
-      if (
-        updatedMedicines[existingMedicineIndex].quantity >
-        data.find((item) => item._id === id)?.quantity
-      ) {
-        updatedMedicines[existingMedicineIndex].quantity = data.find(
-          (item) => item._id === id
-        )?.quantity;
-      }
-
-      setCart((prevCart) => ({
-        ...prevCart,
-        medicines: updatedMedicines,
-      }));
-    } else {
-      // If the medicine is not in the cart, add it as a new entry
-      const newMedicine = {
-        medicine_id: id,
-        quantity: hashMap[id],
-      };
-
-      setCart((prevCart) => ({
-        ...prevCart,
-        medicines: [...prevCart.medicines, newMedicine],
-      }));
-    }
-
-    setCart((prevCart) => ({
-      ...prevCart,
-    }));
-  };
-
-  const calculateTotalPrice = (medicines) => {
-    console.log("ana hna");
-    return medicines.reduce((total, medicine) => {
-      console.log("Hna ya medicine ya negm:" + medicine.medicine_id);
-      // You need to fetch the actual price of the medicine from your data
-      const medicinePrice =
-        data.find((item) => item._id === medicine.medicine_id)?.price || 0;
-      console.log(medicinePrice);
-      console.log(hashMap[medicine.medicine_id]);
-      return total + hashMap[medicine.medicine_id] * medicinePrice;
-    }, 0);
-  };
-
-  const viewCart = () => {
-    console.log("Item viewed");
-  };
-
   const fetchMedicines = async () => {
     try {
       console.log("HERE:");
@@ -208,6 +131,9 @@ const MultiLevelFilterTable = () => {
 
       // Store the fetched data in the 'data' state
       setData(json);
+      console.log("The data before state updating is : ", json);
+
+      await setMedicinesStatus(json);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -219,39 +145,12 @@ const MultiLevelFilterTable = () => {
     setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   };
 
-  const handleSort = (field) => {
-    if (field === sorting.field) {
-      // Toggle sorting order
-      setSorting({
-        field,
-        order: sorting.order === "asc" ? "desc" : "asc",
-      });
-      // Reverse the data array
-      setData([...data].reverse());
-    } else {
-      // Set the field to sort and default order (asc)
-      setSorting({
-        field,
-        order: "asc",
-      });
-      // Sort the data array by the selected field in ascending order
-      setData(
-        [...data].sort((a, b) => {
-          if (field === "_id") {
-            // Special case for sorting by "_id"
-            return a[field]["$oid"].localeCompare(b[field]["$oid"]);
-          }
-          return a[field].localeCompare(b[field]);
-        })
-      );
-    }
-  };
-
   const tableHeaders = [
     "medicineName",
     "picture",
     "Status",
-    "Dosage",
+    "Dose",
+    "Dose Given",
     "Add to the prescription",
   ];
 
@@ -267,7 +166,7 @@ const MultiLevelFilterTable = () => {
   const handelAddToThePrescription = async (medicine) => {
     const id = medicine._id;
     const dose = hashMap[id];
-    if (dose === undefined || dose === 0) return;
+    if (dose === undefined || dose === 0 || dose === "") return;
     console.log(medicine);
     console.log(dose);
     const response = await fetch(
@@ -285,6 +184,16 @@ const MultiLevelFilterTable = () => {
       }
     );
     const json = await response.json();
+    if (json.success) {
+      const updatedData = [...data];
+      updatedData.map((item) => {
+        if (item._id === medicine._id) {
+          item.givenDose = dose;
+          hashMap[item._id] = "";
+        }
+      });
+      setData(updatedData);
+    }
     setMessage(json.message);
   };
   return (
@@ -353,6 +262,9 @@ const MultiLevelFilterTable = () => {
                         value={hashMap[item._id] || ""}
                       />
                     </TableCell>{" "}
+                    <TableCell style={{ textAlign: "center" }}>
+                      {item.givenDose}
+                    </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
                       <button
                         onClick={(e) => handelAddToThePrescription(item)}
