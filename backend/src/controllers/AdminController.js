@@ -287,7 +287,70 @@ const viewPharmacistRequests = async (req, res) => {
   }
 };
 
+const viewallorders = async (req, res) => {
+  try {
+    // Fetch all patients with their orders
+    const patients = await Patient.find({}, "username orders");
+
+    // Extract and return the required fields (cart and date)
+    const allOrders = patients
+      .map(patient => patient.orders.map(order => ({ cart: order.cart, date: order.date })))
+      .flat();
+
+    res.json(allOrders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+const viewSalesReportByMonth = async (req, res) => {
+  try {
+    const targetMonth = req.params.targetMonth; // Assuming the month is provided in the request parameters
+    const patients = await Patient.find({}, "username orders");
+
+    // Filter orders for the target month
+    const ordersInTargetMonth = patients
+      .map(patient => patient.orders.filter(order => order.date.getMonth() + 1 === targetMonth))
+      .flat();
+
+    // Aggregate sales data
+    const totalSales = ordersInTargetMonth.reduce((total, order) => total + order.cart.netPrice, 0);
+
+    // Group sales data by medicine
+    const medicineSales = ordersInTargetMonth.reduce((medicineSales, order) => {
+      order.cart.medicines.forEach(medicine => {
+        const medicineId = medicine.medicine_id.toString();
+        if (!medicineSales[medicineId]) {
+          medicineSales[medicineId] = {
+            medicineId,
+            medicineName: "", // You need to fetch the medicineName from the Medicine model
+            totalQuantity: 0,
+            totalRevenue: 0,
+          };
+        }
+        medicineSales[medicineId].totalQuantity += medicine.quantity;
+        medicineSales[medicineId].totalRevenue += medicine.quantity * order.cart.netPrice;
+      });
+      return medicineSales;
+    }, {});
+
+    // Generate the sales report
+    const salesReport = {
+      totalSales,
+      medicineSales: Object.values(medicineSales),
+    };
+
+    res.json(salesReport);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports = {
+  viewSalesReportByMonth,
+  viewallorders,
   viewAdmins,
   createAdmin,
   removeAdmin,

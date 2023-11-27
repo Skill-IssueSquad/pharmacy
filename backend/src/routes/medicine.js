@@ -11,6 +11,8 @@ const medicineController = require("../controllers/medicineController")
 router.get('/' , medicineController.getAllMedicine)
 
 
+
+
 //get a specific medicine by name
 router.get('/searchByName/:name?' , medicineController.getMedicineByName)
 
