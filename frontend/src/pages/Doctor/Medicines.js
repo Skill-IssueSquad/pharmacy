@@ -66,16 +66,21 @@ const MultiLevelFilterTable = () => {
             }
           });
         });
-        updatedData.map((item) => {
-          if (item.givenDose === undefined) {
-            item.givenDose = "";
-          }
-        });
-      } else {
-        updatedData.map((item) => {
-          item.givenDose = "";
-        });
       }
+      updatedData.map((item) => {
+        if (item.givenDose === undefined) {
+          item.givenDose = "";
+        }
+      });
+      updatedData.sort((a, b) => {
+        if (a.givenDose !== "" && b.givenDose === "") {
+          return -1;
+        }
+        if (a.givenDose === "" && b.givenDose !== "") {
+          return 1;
+        }
+        return 0;
+      });
       setData(updatedData);
       console.log("The data after updating is : ", data);
     } else {
@@ -191,6 +196,15 @@ const MultiLevelFilterTable = () => {
           hashMap[item._id] = "";
         }
       });
+      updatedData.sort((a, b) => {
+        if (a.givenDose !== "" && b.givenDose === "") {
+          return -1;
+        }
+        if (a.givenDose === "" && b.givenDose !== "") {
+          return 1;
+        }
+        return 0;
+      });
       setData(updatedData);
     }
     setMessage(json.message);
@@ -216,6 +230,15 @@ const MultiLevelFilterTable = () => {
         if (item._id === medicine._id) {
           item.givenDose = "";
         }
+      });
+      updatedData.sort((a, b) => {
+        if (a.givenDose !== "" && b.givenDose === "") {
+          return -1;
+        }
+        if (a.givenDose === "" && b.givenDose !== "") {
+          return 1;
+        }
+        return 0;
       });
       setData(updatedData);
     }
