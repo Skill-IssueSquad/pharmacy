@@ -37,7 +37,7 @@ const TotalSalesReport = () => {
 
       {/* Add TextField for selecting the day */}
       <TextField
-        label="Filter by Day"
+        label=" "
         type="date"
         value={selectedDay}
         onChange={(e) => setSelectedDay(e.target.value)}
