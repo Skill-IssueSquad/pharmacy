@@ -11,7 +11,7 @@ const {
   findMedicine,
   viewPharmacistRequests,
   viewallordersandcreatesalesreport,
-  viewFilteredOrders,
+
   viewRecentOrders,
 
  
@@ -35,7 +35,7 @@ router.get("/viewPharmacistRequests", viewPharmacistRequests);
 router.get('/orders' ,viewallordersandcreatesalesreport)
 router.get('/rescentorders' ,viewRecentOrders)
 
-router.get('/filteredOrders', viewFilteredOrders); // Add the new route for filtered orders
+
 
 
 

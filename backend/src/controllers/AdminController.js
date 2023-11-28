@@ -356,38 +356,16 @@ const viewallordersandcreatesalesreport = async (req, res) => {  //notused proba
   }
 };
 
-const viewFilteredOrders = async (req, res) => {
-  const { medicineName, date } = req.query;
 
-  try {
-    // Fetch sales reports with populated medicine details
-    const salesReports = await SalesReport.find({
-      date: { $regex: date, $options: "i" }, // Case-insensitive regex for date filtering
-    }).populate({
-      path: 'medicineSales.medicine_id',
-      model: 'Medicines', // Use the actual model name of your Medicines schema
-    });
-
-    // Filter sales reports based on medicine name
-    const filteredSalesReports = salesReports.filter((report) =>
-      report.medicineSales.some((medicineSale) =>
-        medicineName ? medicineSale.medicine_id.medicineName.toLowerCase().includes(medicineName.toLowerCase()) : true
-      )
-    );
-
-    res.json(filteredSalesReports);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-};
 
 const viewRecentOrders = async (req, res) => {
   try {
+    const searchTerm = req.query.search; // Get search term from query parameters
+
     // Fetch all patients with their orders, populating the 'orders.cart.medicines.medicine_id' field
     const patients = await Patient.find({}, "username orders").populate({
       path: 'orders.cart.medicines.medicine_id',
-      model: 'Medicines', // Use the actual model name of your Medicines schema
+      model: 'Medicines',
     });
 
     // Create an object to store sales data
@@ -426,16 +404,21 @@ const viewRecentOrders = async (req, res) => {
       totalPrice: data.totalPrice,
     }));
 
+    // Filter salesReports based on the search term
+    const filteredReports = salesReports.filter(report =>
+      report.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     // Update existing sales report or create a new one
     const currentDate = new Date();
-    const totalMedicineSales = salesReports.reduce((total, report) => total + report.totalPrice, 0);
+    const totalMedicineSales = filteredReports.reduce((total, report) => total + report.totalPrice, 0);
 
     const salesReport = await SalesReport.findOneAndUpdate(
       { /* Provide the criteria to find the most recent sales report */ },
       {
         date: currentDate,
         totalMedicineSales,
-        medicineSales: salesReports.map((report) => ({
+        medicineSales: filteredReports.map((report) => ({
           medicine_id: report.medicine_id,
           quantity: report.quantity,
           totalPrice: report.totalPrice,
@@ -447,7 +430,7 @@ const viewRecentOrders = async (req, res) => {
     console.log('Sales report viewed and updated:', salesReport);
 
     // Return the updated sales reports to the client
-    res.json(salesReports);
+    res.json(filteredReports);
   } catch (error) {
     console.error('Error fetching and updating recent orders:', error);
     res.status(500).send('Internal Server Error');
@@ -455,9 +438,9 @@ const viewRecentOrders = async (req, res) => {
 };
 
 
+
 module.exports = {
   viewRecentOrders,
-  viewFilteredOrders,
   viewallordersandcreatesalesreport,//notused probably useless
   viewAdmins,
   createAdmin,
