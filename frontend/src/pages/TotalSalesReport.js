@@ -13,14 +13,21 @@ import Navbar from '../components/Navbar';
 
 const TotalSalesReport = () => {
   const [medicines, setMedicines] = useState([]);
-  const [selectedDay, setSelectedDay] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
 
   useEffect(() => {
     const fetchTotalSales = async () => {
       try {
-        // Adjust the API endpoint to include the filter parameter
-        const response = await fetch(`http://localhost:8001/admin/orders?day=${selectedDay}`);
+        const url = `http://localhost:8001/admin/orders?month=${selectedMonth}`;
+        console.log('API Endpoint:', url);
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
+        console.log('Fetched Data:', data);
         setMedicines(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -28,20 +35,21 @@ const TotalSalesReport = () => {
     };
 
     fetchTotalSales();
-  }, [selectedDay]); // Add selectedDay as a dependency to re-fetch when it changes
+  }, [selectedMonth]);
 
   return (
     <div style={{ padding: '20px' }}>
       <Navbar />
       <h1>Total Sales Report</h1>
 
-      {/* Add TextField for selecting the day */}
       <TextField
-        label=" "
-        type="date"
-        value={selectedDay}
-        onChange={(e) => setSelectedDay(e.target.value)}
-        style={{ marginBottom: '20px' }}
+        label="Select Month"
+        type="month"
+        value={selectedMonth}
+        onChange={(e) => setSelectedMonth(e.target.value)}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
 
       <TableContainer component={Paper}>
@@ -66,7 +74,7 @@ const TotalSalesReport = () => {
                 <TableCell>{medicine.quantitySold}</TableCell>
                 <TableCell>{medicine.price}</TableCell>
                 <TableCell>{medicine.discount}</TableCell>
-                <TableCell>{new Date(medicine.date).toLocaleDateString()}</TableCell>
+                <TableCell>{new Date(medicine.date).toLocaleDateString('en-US', { month: 'long' })}</TableCell>
               </TableRow>
             ))}
           </TableBody>

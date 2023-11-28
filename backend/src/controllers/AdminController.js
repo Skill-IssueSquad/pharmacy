@@ -443,35 +443,37 @@ const viewRecentOrders = async (req, res) => {
 
 const viewallorders = async (req, res) => {
   try {
-    // Fetch the 'day' parameter from the query string
-    const { day } = req.query;
+    const { month } = req.query;
+    console.log('Received month parameter:', month);
 
-    // Fetch all patients with their orders, populating the 'orders.cart.medicines.medicine_id' field
-    const patients = await Patient.find({}, "username orders").populate({
+    // Construct a query object to filter orders by month
+    const query = {};
+    if (month) {
+      const [year, monthNumber] = month.split('-');
+      query['orders.date'] = {
+        $gte: new Date(year, monthNumber - 1, 1),
+        $lt: new Date(year, monthNumber, 1),
+      };
+    }
+
+    const patients = await Patient.find(query, "username orders").populate({
       path: 'orders.cart.medicines.medicine_id',
-      model: 'Medicines', // Use the actual model name of your Medicines schema
+      model: 'Medicines',
     });
 
-    // Use a Map to store the aggregated data based on medicine ID and date
     const medicineMap = new Map();
 
     patients.forEach(patient => {
       patient.orders.forEach(order => {
-        const orderDate = order.date.toISOString().split('T')[0]; // Extract YYYY-MM-DD from the date
-
-        // If 'day' parameter is provided, skip orders not matching the specified day
-        if (day && orderDate !== day) {
-          return;
-        }
+        const orderDate = order.date;
+        const orderMonth = orderDate.getMonth() + 1;
 
         order.cart.medicines.forEach(medicine => {
           const medicineId = medicine.medicine_id._id;
-          const key = `${medicineId}_${orderDate}`;
+          const key = `${medicineId}_${orderMonth}`;
           if (medicineMap.has(key)) {
-            // If the entry exists, update the quantitySold
             medicineMap.get(key).quantitySold += medicine.quantity;
           } else {
-            // If the entry doesn't exist, add a new entry
             medicineMap.set(key, {
               medicineName: medicine.medicine_id.medicineName,
               description: medicine.medicine_id.description,
@@ -479,26 +481,21 @@ const viewallorders = async (req, res) => {
               quantitySold: medicine.quantity,
               price: medicine.medicine_id.price,
               discount: order.discount,
-              date: order.date,
+              date: `${orderMonth}`,
             });
           }
         });
       });
     });
 
-    // Convert the Map values to an array
     const allMedicines = Array.from(medicineMap.values());
 
     res.json(allMedicines);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-
-
-
 
 
 
