@@ -425,7 +425,7 @@ const viewRecentOrders = async (req, res) => {
         {
           date: orderSalesReport.date,
           totalMedicineSales,
-          $push: { medicineSales: orderSalesReport }, // Use $push to add each medicine separately
+          medicineSales: [orderSalesReport],
         },
         { new: true, upsert: true }
       );
@@ -441,8 +441,53 @@ const viewRecentOrders = async (req, res) => {
   }
 };
 
+const getTotalSalesReportByDay = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    // Ensure date is provided
+    if (!date) {
+      return res.status(400).json({ error: 'Date parameter is required.' });
+    }
+
+    // Parse the date string to a JavaScript Date object
+    const targetDate = new Date(date);
+
+    // Fetch orders for the given date
+    const orders = await Patient.find({
+      'orders.date': { $gte: targetDate, $lt: new Date(targetDate.getTime() + 86400000) }, // Add 24 hours to include the entire day
+    });
+
+    // Calculate total sales for the given date
+    const totalSales = orders.reduce((total, order) => {
+      // Iterate through medicines in the order and sum up the total sales
+      order.cart.medicines.forEach((medicine) => {
+        total += medicine.quantity * medicine.medicine_id.price;
+      });
+      return total;
+    }, 0);
+
+    // Create a sales report object (you can modify this structure based on your SalesReport schema)
+    const salesReport = {
+      date: targetDate,
+      totalSales,
+    };
+
+    // Send the total sales report as a response
+    res.json(salesReport);
+  } catch (error) {
+    console.error('Error fetching and calculating total sales:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+module.exports = { getTotalSalesReportByDay };
+
+
+
 
 module.exports = {
+  getTotalSalesReportByDay,
   viewRecentOrders,
   viewallordersandcreatesalesreport,//notused probably useless
   viewAdmins,

@@ -11,7 +11,7 @@ const {
   findMedicine,
   viewPharmacistRequests,
   viewallordersandcreatesalesreport,
-
+  getTotalSalesReportByDay,
   viewRecentOrders,
 
  
@@ -34,6 +34,8 @@ router.get("/viewPharmacistRequests", viewPharmacistRequests);
 //salesreport
 router.get('/orders' ,viewallordersandcreatesalesreport)
 router.get('/rescentorders' ,viewRecentOrders)
+router.get('/total-sales-report', getTotalSalesReportByDay);
+
 
 
 
