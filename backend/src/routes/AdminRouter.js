@@ -10,7 +10,10 @@ const {
   getMedicines,
   findMedicine,
   viewPharmacistRequests,
-  viewallorders,
+  viewallordersandcreatesalesreport,
+  viewFilteredOrders,
+  viewRecentOrders,
+
  
 } = require("../controllers/AdminController");
 
@@ -27,7 +30,13 @@ router.delete("/removePatient/:username", removePatient);
 router.get("/viewPharmacistInfo/", viewPharmacistInfo);
 router.get("/viewPatientInfo/", viewPatientInfo);
 router.get("/viewPharmacistRequests", viewPharmacistRequests);
-router.get('/orders' ,viewallorders)
+
+//salesreport
+router.get('/orders' ,viewallordersandcreatesalesreport)
+router.get('/rescentorders' ,viewRecentOrders)
+
+router.get('/filteredOrders', viewFilteredOrders); // Add the new route for filtered orders
+
 
 
 

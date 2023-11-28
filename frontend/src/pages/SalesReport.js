@@ -18,7 +18,7 @@ const SalesReport = () => {
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        const response = await fetch('http://localhost:8001/admin/orders');
+        const response = await fetch('http://localhost:8001/admin/rescentorders');
         const data = await response.json();
         setMedicines(data);
       } catch (error) {
