@@ -441,53 +441,60 @@ const viewRecentOrders = async (req, res) => {
   }
 };
 
-const getTotalSalesReportByDay = async (req, res) => {
+const viewallorders = async (req, res) => {
   try {
-    const { date } = req.query;
-
-    // Ensure date is provided
-    if (!date) {
-      return res.status(400).json({ error: 'Date parameter is required.' });
-    }
-
-    // Parse the date string to a JavaScript Date object
-    const targetDate = new Date(date);
-
-    // Fetch orders for the given date
-    const orders = await Patient.find({
-      'orders.date': { $gte: targetDate, $lt: new Date(targetDate.getTime() + 86400000) }, // Add 24 hours to include the entire day
+    // Fetch all patients with their orders, populating the 'orders.cart.medicines.medicine_id' field
+    const patients = await Patient.find({}, "username orders").populate({
+      path: 'orders.cart.medicines.medicine_id',
+      model: 'Medicines', // Use the actual model name of your Medicines schema
     });
 
-    // Calculate total sales for the given date
-    const totalSales = orders.reduce((total, order) => {
-      // Iterate through medicines in the order and sum up the total sales
-      order.cart.medicines.forEach((medicine) => {
-        total += medicine.quantity * medicine.medicine_id.price;
+    // Use a Map to store the aggregated data based on medicine ID and date
+    const medicineMap = new Map();
+
+    patients.forEach(patient => {
+      patient.orders.forEach(order => {
+        const date = order.date.toISOString().split('T')[0]; // Extract YYYY-MM-DD from the date
+        order.cart.medicines.forEach(medicine => {
+          const medicineId = medicine.medicine_id._id;
+          const key = `${medicineId}_${date}`;
+          if (medicineMap.has(key)) {
+            // If the entry exists, update the quantitySold
+            medicineMap.get(key).quantitySold += medicine.quantity;
+          } else {
+            // If the entry doesn't exist, add a new entry
+            medicineMap.set(key, {
+              medicineName: medicine.medicine_id.medicineName,
+              description: medicine.medicine_id.description,
+              medicinalUsage: medicine.medicine_id.medicinalUsage,
+              quantitySold: medicine.quantity,
+              price: medicine.medicine_id.price,
+              discount: order.discount,
+              date: order.date,
+            });
+          }
+        });
       });
-      return total;
-    }, 0);
+    });
 
-    // Create a sales report object (you can modify this structure based on your SalesReport schema)
-    const salesReport = {
-      date: targetDate,
-      totalSales,
-    };
+    // Convert the Map values to an array
+    const allMedicines = Array.from(medicineMap.values());
 
-    // Send the total sales report as a response
-    res.json(salesReport);
+    res.json(allMedicines);
   } catch (error) {
-    console.error('Error fetching and calculating total sales:', error);
-    res.status(500).send('Internal Server Error');
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
-module.exports = { getTotalSalesReportByDay };
+
+
 
 
 
 
 module.exports = {
-  getTotalSalesReportByDay,
+  viewallorders,
   viewRecentOrders,
   viewallordersandcreatesalesreport,//notused probably useless
   viewAdmins,
