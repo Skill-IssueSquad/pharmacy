@@ -4,6 +4,8 @@ import PatientHome from "./pages/patientHome";
 import MedicineList from "./pages/MedicineList";
 import MedicineSales from "./pages/Sales";
 import SalesReport from "./pages/SalesReport"; // Update the import path
+import TotalSalesReport from "./pages/TotalSalesReport"; // Update the import path
+
 
 import AddMedicine from "./pages/addmedicine";
 import UpdateMedicine from "./pages/updatemedicine";
@@ -55,6 +57,12 @@ function App() {
               exact
               path="/pharmacist/medicines/salesreport"
               element={<SalesReport />}
+            />
+
+<Route
+              exact
+              path="/pharmacist/medicines/totalsalesreport"
+              element={<TotalSalesReport />}
             />
 
 
