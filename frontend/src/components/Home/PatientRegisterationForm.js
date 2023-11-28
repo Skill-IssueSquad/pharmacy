@@ -5,7 +5,7 @@ import { Card } from "react-bootstrap";
 import { MDBCard, MDBRow, MDBCol, MDBCardBody } from "mdb-react-ui-kit";
 import { Button, TextField } from "@mui/material"; 
 import validator from 'validator'
-import { set } from "mongoose";
+
 
 const PatientRegisterationForm = () => {
   const [formData, setFormData] = useState({

@@ -146,6 +146,7 @@ const OrderDetails = () => {
   };
 
   const DeleteOrder = async () => {
+    console.log("omar")
     if (selectedOrder) {
       try {
         const response = await fetch('http://localhost:8001/patient/deleteOrder', {

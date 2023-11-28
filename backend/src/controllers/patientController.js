@@ -202,6 +202,7 @@ const deleteOrder = async (req,res)=>{
     const patient = await Patient.findOne({username:username});
   
     if(patient == null){
+      
         return res.status(404).json({success: false , message: "Patient not found" , data: null})
     }
     else{
@@ -219,6 +220,13 @@ const deleteOrder = async (req,res)=>{
           medicine.quantity = medicine.quantity + medicines[i].quantity;
           await medicine.save();
         }
+        
+       if(patient.walletBalance == undefined)
+       patient.walletBalance =  orders[index].netPrice ;
+      else 
+      patient.walletBalance =   patient.walletBalance + orders[index].netPrice;
+     
+     
 
         const newOrders = orders.filter((order) => order._id != orderID);
         patient.orders = newOrders;
