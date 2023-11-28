@@ -1,5 +1,3 @@
-// TotalSalesReport.js
-
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -9,11 +7,14 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from '@mui/material';
 import Navbar from '../components/Navbar';
 
 const TotalSalesReport = () => {
   const [medicines, setMedicines] = useState([]);
+  const [selectedDay, setSelectedDay] = useState('');
+  const [filteredMedicines, setFilteredMedicines] = useState([]);
 
   useEffect(() => {
     const fetchTotalSales = async () => {
@@ -29,10 +30,31 @@ const TotalSalesReport = () => {
     fetchTotalSales();
   }, []); // No dependencies, fetch once when the component mounts
 
+  useEffect(() => {
+    // Filter medicines based on the selected day
+    if (selectedDay) {
+      const filteredData = medicines.filter(
+        (medicine) => new Date(medicine.date).toLocaleDateString() === selectedDay
+      );
+      setFilteredMedicines(filteredData);
+    } else {
+      setFilteredMedicines(medicines);
+    }
+  }, [selectedDay, medicines]);
+
   return (
     <div style={{ padding: '20px' }}>
       <Navbar />
       <h1>Total Sales Report</h1>
+
+      {/* Add a TextField for selecting the day */}
+      <TextField
+        label=" "
+        type="date"
+        value={selectedDay}
+        onChange={(e) => setSelectedDay(e.target.value)}
+        style={{ marginBottom: '20px' }}
+      />
 
       <TableContainer component={Paper}>
         <Table>
@@ -48,7 +70,7 @@ const TotalSalesReport = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {medicines.map((medicine, index) => (
+            {filteredMedicines.map((medicine, index) => (
               <TableRow key={index}>
                 <TableCell>{medicine.medicineName}</TableCell>
                 <TableCell>{medicine.description}</TableCell>
