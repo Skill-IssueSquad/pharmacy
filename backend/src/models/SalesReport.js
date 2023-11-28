@@ -7,8 +7,8 @@ const salesReportSchema = new Schema({
   totalMedicineSales: Number,
   medicineSales: [
     {
-      medicine_id: Model.Types.ObjectId,
-      ref: "Medicines",
+      medicine_id: Schema.Types.ObjectId,
+     // ref: "Medicines",
       quantity: Number,
       totalPrice: Number,
     },

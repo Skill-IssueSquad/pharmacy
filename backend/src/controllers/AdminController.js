@@ -3,6 +3,8 @@ const Pharmacist = require("../models/Pharmacist");
 const Patient = require("../models/Patient");
 const Medicine = require("../models/Medicines");
 const PharmReq = require("../models/PharmacistRequest");
+const SalesReport  = require("../models/SalesReport");
+
 
 //Add Admin
 const createAdmin = async (req, res) => {
@@ -289,67 +291,75 @@ const viewPharmacistRequests = async (req, res) => {
 
 const viewallorders = async (req, res) => {
   try {
-    // Fetch all patients with their orders
-    const patients = await Patient.find({}, "username orders");
+    // Fetch all patients with their orders, populating the 'orders.cart.medicines.medicine_id' field
+    const patients = await Patient.find({}, "username orders").populate({
+      path: 'orders.cart.medicines.medicine_id',
+      model: 'Medicines', // Use the actual model name of your Medicines schema
+    });
 
-    // Extract and return the required fields (cart and date)
-    const allOrders = patients
-      .map(patient => patient.orders.map(order => ({ cart: order.cart, date: order.date })))
-      .flat();
+    // Create an object to store sales data
+    const salesData = {};
 
-    res.json(allOrders);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-}
+    // Extract and return the required fields for each sold medicine
+    patients.forEach((patient) => {
+      patient.orders.forEach((order) => {
+        order.cart.medicines.forEach((medicine) => {
+          const medicineId = medicine.medicine_id._id.toString();
 
-const viewSalesReportByMonth = async (req, res) => {
-  try {
-    const targetMonth = req.params.targetMonth; // Assuming the month is provided in the request parameters
-    const patients = await Patient.find({}, "username orders");
+          // Initialize sales data if not present
+          if (!salesData[medicineId]) {
+            salesData[medicineId] = {
+              medicine_id: medicine.medicine_id._id,
+              medicineName: medicine.medicine_id.medicineName,
+              date: order.date,
+              quantity: 0,
+              totalPrice: 0,
+            };
+          }
 
-    // Filter orders for the target month
-    const ordersInTargetMonth = patients
-      .map(patient => patient.orders.filter(order => order.date.getMonth() + 1 === targetMonth))
-      .flat();
-
-    // Aggregate sales data
-    const totalSales = ordersInTargetMonth.reduce((total, order) => total + order.cart.netPrice, 0);
-
-    // Group sales data by medicine
-    const medicineSales = ordersInTargetMonth.reduce((medicineSales, order) => {
-      order.cart.medicines.forEach(medicine => {
-        const medicineId = medicine.medicine_id.toString();
-        if (!medicineSales[medicineId]) {
-          medicineSales[medicineId] = {
-            medicineId,
-            medicineName: "", // You need to fetch the medicineName from the Medicine model
-            totalQuantity: 0,
-            totalRevenue: 0,
-          };
-        }
-        medicineSales[medicineId].totalQuantity += medicine.quantity;
-        medicineSales[medicineId].totalRevenue += medicine.quantity * order.cart.netPrice;
+          // Update sales data for the current medicine
+          salesData[medicineId].quantity += medicine.quantity;
+          salesData[medicineId].totalPrice += medicine.medicine_id.price * medicine.quantity;
+        });
       });
-      return medicineSales;
-    }, {});
+    });
 
-    // Generate the sales report
-    const salesReport = {
-      totalSales,
-      medicineSales: Object.values(medicineSales),
-    };
+    // Create sales reports based on the collected data
+    const salesReports = Object.values(salesData).map((data) => ({
+      medicine_id: data.medicine_id,
+      medicineName: data.medicineName,
+      date: data.date,
+      quantity: data.quantity,
+      totalPrice: data.totalPrice,
+    }));
 
-    res.json(salesReport);
+    // Create a sales report entry in the database
+    const currentDate = new Date();
+    const totalMedicineSales = salesReports.reduce((total, report) => total + report.totalPrice, 0);
+    const newSalesReport = new SalesReport({
+      date: currentDate,
+      totalMedicineSales,
+      medicineSales: salesReports.map((report) => ({
+        medicine_id: report.medicine_id,
+        quantity: report.quantity,
+        totalPrice: report.totalPrice,
+      })),
+    });
+
+    // Save the new sales report
+    await newSalesReport.save();
+
+    res.json(salesReports);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };
 
+
+
 module.exports = {
-  viewSalesReportByMonth,
+
   viewallorders,
   viewAdmins,
   createAdmin,

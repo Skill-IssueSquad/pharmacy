@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PatientHome from "./pages/patientHome";
 import MedicineList from "./pages/MedicineList";
 import MedicineSales from "./pages/Sales";
+import SalesReport from "./pages/SalesReport"; // Update the import path
+
 import AddMedicine from "./pages/addmedicine";
 import UpdateMedicine from "./pages/updatemedicine";
 import Home from "./pages/Home";
@@ -23,6 +25,7 @@ import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import PharmacistRegistrationForm from "./components/pharmacistRegistrationForm";
+
 
 
 function App() {
@@ -48,6 +51,13 @@ function App() {
               path="/pharmacist/medicines/sales"
               element={<MedicineSales />}
             />
+             <Route
+              exact
+              path="/pharmacist/medicines/salesreport"
+              element={<SalesReport />}
+            />
+
+
             <Route
               exact
               path="/pharmacist/medicines/addmedicine"
