@@ -14,12 +14,12 @@ import Navbar from '../components/Navbar';
 const TotalSalesReport = () => {
   const [medicines, setMedicines] = useState([]);
   const [selectedDay, setSelectedDay] = useState('');
-  const [filteredMedicines, setFilteredMedicines] = useState([]);
 
   useEffect(() => {
     const fetchTotalSales = async () => {
       try {
-        const response = await fetch('http://localhost:8001/admin/orders');
+        // Adjust the API endpoint to include the filter parameter
+        const response = await fetch(`http://localhost:8001/admin/orders?day=${selectedDay}`);
         const data = await response.json();
         setMedicines(data);
       } catch (error) {
@@ -28,28 +28,16 @@ const TotalSalesReport = () => {
     };
 
     fetchTotalSales();
-  }, []); // No dependencies, fetch once when the component mounts
-
-  useEffect(() => {
-    // Filter medicines based on the selected day
-    if (selectedDay) {
-      const filteredData = medicines.filter(
-        (medicine) => new Date(medicine.date).toLocaleDateString() === selectedDay
-      );
-      setFilteredMedicines(filteredData);
-    } else {
-      setFilteredMedicines(medicines);
-    }
-  }, [selectedDay, medicines]);
+  }, [selectedDay]); // Add selectedDay as a dependency to re-fetch when it changes
 
   return (
     <div style={{ padding: '20px' }}>
       <Navbar />
       <h1>Total Sales Report</h1>
 
-      {/* Add a TextField for selecting the day */}
+      {/* Add TextField for selecting the day */}
       <TextField
-        label=" "
+        label="Filter by Day"
         type="date"
         value={selectedDay}
         onChange={(e) => setSelectedDay(e.target.value)}
@@ -70,7 +58,7 @@ const TotalSalesReport = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredMedicines.map((medicine, index) => (
+            {medicines.map((medicine, index) => (
               <TableRow key={index}>
                 <TableCell>{medicine.medicineName}</TableCell>
                 <TableCell>{medicine.description}</TableCell>

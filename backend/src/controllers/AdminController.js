@@ -443,6 +443,9 @@ const viewRecentOrders = async (req, res) => {
 
 const viewallorders = async (req, res) => {
   try {
+    // Fetch the 'day' parameter from the query string
+    const { day } = req.query;
+
     // Fetch all patients with their orders, populating the 'orders.cart.medicines.medicine_id' field
     const patients = await Patient.find({}, "username orders").populate({
       path: 'orders.cart.medicines.medicine_id',
@@ -454,10 +457,16 @@ const viewallorders = async (req, res) => {
 
     patients.forEach(patient => {
       patient.orders.forEach(order => {
-        const date = order.date.toISOString().split('T')[0]; // Extract YYYY-MM-DD from the date
+        const orderDate = order.date.toISOString().split('T')[0]; // Extract YYYY-MM-DD from the date
+
+        // If 'day' parameter is provided, skip orders not matching the specified day
+        if (day && orderDate !== day) {
+          return;
+        }
+
         order.cart.medicines.forEach(medicine => {
           const medicineId = medicine.medicine_id._id;
-          const key = `${medicineId}_${date}`;
+          const key = `${medicineId}_${orderDate}`;
           if (medicineMap.has(key)) {
             // If the entry exists, update the quantitySold
             medicineMap.get(key).quantitySold += medicine.quantity;
