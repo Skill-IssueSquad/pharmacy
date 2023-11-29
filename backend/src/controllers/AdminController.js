@@ -360,83 +360,69 @@ const viewallordersandcreatesalesreport = async (req, res) => {  //notused proba
 
 const viewRecentOrders = async (req, res) => {
   try {
-    const searchTerm = req.query.search; // Get search term from query parameters
+    const searchTerm = req.query.search;
 
-    // Fetch all patients with their orders, populating the 'orders.cart.medicines.medicine_id' field
     const patients = await Patient.find({}, "username orders").populate({
       path: 'orders.cart.medicines.medicine_id',
       model: 'Medicines',
     });
 
-    // Create an array to store individual sales reports for each order
     const salesReports = [];
+    const dailySalesData = new Map();
 
-    // Iterate through patients and their orders
     patients.forEach((patient) => {
       patient.orders.forEach((order) => {
-        // Create an object to store sales data for the current order
+        const orderDate = new Date(order.date);
+        const formattedDate = orderDate.toISOString().split('T')[0];
+
         const orderSalesData = {};
 
         order.cart.medicines.forEach((medicine) => {
           const medicineId = medicine.medicine_id._id.toString();
 
-          // Initialize sales data if not present or if the date is different
           if (!orderSalesData[medicineId]) {
             orderSalesData[medicineId] = {
               medicine_id: medicine.medicine_id._id,
               medicineName: medicine.medicine_id.medicineName,
-              date: order.date,
+              date: formattedDate,
               quantity: 0,
               totalPrice: 0,
             };
           }
 
-          // Update sales data for the current medicine
           orderSalesData[medicineId].quantity += medicine.quantity;
-          orderSalesData[medicineId].totalPrice += medicine.medicine_id.price * medicine.quantity;
+          orderSalesData[medicineId].totalPrice +=
+            medicine.medicine_id.price * medicine.quantity;
         });
 
-        // Create sales report for the current order
-        const orderSalesReport = Object.values(orderSalesData).map((data) => ({
-          medicine_id: data.medicine_id,
-          medicineName: data.medicineName,
-          date: data.date,
-          quantity: data.quantity,
-          totalPrice: data.totalPrice,
-        }));
+        Object.values(orderSalesData).forEach((data) => {
+          const key = `${data.medicine_id}_${data.date}`;
 
-        // Filter sales report based on the search term
-        const filteredOrderSalesReport = orderSalesReport.filter(report =>
-          report.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+          if (!dailySalesData.has(key)) {
+            dailySalesData.set(key, {
+              medicine_id: data.medicine_id,
+              medicineName: data.medicineName,
+              date: data.date,
+              quantity: 0,
+              totalPrice: 0,
+            });
+          }
 
-        // Add the filtered sales report to the overall array
-        salesReports.push(...filteredOrderSalesReport);
+          dailySalesData.get(key).quantity += data.quantity;
+          dailySalesData.get(key).totalPrice += data.totalPrice;
+        });
       });
     });
 
-    // Update existing sales report or create a new one for each order
-    const currentDate = new Date();
-    const totalMedicineSales = salesReports.reduce((total, report) => total + report.totalPrice, 0);
+    const aggregatedSales = Array.from(dailySalesData.values());
 
-    for (const orderSalesReport of salesReports) {
-      const salesReport = await SalesReport.findOneAndUpdate(
-        { date: orderSalesReport.date }, // Provide the criteria to find the most recent sales report
-        {
-          date: orderSalesReport.date,
-          totalMedicineSales,
-          medicineSales: [orderSalesReport],
-        },
-        { new: true, upsert: true }
-      );
+    const filteredAggregatedSales = aggregatedSales.filter((report) =>
+      report.date.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-      console.log('Sales report viewed and updated:', salesReport);
-    }
-
-    // Return the updated sales reports to the client
-    res.json(salesReports);
+    res.json(filteredAggregatedSales);
   } catch (error) {
-    console.error('Error fetching and updating recent orders:', error);
+    console.error('Error fetching recent orders:', error);
     res.status(500).send('Internal Server Error');
   }
 };
