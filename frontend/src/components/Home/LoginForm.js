@@ -61,7 +61,7 @@ function App() {
         }
         else{
             try{
-                const response = await fetch('/account/login', {method: 'POST', 
+                const response = await fetch('http://localhost:8000/account/login', {method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { auth } from "./Protected/AuthProvider";
 
 import useAxios from '../useAxios';
 import { useEffect } from 'react';
@@ -19,6 +20,14 @@ import { useEffect } from 'react';
 const cardHeight = '350px'; // You can adjust this value
 
 const MedicineList = () => {
+  let show = false;
+
+  console.log(auth());
+  if(auth() && localStorage.getItem('role')==="Pharmacist"){
+      show = true;
+  }
+
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMedicalUsage, setFilterMedicalUsage] = useState('');
   const [Data, setData] = useState([]);
@@ -81,81 +90,86 @@ const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
   );
 
   return (
-    <div className="search_and_filter" style={{ padding: '20px' }}>
-       <Navbar/>
-      <h1>Available Medicines</h1>
-      <div className="TextFields">
-        <div className="input-container">
-          <Typography variant="body2">Search by Name</Typography>
-          <TextField
-            variant="outlined"
-            fullWidth
-            size="small"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
+    <div>
+    {show? (
+      <div className="search_and_filter" style={{ padding: '20px' }}>
+        <Navbar/>
+        <h1>Available Medicines</h1>
+        <div className="TextFields">
+          <div className="input-container">
+            <Typography variant="body2">Search by Name</Typography>
+            <TextField
+              variant="outlined"
+              fullWidth
+              size="small"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+          <div className="input-container">
+            <Typography variant="body2">Filter by Medical Usage</Typography>
+            <TextField
+              variant="outlined"
+              fullWidth
+              size="small"
+              value={filterMedicalUsage}
+              onChange={handleFilterChange}
+            />
+          </div>
         </div>
-        <div className="input-container">
-          <Typography variant="body2">Filter by Medical Usage</Typography>
-          <TextField
-            variant="outlined"
-            fullWidth
-            size="small"
-            value={filterMedicalUsage}
-            onChange={handleFilterChange}
-          />
-        </div>
-      </div>
-      {medicines && (
-        <div>
-         
-          <Grid container spacing={3}>
-            {slicedData.map((medicine) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={medicine._id}>
-                <Link to={`updatemedicine/${medicine._id}`}>
-                  <Card style={{ height: cardHeight }}>
-                    <CardMedia
-                      component="img"
-                      alt={medicine.medicineName}
-                      image={medicine.picture}
-                      style={{ height: '200px' }}
-                    />
-                    <CardContent>
-                      <Typography variant="h6" component="div">
-                        Name: {medicine.medicineName}
-                      </Typography>
-                      <Typography variant="body2">
-                        Description: {medicine.description}
-                      </Typography>
-                      <Typography variant="body2">
-                        Usage: {medicine.medicinalUsage}
-                      </Typography>
-                      <Typography variant="body2" component="div">
-                        Price: {medicine.price}
-                      </Typography>
-                      <Typography variant="body2" component="div">
-                        Sales: {medicine.sales}
-                      </Typography>
-                      <Typography variant="body2" component="div">
-                        Quantity: {medicine.quantity}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 50]}
-            component="div"
-            count={filteredByMedicalUsage.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </div>
-      )}
+        {medicines && (
+          <div>
+          
+            <Grid container spacing={3}>
+              {slicedData.map((medicine) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={medicine._id}>
+                  <Link to={`updatemedicine/${medicine._id}`}>
+                    <Card style={{ height: cardHeight }}>
+                      <CardMedia
+                        component="img"
+                        alt={medicine.medicineName}
+                        image={medicine.picture}
+                        style={{ height: '200px' }}
+                      />
+                      <CardContent>
+                        <Typography variant="h6" component="div">
+                          Name: {medicine.medicineName}
+                        </Typography>
+                        <Typography variant="body2">
+                          Description: {medicine.description}
+                        </Typography>
+                        <Typography variant="body2">
+                          Usage: {medicine.medicinalUsage}
+                        </Typography>
+                        <Typography variant="body2" component="div">
+                          Price: {medicine.price}
+                        </Typography>
+                        <Typography variant="body2" component="div">
+                          Sales: {medicine.sales}
+                        </Typography>
+                        <Typography variant="body2" component="div">
+                          Quantity: {medicine.quantity}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 50]}
+              component="div"
+              count={filteredByMedicalUsage.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div>
+        )}
+      </div>):
+       (<h2>No access</h2>)
+      }
     </div>
   );
 };

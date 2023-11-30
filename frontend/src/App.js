@@ -11,6 +11,8 @@ import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
 
+//import PatientRegisteration from "./pages/PatientRegisteration";
+//import PharmacistRegisteration from "./pages/PharmacistRegisteration";
 import PatientRegisteration from "./pages/Home/PatientRegisteration";
 import PharmacistRegisteration from "./pages/Home/PharmacistRegisteration";
 import MultiLevelFilterTable from "./components/test";
