@@ -375,6 +375,25 @@ const AddToCart = async (req, res) => {
     console.error('Error:', error);
     return res.status(500).json({ success:false,data:null, error: "Internal server error" });
   }
+
+
+
+// const medicineWithSameActiveIngredients = async (req, res) =>{
+
+//   const{medicineName}=req.body;
+//   const medicine = await Medicine.findById({ medicineName: medicineName });
+//   const activeIngredients = medicine.activeIngredients;
+
+
+  
+// }
+
+
+
+
+
+
+
 };
 
 

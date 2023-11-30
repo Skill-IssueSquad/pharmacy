@@ -130,7 +130,7 @@ const addAddressToPatient = async (req,res) =>{
 
 const addOrderToPatient = async (req,res) =>{
     //console.log("ana in");
-    const { username,status,date,cart,discount,netPrice,deliveryAddress } = req.body;
+    const { username,status,date,cart,discount,netPrice,deliveryAddress,paymentMethod } = req.body;
     try{
         
         const patient = await Patient.findOne({username:username})
@@ -160,7 +160,8 @@ const addOrderToPatient = async (req,res) =>{
                 cart : cart1,
                 discount: discount,
                 netPrice: netPrice,
-                deliveryAddress : newAddress
+                deliveryAddress : newAddress,
+                paymentMethod: paymentMethod
 
               };
 
@@ -220,13 +221,14 @@ const deleteOrder = async (req,res)=>{
           medicine.quantity = medicine.quantity + medicines[i].quantity;
           await medicine.save();
         }
-        
+        if(patient.orders[index].paymentMethod === 'cash'){
+
        if(patient.walletBalance == undefined)
        patient.walletBalance =  orders[index].netPrice ;
       else 
       patient.walletBalance =   patient.walletBalance + orders[index].netPrice;
      
-     
+        }
 
         const newOrders = orders.filter((order) => order._id != orderID);
         patient.orders = newOrders;

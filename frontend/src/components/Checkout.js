@@ -46,6 +46,8 @@ const Checkout = () => {
   console.log(cartItems);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [pay, setPay] = useState('cash');
+
   const [newAddress, setNewAddress] = useState('');
   const [total, setTotal] = useState(0);
   const [addressList, setAddressList] = useState([
@@ -238,7 +240,8 @@ const clearCart = (username)=>{
             cart : data,
             discount :0 ,
             netPrice : total ,
-            deliveryAddress : selectedAddress
+            deliveryAddress : selectedAddress,
+            paymentMethod:pay
       }
     fetch('http://localhost:8001/patient/addOrder', {
       method: 'POST',
@@ -252,7 +255,8 @@ const clearCart = (username)=>{
         cart : data,
         discount :0 ,
         netPrice : total ,
-        deliveryAddress : selectedAddress
+        deliveryAddress : selectedAddress,
+        paymentMethod:pay
 
       }),
   
@@ -472,10 +476,16 @@ const clearCart = (username)=>{
           
           <Grid  style={{ marginTop: 16 ,marginLeft:18}}>
           <div>
-        <input type="radio" id="Payment" name="paymentMethod" value="Cash On Delivery"  checked/>
+        <input type="radio" id="Payment" name="paymentMethod" value="Cash On Delivery"  checked ={pay ==='cash'}
+         onChange={() => setPay('cash')}
+        />
         <label for="Payment"> Cash On Delivery</label>
         
-        <input type="radio" id="Paymentx" name="paymentMethod" value="Pay Using Stripe" style={{ marginLeft:15}}/>
+        <input type="radio" id="Paymentx" name="paymentMethod" value="Pay Using Stripe" style={{ marginLeft:15}} checked ={pay ==='stripe'}
+          onChange={() => setPay('stripe')}
+
+        
+        />
         <label for="Paymentx"> Pay using Stripe</label>
 
       </div>

@@ -61,6 +61,7 @@ const patientSchema = new Schema({
     {
       status: String,
       date: Date,
+      paymentMethod:String,
       cart: {
         medicines: [
           {
