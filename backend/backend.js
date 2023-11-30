@@ -18,6 +18,7 @@ const {
 } = require("./src/middleware/Authentication");
 const accountRouter = require("./src/routes/AccountRouter");
 const patientCart = require("./src/routes/Patient");
+const { equateBalance } = require("./src/controllers/Balance");
 
 //for iamages
 const multer = require("multer");
@@ -59,3 +60,5 @@ app.use("/medicine", patientRoutes);
 app.use("/patient", patientCart);
 
 app.use("/doctor", doctorRouter);
+
+app.post("/balance/:username", equateBalance);
