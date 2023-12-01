@@ -346,12 +346,74 @@ const viewallorders = async (req, res) => {
   }
 };
 
+
+const viewallordersbymonth = async (req, res) => {
+  try {
+    const selectedMonth = req.query.month;
+
+    // Find all patients and populate the 'orders' field with necessary fields
+    const patients = await Patient.find()
+      .populate({
+        path: 'orders.cart.medicines.medicine_id',
+        model: 'Medicines',
+        select: '_id medicineName price',
+      })
+      .select('orders.date orders.cart.medicines');
+
+    // Create a map to store the aggregated information for each medicine on a specific month
+    const medicinesInfoMap = new Map();
+
+    // Process each patient's orders
+    patients.forEach((patient) => {
+      patient.orders.forEach((order) => {
+        const orderDate = new Date(order.date);
+        const yearMonth = `${orderDate.getFullYear()}-${orderDate.getMonth() + 1}`;
+
+        // Check if the order is for the selected month
+        if (!selectedMonth || yearMonth === selectedMonth) {
+          // Process each medicine in the order
+          order.cart.medicines.forEach((medicine) => {
+            if (medicine.medicine_id) {
+              const medicineKey = `${medicine.medicine_id._id || medicine.medicine_id}_${yearMonth}`;
+
+              if (!medicinesInfoMap.has(medicineKey)) {
+                medicinesInfoMap.set(medicineKey, {
+                  medicine_id: medicine.medicine_id._id || medicine.medicine_id,
+                  medicineName: medicine.medicine_id.medicineName,
+                  quantity: 0,
+                  totalPrice: 0,
+                  date: yearMonth,
+                });
+              }
+
+              const medicineInfo = medicinesInfoMap.get(medicineKey);
+              medicineInfo.quantity += medicine.quantity;
+              medicineInfo.totalPrice += calculateTotalPrice(medicine.quantity, medicine.medicine_id.price);
+            }
+          });
+        }
+      });
+    });
+
+    const medicinesInfo = Array.from(medicinesInfoMap.values());
+
+    res.json(medicinesInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+
 // Function to calculate total price for each medicine
 function calculateTotalPrice(quantity, unitPrice) {
   return quantity * unitPrice;
 }
 
 module.exports = {
+  viewallordersbymonth,
   viewallorders,
   viewAdmins,
   createAdmin,
