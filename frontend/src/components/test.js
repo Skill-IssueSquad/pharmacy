@@ -12,6 +12,15 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {Cart} from './Cart';
 import ResponsiveAppBar from './navBarC'
+
+
+import { useNavigate } from 'react-router-dom';
+const MyContext = React.createContext();
+
+
+
+
+
 const MultiLevelFilterTable = () => {
   const [filter, setFilter] = useState({ medicineName: "", medicinalUsage: "" });
   const [data, setData] = useState([]); // Store the fetched data
@@ -193,6 +202,15 @@ const MultiLevelFilterTable = () => {
 
 
 
+  const navigate = useNavigate();
+
+  const viewAlternatives = (medicineName) => {
+    
+      navigate('/viewAlternatives', { state: {medicineName} });
+   
+    
+  };
+
 
 
 
@@ -341,10 +359,21 @@ const MultiLevelFilterTable = () => {
     min="0"
     max={item.quantity}
     onInput={(e) => handleInput(e, item._id, item.quantity)}
+    style={{ width: '75px' }}
     value={hashMap[item._id] || ""}
 
   />
-</TableCell>     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
+</TableCell>     <TableCell style={{ textAlign: 'center' }}> {item.quantity > 0 ? (
+        <>
+    
+      <button onClick={() => addToCart(item._id)} disabled={item.quantity === 0}>
+        Add To Cart
+      </button>
+    </>
+  ) : (
+    <button onClick={() =>viewAlternatives(item.medicineName)}>View Alternatives</button>
+  )}
+</TableCell>
       </TableRow>
   ))}
 </TableBody>

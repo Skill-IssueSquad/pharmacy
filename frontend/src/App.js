@@ -22,6 +22,8 @@ import Login from "./pages/Home/Login";
 import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
+import AlternativesView from "./components/Alternatives";
+
 import PharmacistRegistrationForm from "./components/pharmacistRegistrationForm";
 
 
@@ -99,7 +101,11 @@ function App() {
               element={<OrderDetails/>}
             />
             
-
+            <Route
+              exact
+              path="/viewAlternatives"
+              element={<AlternativesView/>}
+            />
           </Routes>
         </div>
       </BrowserRouter>
