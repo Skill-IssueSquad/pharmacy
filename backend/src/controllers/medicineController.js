@@ -419,6 +419,8 @@ const getAlternativeMedicines = async (req, res) => {
     }
 
     const activeIngredients = medicine.activeIngredients;
+    if(activeIngredients.length == 0)
+          return;
     var max = 0;
     var  mainActiveIngredient = "";
 
