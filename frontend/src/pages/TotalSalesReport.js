@@ -18,7 +18,7 @@ const MonthlySalesReport = () => {
   useEffect(() => {
     const fetchTotalSales = async () => {
       try {
-        const url = `http://localhost:8001/admin/ordersbymonth`;
+        const url = `http://localhost:8001/admin/ordersbymonth?month=${selectedMonth}`;
         console.log('API Endpoint:', url);
 
         const response = await fetch(url);
@@ -37,6 +37,10 @@ const MonthlySalesReport = () => {
     fetchTotalSales();
   }, [selectedMonth]);
 
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
+  };
+
   return (
     <div style={{ padding: '20px' }}>
       <Navbar />
@@ -46,7 +50,7 @@ const MonthlySalesReport = () => {
         label="Select Month"
         type="month"
         value={selectedMonth}
-        onChange={(e) => setSelectedMonth(e.target.value)}
+        onChange={handleMonthChange}
         InputLabelProps={{
           shrink: true,
         }}
@@ -57,10 +61,8 @@ const MonthlySalesReport = () => {
           <TableHead>
             <TableRow>
               <TableCell>Medicine Name</TableCell>
-             
               <TableCell>Quantity Sold</TableCell>
               <TableCell>Price</TableCell>
-        
               <TableCell>Month</TableCell>
             </TableRow>
           </TableHead>
@@ -68,11 +70,13 @@ const MonthlySalesReport = () => {
             {medicines.map((medicine, index) => (
               <TableRow key={index}>
                 <TableCell>{medicine.medicineName}</TableCell>
-               
                 <TableCell>{medicine.quantity}</TableCell>
                 <TableCell>{medicine.totalPrice}</TableCell>
-              
-                <TableCell>{new Date(medicine.date).toLocaleDateString('en-US', { month: 'long' })}</TableCell>
+                <TableCell>
+                  {new Date(medicine.date).toLocaleDateString('en-US', {
+                    month: 'long',
+                  })}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
