@@ -14,11 +14,10 @@ import Navbar from '../components/Navbar';
 const SalesReport = () => {
   const [medicines, setMedicines] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [medicineSearchTerm, setMedicineSearchTerm] = useState('');
 
   useEffect(() => {
-    const formattedDate = searchTerm; 
-   
-
+    const formattedDate = searchTerm;
 
     const fetchMedicines = async () => {
       try {
@@ -33,9 +32,11 @@ const SalesReport = () => {
         const data = await response.json();
         console.log('Fetched Data:', data);
 
-        // Filter medicines based on the search term
-        const filteredMedicines = data.filter((medicine) =>
-          medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
+        // Filter medicines based on the search term and medicine name
+        const filteredMedicines = data.filter(
+          (medicine) =>
+            medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            medicine.medicineName.toLowerCase().includes(medicineSearchTerm.toLowerCase())
         );
 
         setMedicines(filteredMedicines);
@@ -45,10 +46,14 @@ const SalesReport = () => {
     };
 
     fetchMedicines();
-  }, [searchTerm]);
+  }, [searchTerm, medicineSearchTerm]);
 
   const handleDateChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleMedicineSearchChange = (e) => {
+    setMedicineSearchTerm(e.target.value);
   };
 
   return (
@@ -64,6 +69,14 @@ const SalesReport = () => {
         InputLabelProps={{
           shrink: true,
         }}
+        style={{ marginRight: '20px' }}
+      />
+
+      <TextField
+        label="Search Medicine Name"
+        value={medicineSearchTerm}
+        onChange={handleMedicineSearchChange}
+        style={{ marginBottom: '20px' }}
       />
 
       <TableContainer component={Paper}>
