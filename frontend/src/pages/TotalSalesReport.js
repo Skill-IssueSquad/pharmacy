@@ -57,23 +57,21 @@ const TotalSalesReport = () => {
           <TableHead>
             <TableRow>
               <TableCell>Medicine Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Medicinal Usage</TableCell>
+             
               <TableCell>Quantity Sold</TableCell>
               <TableCell>Price</TableCell>
-              <TableCell>Discount</TableCell>
-              <TableCell>Date</TableCell>
+        
+              <TableCell>Month</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {medicines.map((medicine, index) => (
               <TableRow key={index}>
                 <TableCell>{medicine.medicineName}</TableCell>
-                <TableCell>{medicine.description}</TableCell>
-                <TableCell>{medicine.medicinalUsage}</TableCell>
-                <TableCell>{medicine.quantitySold}</TableCell>
-                <TableCell>{medicine.price}</TableCell>
-                <TableCell>{medicine.discount}</TableCell>
+               
+                <TableCell>{medicine.quantity}</TableCell>
+                <TableCell>{medicine.totalPrice}</TableCell>
+              
                 <TableCell>{new Date(medicine.date).toLocaleDateString('en-US', { month: 'long' })}</TableCell>
               </TableRow>
             ))}

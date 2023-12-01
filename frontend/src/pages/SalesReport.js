@@ -56,7 +56,6 @@ const SalesReport = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Medicine ID</TableCell>
               <TableCell>Medicine Name</TableCell>
               <TableCell>Quantity Sold</TableCell>
               <TableCell>Total Price</TableCell>
@@ -66,7 +65,6 @@ const SalesReport = () => {
           <TableBody>
             {medicines.map((medicine) => (
               <TableRow key={medicine.medicine_id + '_' + medicine.date}>
-                <TableCell>{medicine.medicine_id}</TableCell>
                 <TableCell>{medicine.medicineName}</TableCell>
                 <TableCell>{medicine.quantity}</TableCell>
                 <TableCell>{medicine.totalPrice}</TableCell>
