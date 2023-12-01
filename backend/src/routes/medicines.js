@@ -25,7 +25,7 @@ const upload=multer({storage:storage})
 
 
 const {
-    getMedicines,AddMedicine,searchMedicine,updateMedicine,medicinedetailsbyid,archiveMedicine
+    getMedicines,AddMedicine,searchMedicine,updateMedicine,medicinedetailsbyid,archiveMedicine,getAlternativeMedicines
 }=require('../controllers/medicineController');
 
 
@@ -35,7 +35,7 @@ router.get('/:id',medicinedetailsbyid);
 router.patch('/:id', updateMedicine);
 
 router.post('/archive',archiveMedicine);
-router.post('/archive',archiveMedicine);
+router.post('/viewAlternative',getAlternativeMedicines)
 
 
 
