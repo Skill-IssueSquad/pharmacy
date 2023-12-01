@@ -3,6 +3,7 @@ const Medicine = require("../models/Medicines");
 const Patient = require("../models/Patient");
 
 const mongoose = require("mongoose");
+const nodemailer = require("nodemailer");
 
 
 
@@ -266,117 +267,87 @@ const getArrayOfMedicine = async (req, res) => {
 
 
 const AddToCart = async (req, res) => {
-
   const userName = req.params.userName;
   const medicineId = req.params.medicineId;
   const quantity = req.params.quantity;
 
-  console.log('userName:', userName);
-  console.log('medicineId:', medicineId);
-  console.log('quantity:', quantity);
-
   try {
-  
-
     const medicine = await Medicine.findById({ _id: medicineId });
 
-
     if (!medicine) {
-      console.log('Medicine not found');
-      return res.status(404).json({ success:false,data:null,message:"Medicine not found"});
+      return res.status(404).json({ success: false, data: null, message: "Medicine not found" });
     }
 
-    
-
-
-
-
-
-
-
-    if(medicine.quantity == 0){
-      return res.status(404).json({succes:false,data:null,message:"Medicine is out of stock"});
+    if (medicine.quantity === 0) {
+      // Send email notification to pharmacist
+      sendMailNotification(medicine.medicineName);
+      
+      return res.status(404).json({ success: false, data: null, message: "Medicine is out of stock" });
     }
-    // else{
-    // // medicine.quantity = medicine.quantity - 1;
-    // // medicine.sales = medicine.sales+1;
-    // //await medicine.save();
-    // }
 
-    // const user = await Patient.findOneAndUpdate(
-    //   { username: userName },
-    //   { $push: { 'cart.medicines': { medicine_id: medicineId, quantity: quantity } } },
-    //   //{ new: true }
-    // );
+    // Check if the requested quantity is available
+    if (quantity > medicine.quantity) {
+      return res.status(400).json({ success: false, data: null, message: "Insufficient stock for the requested quantity" });
+    }
 
+    // Update the medicine quantity and sales
+    medicine.quantity -= quantity;
+    medicine.sales += quantity;
+    await medicine.save();
+
+    // Add the medicine to the user's cart
     const user = await Patient.findOne({ username: userName });
 
     const medicineIndex = user.cart.medicines.findIndex(
       (medicine) => medicine.medicine_id.toString() === medicineId
     );
 
-    console.log(medicineIndex)
     if (medicineIndex !== -1) {
-      // Medicine is in the cart, decrement the quantity
-      if (user.cart.medicines[medicineIndex].quantity >= 1) {
-        user.cart.medicines[medicineIndex].quantity += 1;
-        console.log(medicineIndex )
-      } 
+      // Medicine is in the cart, update the quantity
+      user.cart.medicines[medicineIndex].quantity += quantity;
     } else {
       // Medicine is not in the cart, add it
-      console.log(medicineIndex )
-
-      user.cart.medicines.push({ medicine_id: medicineId, quantity: 1 });
+      user.cart.medicines.push({ medicine_id: medicineId, quantity });
     }
 
+    // Update total price, net price, and save the user
+    user.cart.totalPrice += medicine.price * quantity;
+    user.cart.netPrice = user.cart.totalPrice - (user.cart.totalPrice * (user.cart.discount || 0));
 
     await user.save();
 
-
-
-
-    // const totalPrice = user.cart.totalPrice + medicine.price * quantity;
-    
-
-    // console.log(totalPrice);
-    // const netPrice = totalPrice - (totalPrice * 0.05);
-    
-
-    // const discount = totalPrice -netPrice;
-
-
-    // console.log(netPrice);
-    // console.log(discount);
-
-
-
-    // const userTwo = await Patient.findOneAndUpdate(
-    //   { username: userName },
-    //   {$set: { 'cart.totalPrice': totalPrice } },
-    //   {$set:{'cart.discount':discount}},
-    //   {$set:{'cart.netPrice':netPrice}}
-
-
-    // // );
-    // user.cart.totalPrice = totalPrice;
-    // user.cart.netPrice = netPrice;
-    // user.cart.discount = discount;
-    await user.save();
-
-    
-    if (user) {
-      console.log('User cart updated:', user.cart);
-      return res.status(200).json(user);
-    } else {
-      console.log('Patient not found');
-      return res.status(404).json({ success:false,data:null,error: "Patient not found" });
-    }
+    return res.status(200).json({ success: true, data: user, message: "Medicine added to cart successfully" });
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ success:false,data:null, error: "Internal server error" });
+    return res.status(500).json({ success: false, data: null, error: "Internal server error" });
   }
 };
 
+// Function to send mail notification
+const sendMailNotification = (medicineName) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'el7a2ni.virtual@gmail.com',
+      pass: 'zijy ztiz drcn ioxq'
+    }
+  });
+
+  const mailOptions = {
+    from: 'el7a2ni.virtual@gmail.com',
+    to: 'pharmacypharmcist@gmail.com',
+    subject: 'Medicine Out of Stock Notification',
+    text: `The medicine "${medicineName}" is now out of stock. Please update the inventory.`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+};
 
 
 
