@@ -18,7 +18,7 @@ const TotalSalesReport = () => {
   useEffect(() => {
     const fetchTotalSales = async () => {
       try {
-        const url = `http://localhost:8001/admin/orders?month=${selectedMonth}`;
+        const url = `http://localhost:8001/admin/ordersbymonth`;
         console.log('API Endpoint:', url);
 
         const response = await fetch(url);

@@ -10,9 +10,11 @@ const {
   getMedicines,
   findMedicine,
   viewPharmacistRequests,
-  viewallordersandcreatesalesreport,
+
   viewallorders,
-  viewRecentOrders,
+
+  viewallordersbymonth,
+
 
  
 } = require("../controllers/AdminController");
@@ -33,7 +35,7 @@ router.get("/viewPharmacistRequests", viewPharmacistRequests);
 
 //salesreport
 router.get('/orders' ,viewallorders)
-router.get('/rescentorders' ,viewRecentOrders)
+router.get('/ordersbymonth' ,viewallordersbymonth)
 
 
 
