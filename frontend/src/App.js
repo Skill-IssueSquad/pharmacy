@@ -10,8 +10,10 @@ import Admin from "./pages/Admin";
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
-import SalesReport from "./pages/SalesReport"; // Update the import path
-import MonthlySalesReport from "./pages/TotalSalesReport"; // Update the import path
+import SalesReport from "./pages/SalesReport"; 
+import MonthlySalesReport from "./pages/MonthlySalesReport"; 
+import MonthlySalesReportForAdmin from "./pages/MonthlySalesReportForAdmin"; 
+
 import PatientRegisteration from "./pages/Home/PatientRegisteration";
 import PharmacistRegisteration from "./pages/Home/PharmacistRegisteration";
 import MultiLevelFilterTable from "./components/test";
@@ -65,6 +67,14 @@ function App() {
               path="/admin/medicines"
               element={<MedicinesForAdmin />}
             />
+
+           
+            <Route
+              exact
+              path="/admin/monthlysalesreport"
+              element={<MonthlySalesReportForAdmin />}
+            />
+
             <Route exact path="admin/viewAccounts" element={<ViewAccsInfo />} />
             <Route
               exact
@@ -80,7 +90,7 @@ function App() {
 
             <Route
               exact
-              path="/pharmacist/medicines/totalsalesreport"
+              path="/pharmacist/medicines/monthlysalesreport"
               element={<MonthlySalesReport />}
             />
 
