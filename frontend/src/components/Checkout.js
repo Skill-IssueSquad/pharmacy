@@ -397,7 +397,38 @@ const clearCart = (username)=>{
 
 
 
+//var walletBalance = 0  ;
 
+const [walletBalance, setWalletBalance] = useState(0);
+
+
+const getWalletBalance = (username) => {
+  fetch('http://localhost:8001/patient/getPatient', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json(); // Return the JSON response
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log(data.data.walletBalance);
+      //walletBalance = data.data.walletBalance;
+
+      setWalletBalance(data.data.walletBalance);
+    })
+    .catch((error) => console.error('Error fetching wallet balance:', error));
+};
+
+
+
+getWalletBalance(username);
 
 
 
@@ -491,7 +522,12 @@ const clearCart = (username)=>{
       </div>
           </Grid>
         </Grid>
-      
+
+
+        <Typography variant="body1" style={{ marginTop: '10px' }}>
+         Wallet Balance: {walletBalance}
+        </Typography>
+                
         <Button
           variant="contained"
           color="primary"
