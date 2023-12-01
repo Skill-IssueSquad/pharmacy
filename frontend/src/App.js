@@ -10,6 +10,8 @@ import Admin from "./pages/Admin";
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
+import SalesReport from "./pages/SalesReport"; // Update the import path
+import MonthlySalesReport from "./pages/TotalSalesReport"; // Update the import path
 
 import PatientRegisteration from "./pages/Home/PatientRegisteration";
 import PharmacistRegisteration from "./pages/Home/PharmacistRegisteration";
@@ -64,6 +66,17 @@ function App() {
               path="/admin/medicines"
               element={<MedicinesForAdmin />}
             />
+             <Route
+              exact
+              path="/pharmacist/medicines/salesreport"
+              element={<SalesReport />}
+            />
+            <Route
+              exact
+              path="/pharmacist/medicines/totalsalesreport"
+              element={<MonthlySalesReport />}
+            />
+
             <Route exact path="admin/viewAccounts" element={<ViewAccsInfo />} />
             <Route
               exact
