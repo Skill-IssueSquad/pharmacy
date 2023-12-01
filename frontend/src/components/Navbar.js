@@ -30,7 +30,7 @@ const Navbar = () => {
 
           <Button
             component={Link}
-            to="/pharmacist/medicines/totalsalesreport"
+            to="/pharmacist/medicines/monthlysalesreport"
             color="inherit"
           >
             Monthly Sales Report
