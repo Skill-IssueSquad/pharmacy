@@ -20,9 +20,15 @@ const SalesReport = () => {
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        const response = await fetch(`http://localhost:8001/admin/rescentorders?search=${searchTerm}`);
+        const response = await fetch(`http://localhost:8001/admin/orders`);
         const data = await response.json();
-        setMedicines(data);
+
+        // Filter medicines based on the search term
+        const filteredMedicines = data.filter((medicine) =>
+          medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setMedicines(filteredMedicines);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

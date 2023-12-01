@@ -427,63 +427,68 @@ const viewRecentOrders = async (req, res) => {
   }
 };
 
+
+
+
+
 const viewallorders = async (req, res) => {
   try {
-    const { month } = req.query;
-    console.log('Received month parameter:', month);
+    // Find all patients and populate the 'orders' field with necessary fields
+    const patients = await Patient.find()
+      .populate({
+        path: 'orders.cart.medicines.medicine_id',
+        model: 'Medicines', // Add this line to specify the model
+        select: '_id medicineName price', // Add the fields you want to select from the Medicine model
+      })
+      .select('orders.date orders.cart.medicines');
 
-    // Construct a query object to filter orders by month
-    const query = {};
-    if (month) {
-      const [year, monthNumber] = month.split('-');
-      query['orders.date'] = {
-        $gte: new Date(year, monthNumber - 1, 1),
-        $lt: new Date(year, monthNumber, 1),
-      };
-    }
+    // Create a map to store the aggregated information for each medicine on a specific day
+    const medicinesInfoMap = new Map();
 
-    const patients = await Patient.find(query, "username orders").populate({
-      path: 'orders.cart.medicines.medicine_id',
-      model: 'Medicines',
-    });
-
-    const medicineMap = new Map();
-
+    // Process each patient's orders
     patients.forEach(patient => {
       patient.orders.forEach(order => {
-        const orderDate = order.date;
-        const orderMonth = orderDate.getMonth() + 1;
-
+        const orderDate = new Date(order.date).toLocaleDateString();
+        
+        // Process each medicine in the order
         order.cart.medicines.forEach(medicine => {
-          const medicineId = medicine.medicine_id._id;
-          const key = `${medicineId}_${orderMonth}`;
-          if (medicineMap.has(key)) {
-            medicineMap.get(key).quantitySold += medicine.quantity;
-          } else {
-            medicineMap.set(key, {
-              medicineName: medicine.medicine_id.medicineName,
-              description: medicine.medicine_id.description,
-              medicinalUsage: medicine.medicine_id.medicinalUsage,
-              quantitySold: medicine.quantity,
-              price: medicine.medicine_id.price,
-              discount: order.discount,
-              date: `${orderMonth}`,
-            });
+          if (medicine.medicine_id) {
+            const medicineKey = `${medicine.medicine_id._id || medicine.medicine_id}_${orderDate}`;
+            
+            if (!medicinesInfoMap.has(medicineKey)) {
+              // Initialize the map entry for the medicine on the specific day
+              medicinesInfoMap.set(medicineKey, {
+                medicine_id: medicine.medicine_id._id || medicine.medicine_id,
+                medicineName: medicine.medicine_id.medicineName,
+                quantity: 0,
+                totalPrice: 0,
+                date: orderDate,
+              });
+            }
+
+            // Update quantity and total price for the medicine on the specific day
+            const medicineInfo = medicinesInfoMap.get(medicineKey);
+            medicineInfo.quantity += medicine.quantity;
+            medicineInfo.totalPrice += calculateTotalPrice(medicine.quantity, medicine.medicine_id.price);
           }
         });
       });
     });
 
-    const allMedicines = Array.from(medicineMap.values());
+    // Convert the map values to an array
+    const medicinesInfo = Array.from(medicinesInfoMap.values());
 
-    res.json(allMedicines);
+    res.json(medicinesInfo);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-
+// Function to calculate total price for each medicine
+function calculateTotalPrice(quantity, unitPrice) {
+  return quantity * unitPrice;
+}
 
 module.exports = {
   viewallorders,
