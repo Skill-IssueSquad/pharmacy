@@ -22,6 +22,24 @@ const Navbar = () => {
           </Button>
           <Button
             component={Link}
+            to="/pharmacist/medicines/salesreport"
+            color="inherit"
+          >
+            Sales Report
+          </Button>
+
+          <Button
+            component={Link}
+            to="/pharmacist/medicines/totalsalesreport"
+            color="inherit"
+          >
+            Monthly Sales Report
+          </Button>
+
+
+
+          <Button
+            component={Link}
             to="/pharmacist/medicines/addmedicine"
             color="inherit"
           >
