@@ -35,6 +35,7 @@ router.get('/:id',medicinedetailsbyid);
 router.patch('/:id', updateMedicine);
 
 router.post('/archive',archiveMedicine);
+router.post('/archive',archiveMedicine);
 
 
 
