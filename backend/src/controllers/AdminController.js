@@ -295,8 +295,8 @@ const viewallorders = async (req, res) => {
     const patients = await Patient.find()
       .populate({
         path: 'orders.cart.medicines.medicine_id',
-        model: 'Medicines', // Add this line to specify the model
-        select: '_id medicineName price', // Add the fields you want to select from the Medicine model
+        model: 'Medicines',
+        select: '_id medicineName price',
       })
       .select('orders.date orders.cart.medicines');
 
@@ -306,7 +306,7 @@ const viewallorders = async (req, res) => {
     // Process each patient's orders
     patients.forEach((patient) => {
       patient.orders.forEach((order) => {
-        const orderDate = new Date(order.date).toLocaleDateString();
+        const orderDate = new Date(order.date).toLocaleDateString(); // Use toLocaleDateString directly
 
         // Check if the order is for the selected date
         if (!selectedDate || orderDate === selectedDate) {
