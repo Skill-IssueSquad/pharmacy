@@ -8,6 +8,7 @@ import {
   TextField,
   InputAdornment,
   TablePagination,
+  Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -16,7 +17,7 @@ import useAxios from '../useAxios';
 import { useEffect } from 'react';
 
 // Define a fixed height for the cards
-const cardHeight = '350px'; // You can adjust this value
+const cardHeight = '450px'; // You can adjust this value
 
 const MedicineList = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,6 +26,7 @@ const MedicineList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { medicines } = useAxios('http://localhost:8001/pharmacist/medicines');
+  const [showArchiveComponent, setShowArchiveComponent] = useState(false); // New state
 
   // Update Data with fetched data whenever medicinesResponse changes
   useEffect(() => {
@@ -80,6 +82,38 @@ const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
     page * rowsPerPage + rowsPerPage
   );
 
+  const handleArchive = (medicineName) => {
+    fetch('http://localhost:8001/pharmacist/medicines/archive', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        medicineName,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Find the medicine in your data and update its isArchived property
+          setData((prevData) => {
+            return prevData.map((medicine) => {
+              if (medicine.medicineName === medicineName) {
+                // Toggle the value of isArchived
+                medicine.isArchived = !medicine.isArchived;
+              }
+              return medicine;
+            });
+          });
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch((error) => {
+        console.error('Error archiving medicine:', error);
+      });
+  };
+
   return (
     <div className="search_and_filter" style={{ padding: '20px' }}>
        <Navbar/>
@@ -109,7 +143,7 @@ const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
       {medicines && (
         <div>
          
-          <Grid container spacing={3}>
+          <Grid container spacing={6}>
             {slicedData.map((medicine) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={medicine._id}>
                 <Link to={`updatemedicine/${medicine._id}`}>
@@ -139,9 +173,20 @@ const filteredByMedicalUsage = filteredMedicines.filter((medicine) => {
                       <Typography variant="body2" component="div">
                         Quantity: {medicine.quantity}
                       </Typography>
+                      <Typography variant="body2" component="div">
+                       Archived : {medicine.isArchived ? 'Yes' : 'No'}
+                      </Typography>
+                     
                     </CardContent>
                   </Card>
                 </Link>
+                <Button
+                      style={{ marginTop: '20px' }}
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleArchive(medicine.medicineName)}>
+                      Archive / Unarchive
+                    </Button>
               </Grid>
             ))}
           </Grid>

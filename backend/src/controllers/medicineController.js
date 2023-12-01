@@ -148,6 +148,8 @@ const getAllMedicine = async (req, res) => {
   //res.json({mssg : 'get all medicine'})
 };
 
+
+
 const getMedicineByName = (req, res) => {
   const medicineName = req.params.name;
   if (!medicineName || medicineName === "") {
@@ -191,6 +193,9 @@ const getMedicineByMedicalUse = (req, res) => {
       });
   }
 };
+
+
+
 
 // const AddToCart = async (req, res) => {
 
@@ -375,26 +380,32 @@ const AddToCart = async (req, res) => {
     console.error('Error:', error);
     return res.status(500).json({ success:false,data:null, error: "Internal server error" });
   }
-
-
-
-// const medicineWithSameActiveIngredients = async (req, res) =>{
-
-//   const{medicineName}=req.body;
-//   const medicine = await Medicine.findById({ medicineName: medicineName });
-//   const activeIngredients = medicine.activeIngredients;
-
-
-  
-// }
-
-
-
-
-
-
-
 };
+
+
+const archiveMedicine = async (req, res) => {
+  const { medicineName } = req.body;
+
+  try {
+    const medicine = await Medicine.findOne({ medicineName });
+
+    if (!medicine) {
+      return res.status(404).json({ error: "Medicine not found" });
+    }
+    medicine.isArchived = !medicine.isArchived;
+    await medicine.save();
+
+    return res.status(200).json({ success: true, message: "Medicine found", data: medicine });
+  } catch (error) {
+    const reply = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(reply);
+  }
+};
+
 
 
 
@@ -409,5 +420,6 @@ module.exports = {
   getMedicineByName,
   getMedicineByMedicalUse,
   AddToCart,
-  getArrayOfMedicine
+  getArrayOfMedicine,
+  archiveMedicine
 };

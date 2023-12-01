@@ -221,7 +221,7 @@ const deleteOrder = async (req,res)=>{
           medicine.quantity = medicine.quantity + medicines[i].quantity;
           await medicine.save();
         }
-        if(patient.orders[index].paymentMethod === 'cash'){
+        if(patient.orders[index].paymentMethod === 'stripe'){
 
        if(patient.walletBalance == undefined)
        patient.walletBalance =  orders[index].netPrice ;
@@ -230,11 +230,34 @@ const deleteOrder = async (req,res)=>{
      
         }
 
+
+
+
         const newOrders = orders.filter((order) => order._id != orderID);
         patient.orders = newOrders;
         await patient.save();
   
         console.log(patient);
+
+        if(patient.orders[index].paymentMethod === 'stripe'){
+     
+
+          const Equate = fetch(`http://localhost:8000/balance/${username}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              balance: patient.walletBalance,
+            }),
+          });
+          
+
+
+
+        }
+
+
         return res.status(200).json({success: true , message: "Order removed" , data: patient.orders})
     }
   }
