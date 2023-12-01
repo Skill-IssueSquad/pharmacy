@@ -287,7 +287,55 @@ const viewPharmacistRequests = async (req, res) => {
   }
 };
 
+// adminController.js
+
+
+
+const getAllOrders = async (req, res) => {
+  try {
+    // Find all patients and populate the 'orders' field with necessary fields
+    const patients = await Patient.find()
+      .populate({
+        path: 'orders.cart.medicines.medicine_id',
+        model: 'Medicines', // Add this line to specify the model
+        select: '_id medicineName price', // Add the fields you want to select from the Medicine model
+      })
+      .select('orders.date orders.cart.medicines');
+
+    // Flatten the nested structure
+    const allOrders = patients.map(patient => patient.orders).flat();
+
+    // Extract relevant information for each medicine
+    const medicinesInfo = [];
+    allOrders.forEach(order => {
+      order.cart.medicines.forEach(medicine => {
+        if (medicine.medicine_id) {
+          const medicineInfo = {
+            medicine_id: medicine.medicine_id._id || medicine.medicine_id,
+            medicineName: medicine.medicine_id.medicineName,
+            quantity: medicine.quantity,
+            totalPrice: calculateTotalPrice(medicine.quantity, medicine.medicine_id.price),
+            date: order.date,
+          };
+          medicinesInfo.push(medicineInfo);
+        }
+      });
+    });
+
+    res.json(medicinesInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Function to calculate total price for each medicine
+function calculateTotalPrice(quantity, unitPrice) {
+  return quantity * unitPrice;
+}
+
 module.exports = {
+  getAllOrders,
   viewAdmins,
   createAdmin,
   removeAdmin,
