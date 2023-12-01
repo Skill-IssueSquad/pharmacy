@@ -1,5 +1,3 @@
-// SalesReport.js
-
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -18,10 +16,22 @@ const SalesReport = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    const formattedDate = searchTerm; 
+   
+
+
     const fetchMedicines = async () => {
       try {
-        const response = await fetch(`http://localhost:8001/admin/orders`);
+        const url = `http://localhost:8001/admin/orders?date=${formattedDate}`;
+        console.log('API Endpoint:', url);
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
+        console.log('Fetched Data:', data);
 
         // Filter medicines based on the search term
         const filteredMedicines = data.filter((medicine) =>
@@ -37,6 +47,10 @@ const SalesReport = () => {
     fetchMedicines();
   }, [searchTerm]);
 
+  const handleDateChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className="search_and_filter" style={{ padding: '20px' }}>
       <Navbar />
@@ -46,7 +60,7 @@ const SalesReport = () => {
         label="Select day"
         type="date"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={handleDateChange}
         InputLabelProps={{
           shrink: true,
         }}
