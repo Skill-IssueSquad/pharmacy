@@ -33,7 +33,7 @@ const Navbar = () => {
             to="/pharmacist/medicines/totalsalesreport"
             color="inherit"
           >
-            Total Sales Report
+            Monthly Sales Report
           </Button>
 
           <Button

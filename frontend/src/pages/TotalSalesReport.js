@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import Navbar from '../components/Navbar';
 
-const TotalSalesReport = () => {
+const MonthlySalesReport = () => {
   const [medicines, setMedicines] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('');
 
@@ -82,4 +82,4 @@ const TotalSalesReport = () => {
   );
 };
 
-export default TotalSalesReport;
+export default MonthlySalesReport;
