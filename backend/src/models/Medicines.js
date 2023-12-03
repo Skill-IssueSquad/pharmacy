@@ -11,6 +11,7 @@ const medicinesSchema = new Schema({
       ingredientAmount: String,
     },
   ],
+  mainActiveIngredient : String,
   quantity: Number,
   price: Number,
   picture: String, // Assuming you store the file path
