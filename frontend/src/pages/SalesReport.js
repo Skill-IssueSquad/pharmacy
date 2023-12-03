@@ -10,15 +10,15 @@ import {
   TextField,
 } from '@mui/material';
 import Navbar from '../components/Navbar';
+import { format } from 'date-fns';
 
 const SalesReport = () => {
   const [medicines, setMedicines] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
 
   useEffect(() => {
-    const formattedDate = searchTerm; 
-   
-
+    const formattedDate = dateFilter ? format(new Date(dateFilter), 'MM/dd/yyyy') : '';
 
     const fetchMedicines = async () => {
       try {
@@ -33,11 +33,20 @@ const SalesReport = () => {
         const data = await response.json();
         console.log('Fetched Data:', data);
 
-        // Filter medicines based on the search term
-        const filteredMedicines = data.filter((medicine) =>
-          medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
+        // Filter medicines based on the search term and date
+        const filteredMedicines = data.filter(
+          (medicine) => {
+            const medicineDate = new Date(medicine.date).toLocaleDateString();
+            console.log('Medicine Date:', medicineDate);
+            console.log('Formatted Date:', formattedDate);
+            console.log('Date Comparison:', medicineDate === formattedDate);
+        
+            return (
+              medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              (formattedDate === '' || medicineDate === formattedDate)
+            );
+          }
         );
-
         setMedicines(filteredMedicines);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -45,10 +54,14 @@ const SalesReport = () => {
     };
 
     fetchMedicines();
-  }, [searchTerm]);
+  }, [searchTerm, dateFilter]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleDateChange = (e) => {
-    setSearchTerm(e.target.value);
+    setDateFilter(e.target.value);
   };
 
   return (
@@ -57,9 +70,16 @@ const SalesReport = () => {
       <h1>Medicine Sales</h1>
 
       <TextField
+        label="Search Medicine Name"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        style={{ marginBottom: '20px', marginRight: '20px' }}
+      />
+
+      <TextField
         label="Select day"
         type="date"
-        value={searchTerm}
+        value={dateFilter}
         onChange={handleDateChange}
         InputLabelProps={{
           shrink: true,
