@@ -17,6 +17,7 @@ const medicinesSchema = new Schema({
   sales: Number,
   isArchived: Boolean,
   requiresPrescription: Boolean,
+  mainActiveIngredient : String
 });
 
 const Medicines = mongoose.model("Medicines", medicinesSchema);
