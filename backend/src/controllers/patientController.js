@@ -1,6 +1,7 @@
 const express = require("express");
 const Medicine = require("../models/Medicines");
 const Patient = require("../models/Patient");
+const PharmacistRequest = require("../models/PharmacistRequest"); // Import the PharmacistRequest model
 
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
@@ -171,6 +172,9 @@ const addOrderToPatient = async (req, res) => {
 
               // Check if the medicine is out of stock and send an email to the pharmacist
               if (medicine.quantity === 0 && oldQuantity > 0) {
+                const pharmacists = await PharmacistRequest.find();
+                    const pharmacistEmails = pharmacists.map((pharmacist) => pharmacist.email);
+
                   const transporter = nodemailer.createTransport({
                       service: "gmail",
                       auth: {
@@ -181,7 +185,7 @@ const addOrderToPatient = async (req, res) => {
 
                   const mailOptions = {
                       from: "el7a2ni.virtual@gmail.com",
-                      to: "youssefalaa398@gmail.com",
+                      to: pharmacistEmails.join(","), // Send to all pharmacists
                       subject: "Medicine Out of Stock",
                       text: `The medicine ${medicine.medicineName} is out of stock. Please update the inventory.`,
                   };
