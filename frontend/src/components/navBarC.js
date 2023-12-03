@@ -13,9 +13,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+
 
 const pages = ['Home', 'Cart', 'Orders','Change Password'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const username ="testuser";
+
 
 function ResponsiveAppBar() {
 let navigate = useNavigate();
@@ -36,6 +40,36 @@ let navigate = useNavigate();
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const [walletBalance, setWalletBalance] = useState(0);
+
+
+const getWalletBalance = (username) => {
+  fetch('http://localhost:8001/patient/getPatient', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json(); // Return the JSON response
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log(data.data.walletBalance);
+      //walletBalance = data.data.walletBalance;
+
+      setWalletBalance(data.data.walletBalance);
+    })
+    .catch((error) => console.error('Error fetching wallet balance:', error));
+};
+
+getWalletBalance(username);
+
 
   return (
     <AppBar position="static">
@@ -138,7 +172,13 @@ let navigate = useNavigate();
               </Button>)
 })}
           </Box>
-
+          <Box >
+            <div style={{ marginLeft: '20px', marginTop: '10px' }}>
+            <Typography variant="body1" style={{ marginTop: '10px', marginRight: '10px' }}>
+              Wallet Balance: {walletBalance}
+            </Typography>
+        </div>
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
