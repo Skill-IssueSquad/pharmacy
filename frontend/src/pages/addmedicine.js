@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 
 const AddMedicine = () => {
+  const [mainIngred,setMainIngred]  = useState(true);;
   const [medicineName, setMedicineName] = useState("");
   const [description, setDescription] = useState("");
   const [medicinalUsage, setMedicinalUsage] = useState("");
@@ -40,6 +41,7 @@ const AddMedicine = () => {
       setActiveIngredients([...activeIngredients, newIngredient]);
       setIngredientName("");
       setIngredientAmount("");
+      setMainIngred( false);
     }
   };
 
@@ -62,6 +64,7 @@ const AddMedicine = () => {
     formData.append('price', price);
     formData.append('sales', sales);
     formData.append('image', image);
+    formData.append('mainActiveIngredient',activeIngredients[0].ingredientName);
     console.log(medicineName)
     /*const jsonData = {
       medicineName,
@@ -174,7 +177,8 @@ const AddMedicine = () => {
             <Grid container spacing={2}>
               <Grid item xs={5}>
                 <TextField
-                  label="Ingredient Name"
+                
+                label={mainIngred ? "Main Ingredient Name" : "Ingredient Name"}
                   fullWidth
                   value={ingredientName}
                   onChange={(e) => setIngredientName(e.target.value)}
