@@ -412,7 +412,47 @@ const archiveMedicine = async (req, res) => {
 
 
 
+const getAlternativeMedicines = async (req, res) => {
 
+  const{medicineName} = req.body;
+  try {
+
+    const medicine = await Medicine.findOne({ medicineName });
+
+    if (!medicine) {
+      return res.status(404).json({ error: "Medicine not found" });
+    }
+
+    const mainActiveIngredient = medicine.mainActiveIngredient;
+  
+
+    const medicines = await Medicine.find({});
+    var alternativeMedicines = [];
+    
+
+    for(var i =0; i<medicines.length;i++){
+      var mainActiveIngredientOfi = medicines[i].mainActiveIngredient;
+      if(mainActiveIngredientOfi == undefined){
+          
+        continue;
+      }
+      if(mainActiveIngredientOfi === mainActiveIngredient && medicines[i].medicineName != medicineName ){
+        alternativeMedicines.push(medicines[i]);
+     }
+
+    }
+    return res.status(200).json({ success: true, message: "Medicine found", data: alternativeMedicines });
+
+    }
+ catch (error) {
+    const reply = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(reply);
+    }
+  }
 
 
 

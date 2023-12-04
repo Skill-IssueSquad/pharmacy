@@ -191,8 +191,14 @@ const MultiLevelFilterTable = () => {
   const addToCart = (id,medicineName,prescription) => {
 
 
+
     if(prescription){
 
+      console.log("ana fe prescription");
+      if(prescriptionMedicines.length === 0){
+        alert("You need a prescription to buy this medicine");
+        return;
+      }
       for(let i = 0;i<prescriptionMedicines.length;i++){
         if(prescriptionMedicines[i].medicineName === medicineName)
           break;
