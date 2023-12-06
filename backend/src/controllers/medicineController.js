@@ -21,7 +21,7 @@ const AddMedicine = async (req, res) => {
   } = req.body;
   const activeIngredients = JSON.parse(req.body.activeIngredients);
   console.log(activeIngredients);
-  let picture = "http://localhost:8000/images/"+req.nameFile;
+  let picture = "http://localhost:8001/images/"+req.nameFile;
  /* console.log("HERE5"+req.body.medicineName)
   console.log("HERE5"+req.body.description)
   console.log("HERE5"+req.body.medicinalUsage)
