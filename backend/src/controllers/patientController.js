@@ -393,9 +393,59 @@ const deleteOrder = async (req,res)=>{
 
   }
 
+const getMedicinesFromClinc = async (req,res) =>{
 
+  const { username } = req.body;
+
+
+
+
+  fetch('http://localhost:8000/patient/getPrescription/sendPrescriptionMedicinesToPharmacy', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username
+    }),
+
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      //console.log("I am here");
+      
+    })
+    .catch((error) => console.error('Error Getting Medicines from the clinc :', error));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 module.exports = {
-    getCart,removeMedicine,getPatient,addAddressToPatient,addOrderToPatient,deleteOrder,clearCart,saveCart
+    getCart,removeMedicine,getPatient,addAddressToPatient,addOrderToPatient,deleteOrder,clearCart,saveCart,getMedicinesFromClinc
   };
   

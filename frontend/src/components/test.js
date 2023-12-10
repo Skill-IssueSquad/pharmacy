@@ -27,17 +27,66 @@ const MultiLevelFilterTable = () => {
   const [sorting, setSorting] = useState({ field: "", order: "" });
   const [getRender, setRender] = useState(false);
   const [hashMap, setHashMap] = useState({});
+  const [prescriptionMedicines, setPrescriptionMedicines] = useState([]);
 
   const [cart, setCart] = useState({
     medicines: [],
     totalPrice: 0,
     discount: 0,
     netPrice: 0,
-  });  var userName = "testuser"; 
+  });  
+  var userName = "regtest"; 
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
   }, []);
+
+  useEffect(() => {
+    const getPrescriptionMedicines = async (username) => {
+      try {
+        const response = await fetch('http://localhost:8000/getPrescription/sendPrescriptionMedicinesToPharmacy', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+        setPrescriptionMedicines(data.data);
+      } catch (error) {
+        console.error('Error getting prescription medicines:', error);
+      }
+    };
+  
+    getPrescriptionMedicines(userName);
+  }, []);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -139,7 +188,33 @@ const MultiLevelFilterTable = () => {
 
 
   
-  const addToCart = (id) => {
+  const addToCart = (id,medicineName,prescription) => {
+
+
+
+    if(prescription){
+
+      console.log("ana fe prescription");
+      if(prescriptionMedicines.length === 0){
+        alert("You need a prescription to buy this medicine");
+        return;
+      }
+      for(let i = 0;i<prescriptionMedicines.length;i++){
+        if(prescriptionMedicines[i].medicineName === medicineName)
+          break;
+        else if(i === prescriptionMedicines.length - 1){
+          alert("You need a prescription to buy this medicine");
+          return;
+        }
+
+      }
+
+
+
+      
+    }
+
+
 
   console.log(hashMap[id]);
     if(hashMap[id] === undefined || hashMap[id] === 0)
@@ -366,7 +441,7 @@ const MultiLevelFilterTable = () => {
 </TableCell>     <TableCell style={{ textAlign: 'center' }}> {item.quantity > 0 ? (
         <>
     
-      <button onClick={() => addToCart(item._id)} disabled={item.quantity === 0}>
+      <button onClick={() => addToCart(item._id,item.medicineName,item.requiresPrescription)} disabled={item.quantity === 0}>
         Add To Cart
       </button>
     </>
