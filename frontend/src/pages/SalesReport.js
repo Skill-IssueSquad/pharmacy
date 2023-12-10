@@ -15,38 +15,30 @@ import { format } from 'date-fns';
 const SalesReport = () => {
   const [medicines, setMedicines] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
-    const formattedDate = dateFilter ? format(new Date(dateFilter), 'MM/dd/yyyy') : '';
-
     const fetchMedicines = async () => {
       try {
-        const url = `http://localhost:8001/admin/orders?date=${formattedDate}`;
-        console.log('API Endpoint:', url);
-
+        const url = `http://localhost:8001/admin/orders`;
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Fetched Data:', data);
 
-        // Filter medicines based on the search term and date
-        const filteredMedicines = data.filter(
-          (medicine) => {
-            const medicineDate = new Date(medicine.date).toLocaleDateString();
-            console.log('Medicine Date:', medicineDate);
-            console.log('Formatted Date:', formattedDate);
-            console.log('Date Comparison:', medicineDate === formattedDate);
+        const filteredMedicines = data.filter((medicine) => {
+          const medicineDate = new Date(medicine.date);
         
-            return (
-              medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-              (formattedDate === '' || medicineDate === formattedDate)
-            );
-          }
-        );
+          // Convert date to string in the format 'yyyy-mm-dd'
+          const formattedMedicineDate = medicineDate.toLocaleDateString('en-CA');
+        
+          return (
+            medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (!selectedDate || formattedMedicineDate === selectedDate)
+          );
+        });
         setMedicines(filteredMedicines);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -54,14 +46,14 @@ const SalesReport = () => {
     };
 
     fetchMedicines();
-  }, [searchTerm, dateFilter]);
+  }, [searchTerm, selectedDate]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const handleDateChange = (e) => {
-    setDateFilter(e.target.value);
+    setSelectedDate(e.target.value);
   };
 
   return (
@@ -79,7 +71,7 @@ const SalesReport = () => {
       <TextField
         label="Select day"
         type="date"
-        value={dateFilter}
+        value={selectedDate}
         onChange={handleDateChange}
         InputLabelProps={{
           shrink: true,

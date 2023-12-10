@@ -289,7 +289,7 @@ const viewPharmacistRequests = async (req, res) => {
 
 const viewallorders = async (req, res) => {
   try {
-    const selectedDate = req.query.date;
+ 
 
     // Find all patients and populate the 'orders' field with necessary fields
     const patients = await Patient.find()
@@ -309,7 +309,7 @@ const viewallorders = async (req, res) => {
         const orderDate = new Date(order.date).toLocaleDateString(); // Use toLocaleDateString directly
 
         // Check if the order is for the selected date
-        if (!selectedDate || orderDate === selectedDate) {
+    
           // Process each medicine in the order
           order.cart.medicines.forEach((medicine) => {
             if (medicine.medicine_id) {
@@ -332,7 +332,7 @@ const viewallorders = async (req, res) => {
               medicineInfo.totalPrice += calculateTotalPrice(medicine.quantity, medicine.medicine_id.price);
             }
           });
-        }
+        
       });
     });
 
