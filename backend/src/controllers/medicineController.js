@@ -1,6 +1,6 @@
 const express = require("express");
 const Medicine = require("../models/Medicines");
-const Patient = require("../models/Patient");
+const Pharmacist = require("../models/Pharmacist");
 
 const mongoose = require("mongoose");
 
@@ -527,6 +527,38 @@ const getAlternativeMedicines = async (req, res) => {
     }
   }
 
+//getpharmacistByUsername
+const getWalletBalancepharmacist = async (req,res) =>{
+  const { username } = req.body;
+  try{
+      
+      const pharmacist = await Pharmacist.findOne({username:username})
+      if(pharmacist == null){
+          return res.status(404).json({success: false , message: "Pharmacist not found" , data: null})
+      }
+      else{
+
+
+      walletBalance = pharmacist.walletBalance;
+
+      return res.status(200).json({success: true , message: "Patient  found" , data: walletBalance})
+
+         
+         
+      }
+  }
+  catch (error) {
+      const reply = {
+        success: false,
+        data: null,
+        message: error.message,
+      };
+      return res.status(500).json(reply);
+    }
+
+
+}
+
 module.exports = {
   AddMedicine,
   getMedicines,
@@ -539,5 +571,6 @@ module.exports = {
   AddToCart,
   getArrayOfMedicine,
   archiveMedicine,
-  getAlternativeMedicines
+  getAlternativeMedicines,
+  getWalletBalancepharmacist
 };

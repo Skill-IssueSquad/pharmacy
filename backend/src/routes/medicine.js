@@ -23,4 +23,6 @@ router.post('/addToCart/:userName/:medicineId/:quantity' , medicineController.Ad
 
 router.post('/getArrayMedicinesByID',medicineController.getArrayOfMedicine);
 
+
+
 module.exports = router;
