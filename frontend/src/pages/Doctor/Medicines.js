@@ -25,14 +25,7 @@ const MultiLevelFilterTable = () => {
   const [data, setData] = useState([]); // Store the fetched data
   const [hashMap, setHashMap] = useState({});
   const [message, setMessage] = useState("");
-
-  const [cart, setCart] = useState({
-    medicines: [],
-    totalPrice: 0,
-    discount: 0,
-    netPrice: 0,
-  });
-  var userName = "testuser";
+  const [additionalMedicines, setAdditionalMedicines] = useState("");
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
@@ -52,7 +45,10 @@ const MultiLevelFilterTable = () => {
         }),
       }
     );
-    const json = await response.json();
+    const responseData = await response.json();
+    const json = responseData.data;
+    console.log("The data before state updating is : ", json);
+    setAdditionalMedicines(responseData.additionalMedicines);
     console.log(json);
     const updatedData = [...tmpData];
     console.log("The data inside updating is : ", updatedData);
@@ -99,25 +95,7 @@ const MultiLevelFilterTable = () => {
   };
 
   const handleInput = (event, itemId, maxQuantity) => {
-    // const inputElement = event.target;
-    // let enteredValue = parseInt(inputElement.value, 10);
-
-    // // Check if the entered value is a number
-    // if (isNaN(enteredValue)) {
-    //   enteredValue = 0;
-    // }
-
-    // // Ensure the entered value is within the specified range
-    // enteredValue = Math.max(0, Math.min(enteredValue, 9999));
-
-    // // Update the input value
-    // inputElement.value = enteredValue;
-
     updateHashMap(itemId, event.target.value);
-
-    // You can store or handle the entered value and itemId as needed
-    // For example, you might want to update the corresponding item in your state.
-    // handleItemQuantityChange(itemId, enteredValue);
   };
 
   const fetchMedicines = async () => {
@@ -266,6 +244,23 @@ const MultiLevelFilterTable = () => {
     }
     setMessage(json.message);
   };
+  const handelSaveAdditionalMedicines = async () => {
+    const response = await fetch(
+      "http://localhost:8000/doctor/saveAdditionalMedicines",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          appID,
+          additionalMedicines,
+        }),
+      }
+    );
+    const json = await response.json();
+    setMessage(json.message);
+  };
   return (
     <div>
       <br />
@@ -356,6 +351,22 @@ const MultiLevelFilterTable = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <h3>Additional medicines</h3>
+          <textarea
+            name="meds"
+            id="additionalMeds"
+            cols="30"
+            rows="10"
+            style={{ width: "1000px", height: "200px" }}
+            value={additionalMedicines}
+            onChange={(e) => setAdditionalMedicines(e.target.value)}
+          ></textarea>
+          <button
+            onClick={handelSaveAdditionalMedicines}
+            style={{ marginLeft: "50px" }}
+          >
+            Save additional medicines
+          </button>
         </div>
       </div>
     </div>

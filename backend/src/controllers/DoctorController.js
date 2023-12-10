@@ -11,6 +11,7 @@ const submitPrescriptionToPharmacy = async (req, res) => {
     const discount = resData.data.discount / 100;
     const username = patientClinic.username;
     var patientPharmacy = await Patient.findOne({ username: username });
+    console.log("Before changes : ", patientPharmacy);
     var message = "";
     var hadNoAccount = false;
     //console.log(patientPharmacy);
@@ -65,14 +66,24 @@ const submitPrescriptionToPharmacy = async (req, res) => {
       };
     } else {
       for (let i = 0; i < medicines.length; i++) {
-        let found = patientPharmacy.cart.medicines.find(
-          (med) => med.medicine_id === medicines[i]._id
-        );
+        let found = patientPharmacy.cart.medicines.find((med) => {
+          // console.log("*******************");
+          // console.log(med.medicine_id.toString());
+          // console.log(medicines[i]);
+
+          // console.log(
+          //   `${med.medicine_id.toString()}` === medicines[i].medicine_id
+          // );
+          // console.log("*******************");
+          return `${med.medicine_id.toString()}` === medicines[i].medicine_id;
+        });
 
         if (found) {
           found.quantity += 1;
+          console.log("found");
         } else {
           patientPharmacy.cart.medicines.push({ ...medicines[i], quantity: 1 });
+          console.log("not found");
         }
       }
 
@@ -80,13 +91,28 @@ const submitPrescriptionToPharmacy = async (req, res) => {
         (total, medicine) => total + medicine.price * medicine.quantity,
         0
       );
+      console.log(patientPharmacy.cart.totalPrice);
       patientPharmacy.cart.discount = discount;
       patientPharmacy.cart.netPrice =
         patientPharmacy.cart.totalPrice -
         patientPharmacy.cart.totalPrice * patientPharmacy.cart.discount;
     }
+    console.log("After changes : ", patientPharmacy);
+    if (hadNoAccount) {
+      await patientPharmacy.save();
+    } else {
+      await Patient.findByIdAndUpdate(patientPharmacy._id, {
+        $set: {
+          cart: {
+            medicines: patientPharmacy.cart.medicines,
+            totalPrice: patientPharmacy.cart.totalPrice,
+            discount: patientPharmacy.cart.discount,
+            netPrice: patientPharmacy.cart.netPrice,
+          },
+        },
+      });
+    }
 
-    await patientPharmacy.save();
     const send = {
       success: true,
       data: patientPharmacy,
