@@ -65,6 +65,7 @@ function App() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(data),});
     
                 const json = await response.json();
@@ -79,6 +80,7 @@ function App() {
                     //setToken(json.data);
                     localStorage.setItem('token',json.data);
                     localStorage.setItem('role',role);
+                    localStorage.setItem('username',data.username);
                     switch(role)
                     {
                         case "Admin" : navigate('/admin'); break;

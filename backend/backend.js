@@ -12,6 +12,8 @@ const path = require("path");
 const {authAdmin, authPharmacist, authPharmacistRequest ,authPatient} = require("./src/middleware/Authentication");
 const accountRouter = require("./src/routes/AccountRouter");
 const patientCart = require("./src/routes/Patient");
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 
 //for iamages
@@ -23,7 +25,14 @@ const upload = multer({
 
 app.use("/images", express.static("./images"));
 
-app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with the actual origin of your frontend
+  credentials: true, // Allow credentials (cookies, etc.) to be sent
+}));
+
+app.use(cookieParser());
+app.use('/documents', express.static('documents'));
 
 mongoose
   .connect(process.env.DATABASE_URL, { useNewUrlParser: true })
@@ -35,22 +44,19 @@ mongoose
 app.use(express.json());
 
 const AdminRouter = require("./src/routes/AdminRouter");
-//app.use("/admin", authAdmin, AdminRouter);
-app.use("/admin", AdminRouter);
-;
+app.use("/admin", authAdmin, AdminRouter);
 
-//app.use("/pharmacist/medicines", authPharmacist,  medicineRouter);
-app.use("/pharmacist/medicines",   medicineRouter);
+
+app.use("/pharmacist/medicines", authPharmacist,  medicineRouter);
 require("dotenv").config();
 
 app.use("/register/patient", PatientRegisteration);
 app.use("/register/pharmacist", PharmacistRegisteration);
 
 
-//app.use("/pharmacistRequest", authPharmacistRequest,pharmacistRequestRouter)
-app.use("/pharmacistRequest",pharmacistRequestRouter)
+app.use("/pharmacistRequest", authPharmacistRequest,pharmacistRequestRouter)
 
-app.use("/account", accountRouter);
+app.use("/account", accountRouter); 
 
 app.use("/medicine", patientRoutes);
 
