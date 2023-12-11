@@ -10,11 +10,14 @@ const {
   getMedicines,
   findMedicine,
   viewPharmacistRequests,
+  acceptPharmacist,
+  rejectPharmacist
 } = require("../controllers/AdminController");
 
 //view and create admin
 router.get("/viewAdmins", viewAdmins);
 router.post("/createAdmin", createAdmin);
+router.delete("/removeAdmin/:username",  removeAdmin);
 
 //remove
 router.delete("/removeAdmin/:username", removeAdmin);
@@ -29,5 +32,9 @@ router.get("/viewPharmacistRequests", viewPharmacistRequests);
 //medicine stuff
 router.get("/medicines", getMedicines);
 router.get("/findMedicine", findMedicine);
+
+//accept/reject pharmacist
+router.post("/acceptPharmacist", acceptPharmacist);
+router.post("/rejectPharmacist", rejectPharmacist);
 
 module.exports = router;
