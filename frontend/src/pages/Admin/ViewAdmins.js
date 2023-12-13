@@ -12,7 +12,7 @@ const ViewAdmins = () => {
 
     return ( 
         <div>
-        {show &&  <AdminSideBar flag = {false} ViewComponent={<AdminTable />}/>}
+        {show &&  <AdminSideBar flag = {false} ViewComponent={<AdminTable />} item = "Admin"/>}
         {!show && <h2>No access</h2>}
         </div>
      );
