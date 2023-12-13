@@ -4,14 +4,19 @@ const Patient = require("../models/Patient");
 const Medicine = require("../models/Medicines");
 const PharmReq = require("../models/PharmacistRequest");
 const PharmacistRequest = require("../models/PharmacistRequest");
+const bcrypt = require('bcrypt')
+
 
 //Add Admin
 const createAdmin = async (req, res) => {
   const { username, password, email } = req.body;
   try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newAdmin = await Admin.create({
       username: username,
-      password: password,
+      password: hashedPassword,
       email: email,
     });
     const reply = {
