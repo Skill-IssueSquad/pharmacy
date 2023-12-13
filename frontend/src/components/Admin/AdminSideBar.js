@@ -23,13 +23,11 @@ import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import Doctor from '@mui/icons-material/Person';
-import Patient from '@mui/icons-material/PersonOutline';
-import Request from '@mui/icons-material/StickyNote2';
-import Package from '@mui/icons-material/HealthAndSafety';
-import { useAuth } from '../../pages/Protected/AuthProvider';
+import Analytics from './Analytics';
+import AdminTable from "./AdminTable";
+import PatientTable from "./PatientTable";
+import PharmacistTable from "./PharmacistTable";
+import RequestTable from "./RequestTable";
 
 
 const drawerWidth = 240;
@@ -81,12 +79,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const settings = ['Profile', 'Account', 'Dashboard', "Change Password", 'Logout'];
 
-export default function PersistentDrawerLeft({flag, ViewComponent}) {
+export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
   const navigate = useNavigate();
   //const {setToken} = useAuth();
   const theme = useTheme();
   const [open, setOpen] = React.useState(flag);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [selected, setSelected] = React.useState(item);
+  const [viewComponent, setViewComponent] = React.useState(ViewComponent);
+
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -106,12 +107,13 @@ export default function PersistentDrawerLeft({flag, ViewComponent}) {
 
   const handleClickAdmin = (text) => {
     //console.log(text);
+    setSelected(text);
     switch(text){
-      case "Dashboard": navigate('/Admin'); break;
-      case "Admin": navigate('/Admin/ViewAdmins'); setOpen(false); break;
-      case "Patient":  navigate('/Admin/ViewPatients'); setOpen(false); break;
-      case "Pharmacist": navigate('/Admin/ViewPharmacists'); setOpen(false); break;
-      case "Join Requests":  navigate('/Admin/ViewRequests'); setOpen(false); break;
+      case "Dashboard": navigate("/Admin"); setOpen(false); break;
+      case "Admin": navigate("/Admin/ViewAdmins") ;setOpen(false); break;
+      case "Patient":  navigate("/Admin/ViewPatients"); setOpen(false); break;
+      case "Pharmacist": navigate("/Admin/ViewPharmacists"); setOpen(false); break;
+      case "Join Requests":  navigate("/Admin/ViewRequests"); setOpen(false); break;
     }
   }
 
@@ -219,7 +221,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent}) {
         <Divider />
         <List>
           {['Dashboard', 'Admin','Patient', 'Pharmacist' ,'Join Requests'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={text} disablePadding selected= {selected===text} >
               <ListItemButton onClick={() => handleClickAdmin(text)}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -232,8 +234,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent}) {
         
       </Drawer>
       <Main open={open}>
-        <DrawerHeader />
-        {ViewComponent}
+        {viewComponent}
       </Main>
     </Box>
   );
