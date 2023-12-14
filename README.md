@@ -18,3 +18,63 @@ Features .
 16. Patient can view alternative medicines for the medicines currently out of stock.
 17. Patient can chat with a Doctor/Pharmacist in the clinic.
 18. Pharmacist recevice a notification when a medicine is out of stock via email.
+
+List of available Medicines:
+```
+const getAllMedicine = async (req, res) => {
+  try {
+    const medicine = await Medicine.find({ isArchived: false });
+    res.status(200).json(medicine);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+ ```
+Search for a medcine based on name or medical usage
+```
+const getMedicineByName = (req, res) => {
+  const medicineName = req.params.name;
+  if (!medicineName || medicineName === "") {
+    console.log("EMPTY SEARCH");
+    res.status(200).json([]);
+  } else {
+    Medicine.find({ medicineName: medicineName, isArchived: false })
+      .then((medicine) => {
+        if (medicine) {
+          res.status(200).json(medicine);
+        } else {
+          res.status(404).json({ error: "Medicine not found" });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ error: "Internal server error" });
+      });
+
+  }
+};
+
+const getMedicineByMedicalUse = (req, res) => {
+  const medicinalUsage = req.params.medical_use;
+
+  if (!medicinalUsage || medicinalUsage === "") {
+    console.log("EMPTY SEARCH");
+    res.status(200).json([]);
+  } else {
+    Medicine.find({ medicinalUsage: medicinalUsage, isArchived: false })
+      .then((medicine) => {
+        if (medicine) {
+          res.status(200).json(medicine);
+        } else {
+          res.status(404).json({ error: "Medicine not found" });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ error: "Internal server error" });
+      });
+  }
+};
+
+
+
+
+```
