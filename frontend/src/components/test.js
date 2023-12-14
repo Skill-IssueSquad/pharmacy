@@ -373,8 +373,10 @@ const MultiLevelFilterTable = () => {
 
   return (
     <div>
-     <ResponsiveAppBar/> 
-    <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
+       <div style={{ marginBottom: '5px' }}>
+        <ResponsiveAppBar />
+      </div>
+    <div style={{ paddingTop:'30px',display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
       <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>
       <TextField
         label="Filter by medicineName"
@@ -389,7 +391,7 @@ const MultiLevelFilterTable = () => {
         onChange={handleFilterChange}
       />
 
-     <button style={{marginLeft:'50px'}} onClick={viewCart}><a href="/Cart">View Cart </a></button> 
+     <button style={{marginLeft:'50px' ,color:'black'}} onClick={viewCart}><a  href="/Cart"  style={{textDecoration: 'none',color: 'black'}} >View Cart </a></button> 
       <button style={{marginLeft:'50px'}} onClick={saveCart}>Save Cart </button>
 
     </div>
@@ -441,12 +443,13 @@ const MultiLevelFilterTable = () => {
 </TableCell>     <TableCell style={{ textAlign: 'center' }}> {item.quantity > 0 ? (
         <>
     
-      <button onClick={() => addToCart(item._id,item.medicineName,item.requiresPrescription)} disabled={item.quantity === 0}>
+      <button style={{width :"90px",height:"50px",backgroundColor:""}}  onClick={() => addToCart(item._id,item.medicineName,item.requiresPrescription)} disabled={item.quantity === 0}>
         Add To Cart
+             
       </button>
     </>
   ) : (
-    <button onClick={() =>viewAlternatives(item.medicineName)}>View Alternatives</button>
+    <button style={{width :"90px" ,height:"50px"}} onClick={() =>viewAlternatives(item.medicineName)}>View Alternatives</button>
   )}
 </TableCell>
       </TableRow>
