@@ -89,6 +89,7 @@ const getPatient = async (req,res) =>{
 const addAddressToPatient = async (req,res) =>{
     console.log("ana in");
     const { username,streetName,propertyNumber,FloorNumber,ApartmentNumber,ExtraLandmarks } = req.body;
+  
     try{
         
         const patient = await Patient.findOne({username:username})

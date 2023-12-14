@@ -66,43 +66,34 @@ const Checkout = () => {
 
 
 
+  let medicinesA = [];
+  for (let i = 0; i < medicines.length; i++) {
+    medicinesA.push(medicines[i].medicineName);
+  }
+const fetchMedicines = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/getPrescription/getMedicinesFromPharmacy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        medicines:medicinesA
+        
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
 
 
-
-  useEffect(() => {
-
- 
-    let medicineNames = [];
-      for (let i = 0; i < medicines.length; i++) {
-        medicineNames.push(medicines[i].medicineName);
-      }
-    const fetchMedicines = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/getPrescription/getMedicinesFromPharmacy', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username,
-            medicineNames
-            
-          }),
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-  
- 
-      } catch (error) {
-        console.error('Error fetching medicines:', error);
-      }
-    };
-  
-    fetchMedicines();
+  } catch (error) {
+    console.error('Error fetching medicines:', error);
+  }
+};
 
 
-  }, [medicines]); // Ensure that the dependency array includes all dependencies
 
   const handleCheckout = () => {
     // Your checkout logic here
@@ -272,6 +263,7 @@ const clearCart = (username)=>{
 }
 
     const addOrdertoDB = (username) =>{
+      fetchMedicines();
       const Order = {
         username:username,
           status: "pending",
