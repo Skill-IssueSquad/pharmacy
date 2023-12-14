@@ -22,7 +22,7 @@ const OrderDetails = () => {
   const [order, setOrder] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const username = "testuser";
+  const username = "regtest";
 
   useEffect(() => {
     const fetchUser = async () => {

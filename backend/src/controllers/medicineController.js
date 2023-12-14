@@ -440,7 +440,7 @@ const getAlternativeMedicines = async (req, res) => {
           
         continue;
       }
-      if(mainActiveIngredientOfi === mainActiveIngredient && medicines[i].medicineName != medicineName ){
+      if(mainActiveIngredientOfi === mainActiveIngredient && medicines[i].medicineName != medicineName && medicines[i].quantity > 0 ){
         alternativeMedicines.push(medicines[i]);
      }
 

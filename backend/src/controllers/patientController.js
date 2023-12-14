@@ -257,23 +257,23 @@ const deleteOrder = async (req,res)=>{
   
         console.log(patient);
 
-        if(patient.orders[index].paymentMethod === 'stripe'){
+        // if(patient.orders[index].paymentMethod === 'stripe'){
      
 
-          const Equate = fetch(`http://localhost:8000/balance/${username}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              balance: patient.walletBalance,
-            }),
-          });
+        //   const Equate = fetch(`http://localhost:8000/balance/${username}`, {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //       balance: patient.walletBalance,
+        //     }),
+        //   });
           
 
 
 
-        }
+        // }
 
 
         return res.status(200).json({success: true , message: "Order removed" , data: patient.orders})
@@ -421,30 +421,95 @@ const getMedicinesFromClinc = async (req,res) =>{
       
     })
     .catch((error) => console.error('Error Getting Medicines from the clinc :', error));
+  }
+
+  //   const getCart = async (req,res) =>{
+  //     const { username } = req.body;
+  //     try{
+  //         const patient = await Patient.findOne({username:username})
+  //         if(patient != null){
+  //             return res.status(200).json({success: true , message: "Cart returened" , data: patient.cart})
+  //         }
+  //         else{
+  //             return res.status(404).json({success: false , message: "Patient not found" , data: null})
+  
+  //         }
+  //     }
+  //     catch (error) {
+  //         const reply = {
+  //           success: false,
+  //           data: null,
+  //           message: error.message,
+  //         };
+  //         return res.status(500).json(reply);
+  //       }
+  
+  // }
+const addToCart = async (req,res) =>{
+
+  const{username,id} = req.body;
+       try{
+            const patient = await Patient.findOne({username:username})
+            if(patient != null){
+                //return res.status(200).json({success: true , message: "Cart Returned" , data: patient.cart})
+
+               
+                const medicine = await Medicine.findOne({_id:id});
+
+                if(medicine == null){
+                  return res.status(404).json({success: false , message: "Medicine not found" , data: null})
+                }
+                else{
+                 const oldMedicines = patient.cart.medicines;
+                  const index = oldMedicines.findIndex((medicine) => medicine.medicine_id == id);
+                  if(index != -1){
+                   
+                    oldMedicines[index].quantity = oldMedicines[index].quantity + 1;
+                    patient.cart.totalPrice = patient.cart.totalPrice + medicine.price;
+                    patient.cart.netPrice = patient.cart.totalPrice - patient.cart.totalPrice * (patient.cart.discount ? patient.cart.discount : 0);
+                  }
+                  else{
+                    const newMedicine = {
+                      medicine_id:id,
+                      quantity: 1,
+                    };
+                    patient.cart.medicines.push(newMedicine);
+                    patient.cart.totalPrice = patient.cart.totalPrice + medicine.price;
+                    patient.cart.netPrice = patient.cart.totalPrice - patient.cart.totalPrice * (patient.cart.discount ? patient.cart.discount : 0);
+                  }
+
+                  return res.status(200).json({success: true , message: "Medicine Added" , data: patient.cart})
+                  await patient.save();
+                }
+            }
+            else{
+                return res.status(404).json({success: false , message: "Patient not found" , data: null})
+    
+            }
 
 
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+        catch(error){
+          const reply = {
+                      success: false,
+                      data: null,
+                      message: error.message,
+                    };
+                return res.status(500).json(reply);
+        }
 
 
 
 
 }
 
+
+
+
+
 module.exports = {
-    getCart,removeMedicine,getPatient,addAddressToPatient,addOrderToPatient,deleteOrder,clearCart,saveCart,getMedicinesFromClinc
+    getCart,removeMedicine,getPatient,addAddressToPatient,addOrderToPatient,deleteOrder,clearCart,saveCart,getMedicinesFromClinc,addToCart
   };
-  
