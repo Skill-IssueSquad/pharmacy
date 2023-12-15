@@ -138,7 +138,12 @@ const addOrderToPatient = async (req,res) =>{
             return res.status(404).json({success: false , message: "Patient not found" , data: null})
         }
         else{
-            //console.log("ana in address");
+            if(paymentMethod === "wallet" && !(patient.walletBalance>= netPrice)){
+              return res.status(200).json({success: true , message: "Not enough wallet balance" , data: patient})
+
+            }
+            
+
 
               const newAddress= {
                 streetName: deliveryAddress.streetName,
@@ -164,6 +169,8 @@ const addOrderToPatient = async (req,res) =>{
                 paymentMethod: paymentMethod
 
               };
+              if(paymentMethod === "wallet")
+                patient.walletBalance = patient.walletBalance- netPrice;
 
            patient.orders.push(order);
            await patient.save();
@@ -373,6 +380,39 @@ const deleteOrder = async (req,res)=>{
     }
 
   }
+
+//   const payforOrderByWallet = async (req,res) =>{
+//     const { username, orderPrice } = req.body;
+//     try{
+        
+//         const patient = await Patient.findOne({username:username})
+//         if(patient == null){
+//             return res.status(404).json({success: false , message: "Patient not found" , data: null})
+//         }
+//         else{
+
+//           if(patient.walletBalance >= orderPrice){
+//             patient.walletBalance -= orderPrice;
+//           }
+//            await patient.save();
+
+//            return res.status(200).json({success: true , message: "Patient  found" , data: patient})
+
+           
+           
+//         }
+//     }
+//     catch (error) {
+//         const reply = {
+//           success: false,
+//           data: null,
+//           message: error.message,
+//         };
+//         return res.status(500).json(reply);
+//       }
+
+
+// }
 
 
 
