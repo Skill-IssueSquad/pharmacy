@@ -16,7 +16,6 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.5.1",
     "cors": "^2.8.5",
-    "data-fns": "^1.1.0",
     "date-fns": "^2.30.0",
     "filepond": "^4.30.4",
     "filepond-plugin-file-encode": "^2.1.11",
