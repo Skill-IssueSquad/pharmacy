@@ -1,12 +1,17 @@
-import "./App.css";
+import AppBar from "./components/appBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PatientHome from "./pages/patientHome";
 import MedicineList from "./pages/MedicineList";
 import MedicineSales from "./pages/Sales";
 import AddMedicine from "./pages/addmedicine";
 import UpdateMedicine from "./pages/updatemedicine";
-import Home from "./pages/Home";
-import Admin from "./pages/Admin";
+//import Home from "./pages/Home";
+import Admin from "./pages/Admin/Admin";
+import ViewAdmins from "./pages/Admin/ViewAdmins";
+import ViewPatients from "./pages/Admin/ViewPatients";
+import ViewPharmacists from "./pages/Admin/ViewPharmacists";
+import ViewRequests from "./pages/Admin/ViewRequests";
+
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
@@ -27,20 +32,21 @@ import ResetPassword from "./pages/Home/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import AlternativesView from "./components/Alternatives";
 
-import PharmacistRegistrationForm from "./components/pharmacistRegistrationForm";
+import PharmacistRequest from "./pages/PharmacistRequest/PharmacistRequest";
 
 
 function App() {
   return (
-    <div className="app">
+    <div className="app" style={{backgroundColor: '#f0f0f0', minHeight: '727px'}}>
       <BrowserRouter>
+      <AppBar hh="" gklh="" />
         <div className="pages">
           <Routes>
           <Route path="/" element={<Login />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/ResetPassword" element={<ResetPassword />} />
            <Route path="/ChangePassword" element={<ChangePassword />} />
-            <Route path="/PharmacistRegisteration" element={<PharmacistRegistrationForm/>} />
+            <Route path="/PharmacistRegisteration" element={<PharmacistRegisteration/>} />
             <Route path="/PatientRegisteration" element={<PatientRegisteration/>} />
             <Route exact path="/patient" element={<PatientHome />} />
             <Route
@@ -63,7 +69,14 @@ function App() {
               path="/pharmacist/medicines/updatemedicine/:medicineId"
               element={<UpdateMedicine />}
             />
-            <Route exact path="/admin" element={<Admin />} />
+            <Route exact path="/Admin" element={<Admin />} />
+            <Route exact path="/Admin/ViewAdmins" element={<ViewAdmins />} />
+            <Route exact path="/Admin/ViewPatients" element={<ViewPatients />} />
+            <Route exact path="/Admin/ViewPharmacists" element={<ViewPharmacists />}/>
+            <Route exact path="/Admin/ViewRequests" element={<ViewRequests />}/>
+
+            <Route exact path="/PharmacistRequest" element={<PharmacistRequest />}/>
+
             <Route
               exact
               path="/admin/medicines"

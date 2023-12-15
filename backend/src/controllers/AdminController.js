@@ -3,14 +3,21 @@ const Pharmacist = require("../models/Pharmacist");
 const Patient = require("../models/Patient");
 const Medicine = require("../models/Medicines");
 const PharmReq = require("../models/PharmacistRequest");
+const PharmacistRequest = require("../models/PharmacistRequest");
+const bcrypt = require('bcrypt')
+
 
 //Add Admin
 const createAdmin = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
   try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newAdmin = await Admin.create({
       username: username,
-      password: password,
+      password: hashedPassword,
+      email: email,
     });
     const reply = {
       success: true,
@@ -19,10 +26,17 @@ const createAdmin = async (req, res) => {
     };
     return res.status(200).json(reply);
   } catch (error) {
+    let err;
+    if (error.message.includes("E11000 duplicate key error collection: Pharmacy.admins index: username_1 dup key")){
+      err = "Username is already taken"
+    }
+    else if (error.message.includes("E11000 duplicate key error collection: Pharmacy.admins index: email_1 dup key")){
+      err = "Email is already taken"
+    }
     const reply = {
       success: false,
       data: null,
-      message: error.message,
+      message: err,
     };
     return res.status(500).json(reply);
   }
@@ -287,6 +301,64 @@ const viewPharmacistRequests = async (req, res) => {
   }
 };
 
+
+//Accept pharmacist request
+const acceptPharmacist = async (req,res) => {
+  try{
+      const username = req.body.user;
+      const pharmacistRequest = await PharmacistRequest.findOneAndUpdate({username: username}, {$set: {status: "Accepted"}});
+      const pharmacist = await Pharmacist.create(
+          {
+              username: pharmacistRequest.username,
+              name: pharmacistRequest.name,
+              email: pharmacistRequest.email,
+              password: pharmacistRequest.password,
+              dateOfBirth: pharmacistRequest.dateOfBirth,
+              hourlyRate: pharmacistRequest.hourlyRate,
+              affiliatedHospital: pharmacistRequest.affiliationHospital,
+              educationalBackground: pharmacistRequest.educationalBackground,
+          }
+      );
+      const reply = {
+          success: true,
+          data: pharmacist,
+          message: "Pharmacist has been accepted successfully",
+      }
+      res.status(200).json(reply);
+  }catch(error){
+      const reply = {
+          success: false,
+          data: null,
+          message: error.message,
+      };
+      res.status(400).json(reply);
+  }
+};
+
+//Reject pharmacist request
+const rejectPharmacist = async (req,res) => {
+  const condition = {username: req.body.user};
+  const update = { $set: {status: "Rejected"} };
+  PharmacistRequest.updateOne(condition, update)
+  .then(() => {
+     const reply = {
+         success: true,
+         data: req.params.packageType,
+         message: "Pharmacist has been rejected successfully",
+     };
+     res.status(200).json(reply);
+  })
+  .catch((error) => {
+     const reply = {
+         success: false,
+         data: null,
+         message: error.message,
+     };
+     res.status(400).json(reply);
+  })
+};
+
+
 const viewallorders = async (req, res) => {
   try {
  
@@ -426,4 +498,6 @@ module.exports = {
   getMedicines,
   findMedicine,
   viewPharmacistRequests,
+  acceptPharmacist,
+  rejectPharmacist
 };

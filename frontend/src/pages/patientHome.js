@@ -2,10 +2,18 @@ import MedicinePatients from "../components/medicinePatient";
 import SearchComponent from "../components/SearchComponent";
 import SearchComponentMedicalUse from "../components/SearchComponentMedicalUse";
 import MultiLevelFilterTable from "../components/test";
+import { auth } from "./Protected/AuthProvider";
 
 import { useState } from "react";
 
 const PatientHome = () => {
+  let show = false;
+
+  console.log(auth());
+  if(auth() && localStorage.getItem('role')==="Patient"){
+      show = true;
+  }
+
   const [filteredMedicines, setFilteredMedicines] = useState([]);
 
   const updateFilteredMedicines = (filteredData) => {
@@ -13,12 +21,17 @@ const PatientHome = () => {
   };
 
   return (
-    <div className="home">
-      {/*<SearchComponent updateFilteredMedicines={updateFilteredMedicines} />
-      <SearchComponentMedicalUse updateFilteredMedicines={updateFilteredMedicines} />
-  <MedicinePatients medicines={filteredMedicines} />*/}
+    <div>
+    {show? (
+      <div className="home">
+        {/*<SearchComponent updateFilteredMedicines={updateFilteredMedicines} />
+        <SearchComponentMedicalUse updateFilteredMedicines={updateFilteredMedicines} />
+    <MedicinePatients medicines={filteredMedicines} />*/}
 
-      <MultiLevelFilterTable />
+        <MultiLevelFilterTable />
+      </div>) :
+       (<h2>No access</h2>)
+      }
     </div>
   );
 };

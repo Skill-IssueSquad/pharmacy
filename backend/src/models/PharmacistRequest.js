@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const pharmacistRequestSchema = new Schema({
-  status: Boolean,
+  status: {
+    type: String,
+    enum: ["Pending", "Missing Documents", "Accepted", "Rejected"],
+    default: "Pending",
+  },
   username: {
     type: String,
     required: true,
