@@ -10,6 +10,9 @@ import Admin from "./pages/Admin";
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
 import ViewPharmReq from "./pages/viewPharmReq";
+import SalesReport from "./pages/SalesReport"; 
+import MonthlySalesReport from "./pages/MonthlySalesReport"; 
+import MonthlySalesReportForAdmin from "./pages/MonthlySalesReportForAdmin"; 
 
 import PatientRegisteration from "./pages/Home/PatientRegisteration";
 import PharmacistRegisteration from "./pages/Home/PharmacistRegisteration";
@@ -22,6 +25,8 @@ import Login from "./pages/Home/Login";
 import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
+import AlternativesView from "./components/Alternatives";
+
 import PharmacistRegistrationForm from "./components/pharmacistRegistrationForm";
 
 
@@ -64,6 +69,14 @@ function App() {
               path="/admin/medicines"
               element={<MedicinesForAdmin />}
             />
+
+           
+            <Route
+              exact
+              path="/admin/monthlysalesreport"
+              element={<MonthlySalesReportForAdmin />}
+            />
+
             <Route exact path="admin/viewAccounts" element={<ViewAccsInfo />} />
             <Route
               exact
@@ -71,6 +84,17 @@ function App() {
               element={<ViewPharmReq />}
             />
 
+            <Route
+              exact
+              path="/pharmacist/medicines/salesreport"
+              element={<SalesReport />}
+            />
+
+            <Route
+              exact
+              path="/pharmacist/medicines/monthlysalesreport"
+              element={<MonthlySalesReport />}
+            />
 
             
 
@@ -99,7 +123,11 @@ function App() {
               element={<OrderDetails/>}
             />
             
-
+            <Route
+              exact
+              path="/viewAlternatives"
+              element={<AlternativesView/>}
+            />
           </Routes>
         </div>
       </BrowserRouter>

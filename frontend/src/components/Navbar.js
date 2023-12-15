@@ -58,6 +58,24 @@ getWalletBalance(username);
           <Box>
           <Button
             component={Link}
+            to="/pharmacist/medicines/salesreport"
+            color="inherit"
+          >
+            Sales Report
+          </Button>
+
+          <Button
+            component={Link}
+            to="/pharmacist/medicines/monthlysalesreport"
+            color="inherit"
+          >
+            Monthly Sales Report
+          </Button>
+
+
+
+          <Button
+            component={Link}
             to="/pharmacist/medicines/addmedicine"
             color="inherit"
           >

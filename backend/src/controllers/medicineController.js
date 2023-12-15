@@ -17,10 +17,11 @@ const AddMedicine = async (req, res) => {
     sales,
     isArchived,
     requiresPrescription,
+    mainActiveIngredient
   } = req.body;
   const activeIngredients = JSON.parse(req.body.activeIngredients);
-
-  let picture = "http://localhost:8000/images/"+req.nameFile;
+  console.log(activeIngredients);
+  let picture = "http://localhost:8001/images/"+req.nameFile;
  /* console.log("HERE5"+req.body.medicineName)
   console.log("HERE5"+req.body.description)
   console.log("HERE5"+req.body.medicinalUsage)
@@ -49,7 +50,10 @@ const AddMedicine = async (req, res) => {
       sales,
       isArchived,
       requiresPrescription,
+      mainActiveIngredient
     });
+    console.log("Nour msh Nour"+newMedicine)
+    console.log("Nour msh Nour"+newMedicine.mainActiveIngredient)
     res
       .status(201)
       .json({
@@ -407,83 +411,12 @@ const archiveMedicine = async (req, res) => {
 };
 
 
-// const getAlternativeMedicines = async (req, res) => {
-
-//   const{medicineName} = req.body;
-//   try {
-
-//     const medicine = await Medicine.findOne({ medicineName });
-
-//     if (!medicine) {
-//       return res.status(404).json({ error: "Medicine not found" });
-//     }
-
-//     const activeIngredients = medicine.activeIngredients;
-//     var max = 0;
-//     var  mainActiveIngredient = "";
 
 
-//     for(var i = 0; i < activeIngredients.length; i++) {
-//       var intValue = parseInt(activeIngredients[i].ingredientAmount, 10);
-//       if(intValue > max){
-//         mainActiveIngredient = activeIngredients[i].ingredientName;
-//         max = intValue;
-//       }
-//     }
 
 
-//     var max2 = 0;
-//     var  mainActiveIngredient2 = "";
 
-//     const medicines = await Medicine.find({});
-//     var alternativeMedicines = [];
-    
-   
-//     for(var i = 0; i < medicines.length; i++) {
-//       var activeIngredientss = medicines[i].activeIngredients;
-//       console.log("Medicine "+i+" : "+medicines[i].medicineName);
-//       console.log("Medicine "+i+" : "+medicines[i].activeIngredients);
-//       for(var j = 0; j < activeIngredientss.length; j++) {
-        
-//         if(activeIngredientss[j].ingredientAmount == undefined){
-          
-//           continue;
-//         }
-//         var intValue = parseInt(activeIngredientss[j].ingredientAmount, 10);
-//         console.log("Medicine int value "+i+" : "+intValue);
 
-//         if(intValue > max2){
-//           mainActiveIngredient2 = activeIngredientss[j].ingredientName;
-//           max2 = intValue;
-//         }
-//         }
-//         console.log("Medicine "+i+" : "+mainActiveIngredient2);
-
-//         if(mainActiveIngredient2 == mainActiveIngredient){
-
-//           if(medicines[i].medicineName == medicineName){
-//             continue;
-//           }
-//           alternativeMedicines.push(medicines[i]);
-          
-//         }
-//         var max2 = 0;
-//         var  mainActiveIngredient2 = "";
-       
-
-//       }
-//       return res.status(200).json({ success: true, message: "Medicine found", data: alternativeMedicines });
-
-//     }
-//  catch (error) {
-//     const reply = {
-//       success: false,
-//       data: null,
-//       message: error.message,
-//     };
-//     return res.status(500).json(reply);
-//   }
-// }
 
 const getAlternativeMedicines = async (req, res) => {
 
@@ -498,6 +431,8 @@ const getAlternativeMedicines = async (req, res) => {
 
     const mainActiveIngredient = medicine.mainActiveIngredient;
   
+    
+  
 
     const medicines = await Medicine.find({});
     var alternativeMedicines = [];
@@ -506,15 +441,18 @@ const getAlternativeMedicines = async (req, res) => {
     for(var i =0; i<medicines.length;i++){
       var mainActiveIngredientOfi = medicines[i].mainActiveIngredient;
       if(mainActiveIngredientOfi == undefined){
+
+    
           
         continue;
       }
-      if(mainActiveIngredientOfi === mainActiveIngredient && medicines[i].medicineName != medicineName ){
+      if(mainActiveIngredientOfi === mainActiveIngredient && medicines[i].medicineName != medicineName && medicines[i].quantity > 0 ){
         alternativeMedicines.push(medicines[i]);
      }
 
     }
     return res.status(200).json({ success: true, message: "Medicine found", data: alternativeMedicines });
+   
 
     }
  catch (error) {

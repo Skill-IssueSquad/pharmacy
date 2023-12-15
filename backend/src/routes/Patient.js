@@ -17,5 +17,6 @@ router.post('/deleteOrder' , patientController.deleteOrder);
 
 router.post('/clearCart',patientController.clearCart);
 router.post('/saveCart',patientController.saveCart);
-
+router.post('/getPrescription/sendPrescriptionMedicinesToPharmacy',patientController.getMedicinesFromClinc);
+router.post('/addAlternative',patientController.addToCart);
 module.exports = router;

@@ -8,9 +8,10 @@ const MyContext = React.createContext();
 
 
 const Cart = () => {
-  var userName = "testuser";
+  var userName = "regtest";
   const [cartItems, setCartItems] = useState([]);
   const [medicines, setMedicines] = useState([]);
+  const [changedCart, setChangedCart] = useState(0);
 
   const addQuantity = (id) => {
    
@@ -186,15 +187,15 @@ const Cart = () => {
   useEffect(() => {
 
     const requestData = {
-        username: 'testuser', // Replace with your attribute name and value
+        username: userName, 
       };
 
       const requestOptions = {
-        method: 'POST', // You can use 'POST' or 'PUT' or any appropriate HTTP method
+        method: 'POST', 
         headers: {
-          'Content-Type': 'application/json', // Set the content type to JSON if you're sending JSON data
+          'Content-Type': 'application/json', 
         },
-        body: JSON.stringify(requestData), // Convert the data to JSON format
+        body: JSON.stringify(requestData),
       };
 
 
@@ -214,17 +215,41 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
-  const navigateToCheckout = (cartItems ,medicines) => {
-    if(cartItems.length> 0)
-      navigate('/Checkout', { state: { data: cartItems , medicines: medicines} });
-    else{
+  const navigateToCheckout = async (cartItems, medicines) => {
+    setChangedCart(!changedCart);
+  
+    if (cartItems.length > 0) {
+      for (let i = 0; i < cartItems.length; i++) {
+        const cartItem = cartItems[i];
+        const medicine = medicines.find((item) => item._id === cartItem.medicine_id);
+  
+        if (cartItem.quantity > medicine.quantity) {
+          if (medicine.quantity === 0) {
+            await removeItemFromCart(medicine._id);
+          } else {
+            cartItem.quantity = medicine.quantity;
+          }
+  
+          alert("Cart has been updated due to lack of stock");
+          return;
+        }
+      }
+  
+      console.log("cartItems: ", cartItems);
+      console.log("Medicines New: ", medicines);
+    }
+  
+    if (cartItems.length > 0) {
+      await navigate('/Checkout', { state: { data: cartItems, medicines: medicines } });
+    } else {
       alert("Cart is empty");
     }
   };
+  
 
-
+  
   useEffect(() => {
-  const fetchMedicines = (cartItems) => {
+   const fetchMedicines = (cartItems) => {
     // Send a request to your server with the list of medicine IDs
     fetch('http://localhost:8001/medicine/getArrayMedicinesByID', {
       method: 'POST',
@@ -243,12 +268,13 @@ const Cart = () => {
       .then((medicineOutputs) => {
         // Here, you have the specific medicines, and you can update your component state accordingly
         setMedicines(medicineOutputs);
+        console.log('Medicines:', medicines)
       })
       .catch((error) => console.error('Error fetching medicines:', error));
   };
   fetchMedicines(cartItems);
 
-}, [cartItems]);
+}, [cartItems,changedCart]);
 
 // // const fetchMedicines = async () => {
 // //     try {
@@ -316,12 +342,12 @@ const Cart = () => {
             {medicines.length === cartItems.length &&
               medicines.map((item, index) => (
                 <tr key={item.id} style={index % 2 === 0 ? tableRowStyleEven : tableRowStyleOdd}>
-               <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.medicineName}</td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.description}</td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.medicinalUsage}</td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{item.price}</td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+               <td style={{ ...tableCellStyle, textAlign: 'left' }}>{item.medicineName}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'left' }}>{item.description}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'left' }}>{item.medicinalUsage}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'left' }}>{item.price}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'left' }}>
+                    <div style={{ display: 'flex', alignItems: 'left', justifyContent: 'left' }}>
                       {cartItems[index].quantity}
                       <AddIcon
                         disabled={item.quantity === cartItems[index].quantity}
@@ -336,8 +362,8 @@ const Cart = () => {
                     </div>
                   </td>
                  
-                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>{cartItems[index].quantity * item.price}</td>
-                  <td style={{ ...tableCellStyle, textAlign: 'center' }}>
+                  <td style={{ ...tableCellStyle, textAlign: 'left' ,paddingRight:'3px'}}>{cartItems[index].quantity * item.price}</td>
+                  <td style={{ ...tableCellStyle, textAlign: 'left' }}>
                     <img src={item.picture} alt={item.name} width="100" />
                   </td>
                   <td style={{...tableCellStyle}}>
@@ -359,8 +385,8 @@ const Cart = () => {
     </MyContext.Provider>
     </div>
   );
-};
 
+              };
 export default Cart;
 
 // Styles

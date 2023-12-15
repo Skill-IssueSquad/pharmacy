@@ -12,23 +12,81 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {Cart} from './Cart';
 import ResponsiveAppBar from './navBarC'
+
+
+import { useNavigate } from 'react-router-dom';
+const MyContext = React.createContext();
+
+
+
+
+
 const MultiLevelFilterTable = () => {
   const [filter, setFilter] = useState({ medicineName: "", medicinalUsage: "" });
   const [data, setData] = useState([]); // Store the fetched data
   const [sorting, setSorting] = useState({ field: "", order: "" });
   const [getRender, setRender] = useState(false);
   const [hashMap, setHashMap] = useState({});
+  const [prescriptionMedicines, setPrescriptionMedicines] = useState([]);
 
   const [cart, setCart] = useState({
     medicines: [],
     totalPrice: 0,
     discount: 0,
     netPrice: 0,
-  });  var userName = "testuser"; 
+  });  
+  var userName = "regtest"; 
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
   }, []);
+
+  useEffect(() => {
+    const getPrescriptionMedicines = async (username) => {
+      try {
+        const response = await fetch('http://localhost:8000/getPrescription/sendPrescriptionMedicinesToPharmacy', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+        setPrescriptionMedicines(data.data);
+      } catch (error) {
+        console.error('Error getting prescription medicines:', error);
+      }
+    };
+  
+    getPrescriptionMedicines(userName);
+  }, []);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,7 +123,14 @@ const MultiLevelFilterTable = () => {
   
     // Now, if you log `cart` here, it will reflect the updated state
     console.log(cart);
+    setHashMap({});
     SaveCartToDB(userName,cart);
+    setCart({
+      medicines: [],
+      totalPrice: 0,
+      discount: 0,
+      netPrice: 0,
+    })
   };
 
 
@@ -130,7 +195,33 @@ const MultiLevelFilterTable = () => {
 
 
   
-  const addToCart = (id) => {
+  const addToCart = (id,medicineName,prescription) => {
+
+
+
+    if(prescription){
+
+      console.log("ana fe prescription");
+      if(prescriptionMedicines.length === 0){
+        alert("You need a prescription to buy this medicine");
+        return;
+      }
+      for(let i = 0;i<prescriptionMedicines.length;i++){
+        if(prescriptionMedicines[i].medicineName === medicineName)
+          break;
+        else if(i === prescriptionMedicines.length - 1){
+          alert("You need a prescription to buy this medicine");
+          return;
+        }
+
+      }
+
+
+
+      
+    }
+
+
 
   console.log(hashMap[id]);
     if(hashMap[id] === undefined || hashMap[id] === 0)
@@ -192,6 +283,15 @@ const MultiLevelFilterTable = () => {
   }
 
 
+
+  const navigate = useNavigate();
+
+  const viewAlternatives = (medicineName) => {
+    
+      navigate('/viewAlternatives', { state: {medicineName} });
+   
+    
+  };
 
 
 
@@ -280,8 +380,10 @@ const MultiLevelFilterTable = () => {
 
   return (
     <div>
-     <ResponsiveAppBar/> 
-    <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
+       <div style={{ marginBottom: '5px' }}>
+        <ResponsiveAppBar />
+      </div>
+    <div style={{ paddingTop:'30px',display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
       <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>
       <TextField
         label="Filter by medicineName"
@@ -296,7 +398,7 @@ const MultiLevelFilterTable = () => {
         onChange={handleFilterChange}
       />
 
-     <button style={{marginLeft:'50px'}} onClick={viewCart}><a href="/Cart">View Cart </a></button> 
+     <button style={{marginLeft:'50px' ,color:'black'}} onClick={viewCart}><a  href="/Cart"  style={{textDecoration: 'none',color: 'black'}} >View Cart </a></button> 
       <button style={{marginLeft:'50px'}} onClick={saveCart}>Save Cart </button>
 
     </div>
@@ -341,10 +443,22 @@ const MultiLevelFilterTable = () => {
     min="0"
     max={item.quantity}
     onInput={(e) => handleInput(e, item._id, item.quantity)}
+    style={{ width: '75px' }}
     value={hashMap[item._id] || ""}
 
   />
-</TableCell>     <TableCell style={{textAlign:'center'}}><button  onClick={() => addToCart(item._id)} disabled={item.quantity === 0 }>Add To Cart</button></TableCell>
+</TableCell>     <TableCell style={{ textAlign: 'center' }}> {item.quantity > 0 ? (
+        <>
+    
+      <button style={{width :"90px",height:"50px",backgroundColor:""}}  onClick={() => addToCart(item._id,item.medicineName,item.requiresPrescription)} disabled={item.quantity === 0}>
+        Add To Cart
+             
+      </button>
+    </>
+  ) : (
+    <button style={{width :"90px" ,height:"50px"}} onClick={() =>viewAlternatives(item.medicineName)}>View Alternatives</button>
+  )}
+</TableCell>
       </TableRow>
   ))}
 </TableBody>
