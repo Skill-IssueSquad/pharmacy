@@ -123,7 +123,14 @@ const MultiLevelFilterTable = () => {
   
     // Now, if you log `cart` here, it will reflect the updated state
     console.log(cart);
+    setHashMap({});
     SaveCartToDB(userName,cart);
+    setCart({
+      medicines: [],
+      totalPrice: 0,
+      discount: 0,
+      netPrice: 0,
+    })
   };
 
 
