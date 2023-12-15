@@ -7,9 +7,11 @@ import AddMedicine from "./pages/addmedicine";
 import UpdateMedicine from "./pages/updatemedicine";
 //import Home from "./pages/Home";
 import Admin from "./pages/Admin/Admin";
+import AdminChangePassword from "./pages/Admin/ChangePassword";
 import ViewAdmins from "./pages/Admin/ViewAdmins";
 import ViewPatients from "./pages/Admin/ViewPatients";
 import ViewPharmacists from "./pages/Admin/ViewPharmacists";
+import ViewProfile from "./pages/Admin/ViewProfile";
 import ViewRequests from "./pages/Admin/ViewRequests";
 
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
@@ -65,10 +67,13 @@ function App() {
               element={<UpdateMedicine />}
             />
             <Route exact path="/Admin" element={<Admin />} />
+            <Route exact path="/Admin/ChangePassword" element={<AdminChangePassword />} />
             <Route exact path="/Admin/ViewAdmins" element={<ViewAdmins />} />
             <Route exact path="/Admin/ViewPatients" element={<ViewPatients />} />
             <Route exact path="/Admin/ViewPharmacists" element={<ViewPharmacists />}/>
             <Route exact path="/Admin/ViewRequests" element={<ViewRequests />}/>
+            <Route exact path="/Admin/ViewProfile" element={<ViewProfile />} />
+
 
             <Route exact path="/PharmacistRequest" element={<PharmacistRequest />}/>
 

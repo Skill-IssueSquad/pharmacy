@@ -29,6 +29,8 @@ import AdminIcon from '@mui/icons-material/ManageAccounts'
 import PatientIcon from '@mui/icons-material/People'
 import PharmacistIcon from '@mui/icons-material/HealthAndSafety'
 import RequestIcon from '@mui/icons-material/AddCircle'
+import AccountIcon from '@mui/icons-material/AccountCircle'
+import PasswordIcon from '@mui/icons-material/Lock'
 
 
 const drawerWidth = 240;
@@ -78,7 +80,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-const settings = ['Profile', "Change Password", 'Logout'];
+const settings = ['Logout'];
 
 export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
   const navigate = useNavigate();
@@ -116,6 +118,8 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
       case "View Patients":  navigate("/Admin/ViewPatients"); setOpen(false); break;
       case "View Pharmacists": navigate("/Admin/ViewPharmacists"); setOpen(false); break;
       case "View Join Requests":  navigate("/Admin/ViewRequests"); setOpen(false); break;
+      case "View Profile": navigate("/Admin/ViewProfile"); setOpen(false); break;
+      case "Change Password": navigate("/Admin/ChangePassword"); setOpen(false);
     }
   }
 
@@ -132,6 +136,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
           localStorage.setItem('token','');
           localStorage.setItem('role','');
           localStorage.setItem('username', '');
+          localStorage.setItem('selectedItem', '');
           navigate('/');
         }
       };
@@ -179,8 +184,8 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
           
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ position: 'absolute', top:'5px', right:'10px'}}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ position: 'absolute', top:'15px', right:'10px'}}>
+              <AccountIcon style={{color:'white'}}/>
               </IconButton>
             </Tooltip>
             <Menu
@@ -230,9 +235,23 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        {/* <Divider /> */}
+        <ListItem key={"Dashboard"} disablePadding selected= {selected==="Dashboard"} style={{color:'white', fontSize:'10px'}} sx={{
+              '&.Mui-selected': {
+                backgroundColor: 'rgb(255,255,255,0.2)', // Change 'yourSelectedColor' to your desired color
+                color: 'white',
+              },
+              fontSize: '10px',
+            }}>
+            <ListItemButton onClick={() => handleClickAdmin("Dashboard")}>
+                <ListItemIcon style={{color:'white'}}>
+                  {<DashboardIcon/>}
+                </ListItemIcon>
+                <ListItemText primary={"Dashboard"} />
+            </ListItemButton>
+        </ListItem>
+        <a style={{marginLeft:'20px', marginTop:'15px', color:'grey', fontSize:'14px'}}> PAGES</a>
         <List>
-          {['Dashboard', 'View Admins','View Patients', 'View Pharmacists' ,'View Join Requests'].map((text, index) => (
+          {['View Admins','View Patients', 'View Pharmacists' ,'View Join Requests'].map((text, index) => (
             <ListItem key={text} disablePadding selected= {selected===text} style={{color:'white', fontSize:'10px'}} sx={{
               '&.Mui-selected': {
                 backgroundColor: 'rgb(255,255,255,0.2)', // Change 'yourSelectedColor' to your desired color
@@ -242,17 +261,34 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
             }}>
               <ListItemButton onClick={() => handleClickAdmin(text)}>
                 <ListItemIcon style={{color:'white'}}>
-                  {index===0? <DashboardIcon/> : 
-                    (index===1? <AdminIcon/> : 
-                    (index===2? <PatientIcon/> : 
-                    (index===3? <PharmacistIcon/> : <RequestIcon/>)))}
+                  { (index===0? <AdminIcon/> : 
+                    (index===1? <PatientIcon/> : 
+                    (index===2? <PharmacistIcon/> : <RequestIcon/>)))}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        
+        <a style={{marginLeft:'20px', marginTop:'15px', color:'grey', fontSize:'14px'}}> ACCOUNT</a>
+        <List>
+          {['View Profile','Change Password'].map((text, index) => (
+            <ListItem key={text} disablePadding selected= {selected===text} style={{color:'white', fontSize:'10px'}} sx={{
+              '&.Mui-selected': {
+                backgroundColor: 'rgb(255,255,255,0.2)', // Change 'yourSelectedColor' to your desired color
+                color: 'white',
+              },
+              fontSize: '10px',
+            }}>
+              <ListItemButton onClick={() => handleClickAdmin(text)}>
+                <ListItemIcon style={{color:'white'}}>
+                  { (index===0? <AccountIcon/> : <PasswordIcon/>)}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
       <Main open={open}>
         {viewComponent}
