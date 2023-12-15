@@ -269,7 +269,11 @@ const clearCart = (username)=>{
         }
       })
       .then((data) => {
-        console.log("I am here");
+        if(data.message === "Not enough wallet balance"){
+            alert("Not enough wallet balance");
+            return;
+        }
+        
         clearCart(username);
         navigateToOrderDetails();
         
@@ -518,6 +522,14 @@ getWalletBalance(username);
         
         />
         <label for="Paymentx"> Pay using Stripe</label>
+
+                
+        <input type="radio" id="Paymentx" name="paymentMethod" value="Pay Using wallet Balance" style={{ marginLeft:15}} checked ={pay ==='wallet'}
+          onChange={() => setPay('wallet')}
+
+        
+        />
+        <label for="Paymentx"> Pay using Wallet</label>
 
       </div>
           </Grid>
