@@ -32,7 +32,7 @@ import PharmacistRequest from "./pages/PharmacistRequest/PharmacistRequest";
 
 function App() {
   return (
-    <div className="app">
+    <div className="app" style={{backgroundColor: '#f0f0f0', minHeight: '727px'}}>
       <BrowserRouter>
       <AppBar hh="" gklh="" />
         <div className="pages">

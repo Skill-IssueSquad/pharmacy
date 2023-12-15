@@ -131,17 +131,15 @@ function App() {
     };
 
   return (
-    <MDBContainer className="my-4">
-
-      <MDBCard>
+      <MDBCard style={{width:'1000px', height:'605px', marginLeft:'200px', marginTop:'35px', borderRadius:'5px'}}>
         <MDBRow className='g-0'>
 
           <MDBCol md='6'>
-            <MDBCardImage src='pharmacyLogin.jpg' alt="login form" className='rounded-start w-100' style={{ height: '640px', borderRadius: '5px' }}/>
+            <MDBCardImage src='pharmacyLogin.jpg' alt="login form" className='rounded-start w-100' style={{ height: '605px', borderRadius: '5px' }}/>
           </MDBCol>
 
           <MDBCol md='6'>
-            <MDBCardBody className='d-flex flex-column'>
+            <MDBCardBody className='d-flex flex-column' style={{width:'460px', height:'605px'}}>
 
               <div className='d-flex flex-row mt-2'>
                 <MDBCardImage src='/pharmacyLogo.png' alt='Logo' style={{ width: '80px', height: '80px' }} />
@@ -175,7 +173,8 @@ function App() {
                 />
                 {/* <br /> */}
                 
-              <Button className="mb-4 px-5" color='dark' size='lg' disabled={showProgress} onClick={handleLogin}> {!showProgress && "Login"} 
+              <Button className="mb-4 px-5" color='dark' size='lg' disabled={showProgress} onClick={handleLogin}> 
+              {!showProgress && "Login"} 
               {showProgress && <CircularProgress color="inherit" size={15}/>}  
               </Button>
               <a className="small text-muted" href="/ForgotPassword"><u> Forgot password? </u></a>   
@@ -186,17 +185,11 @@ function App() {
                {' '} <a href="/PharmacistRegisteration" style={{color: '#393fDD'}}> <u> Register as a pharmacist </u></a> 
               </p>
 
-              <div className='d-flex flex-row justify-content-start'>
-                <a className="small text-muted me-1">Terms of use | </a>
-                <a className="small text-muted"> Privacy policy</a>
-              </div>
-
             </MDBCardBody>
           </MDBCol>
 
         </MDBRow>
       </MDBCard>
-    </MDBContainer>
   );
 }
 

@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, colors } from "@mui/material";
+import { Button,  Breadcrumbs, colors, Link, Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
 import ConfirmationAlert from "./ConfirmationAlert";
+import CircularProgress from '@mui/material/CircularProgress';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 export default function DataTable() {
     const [rows, setRows] = useState([]); // State to store the rows
     const [open, setOpen] = useState(false);
+    const [showProgress, setShowProgress] = useState(true);
+    const breadcrumbs = [
+      <Link
+        underline="hover"
+        key="2"
+        color="grey"
+        href="/Admin"
+        // onClick={handleClick}
+      >
+      {<HomeIcon style={{color: 'blue', opacity: 0.5}}></HomeIcon>}
+      </Link>,
+      <Typography key="3" color="grey">
+        View Patients
+      </Typography>,
+    ];
 
     const handleOpen = () => {
       setOpen(true);
@@ -66,6 +84,7 @@ export default function DataTable() {
                 // Update the state with the fetched data
                 const data = json.data
                 setRows(data);
+                setShowProgress(false);
             }
         } catch (error) {
         console.error('Error fetching data:', error);
@@ -79,7 +98,17 @@ export default function DataTable() {
     const isRowSelectable = (params) => false; // Function to make all rows unselectable
     
   return (
-    <div style={{ height: 400, width: '100%' }} >
+    <div>
+      <a style={{fontFamily: 'Arial, sans-serif', fontSize: '20px',color: '#333', fontWeight:'bold'}}>Patients
+      <Breadcrumbs
+        separator={<NavigateNextIcon fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
+      </a>
+      <br/>
+    {!showProgress && <div style={{ height: 400, width: '100%', backgroundColor: '#ffffff', borderRadius: '5px' }} >
       <DataGrid
         rows={rows}
         columns={columns}
@@ -93,6 +122,8 @@ export default function DataTable() {
         disableRowSelectionOnClick={true}
         disableColumnSelector={true}
       />
+    </div>}
+    {showProgress && <CircularProgress color="inherit" style={{marginLeft:'650px', marginTop:'100px'}} />} 
     </div>
   );
 }

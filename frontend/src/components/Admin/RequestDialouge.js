@@ -35,7 +35,7 @@ export default function CustomizedDialogs({rows, username}) {
     const textParagraph = [
         "Name: " + info.name +"\n",
         "Email: " + info.email,
-        "Date of Birth" + info.dateOfBirth,
+        "Date of Birth: " + info.dateOfBirth,
         "Username: " + info.username,
         "Hourly Rate: " + info.hourlyRate,
         "Affiliate Hospital: " +info.affiliatedHospital,
@@ -132,7 +132,7 @@ export default function CustomizedDialogs({rows, username}) {
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent dividers>
+        <DialogContent dividers style={{width:'600px'}}>
         {text && text.map((data, index) => (
             <p>{data}
             </p>

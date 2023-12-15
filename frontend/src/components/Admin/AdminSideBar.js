@@ -23,11 +23,12 @@ import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
-import Analytics from './Analytics';
-import AdminTable from "./AdminTable";
-import PatientTable from "./PatientTable";
-import PharmacistTable from "./PharmacistTable";
-import RequestTable from "./RequestTable";
+import { useEffect } from 'react';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AdminIcon from '@mui/icons-material/ManageAccounts'
+import PatientIcon from '@mui/icons-material/People'
+import PharmacistIcon from '@mui/icons-material/HealthAndSafety'
+import RequestIcon from '@mui/icons-material/AddCircle'
 
 
 const drawerWidth = 240;
@@ -77,7 +78,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-const settings = ['Profile', 'Account', 'Dashboard', "Change Password", 'Logout'];
+const settings = ['Profile', "Change Password", 'Logout'];
 
 export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
   const navigate = useNavigate();
@@ -108,20 +109,20 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
   const handleClickAdmin = (text) => {
     //console.log(text);
     setSelected(text);
+    localStorage.setItem('selectedItem',text);    
     switch(text){
       case "Dashboard": navigate("/Admin"); setOpen(false); break;
-      case "Admin": navigate("/Admin/ViewAdmins") ;setOpen(false); break;
-      case "Patient":  navigate("/Admin/ViewPatients"); setOpen(false); break;
-      case "Pharmacist": navigate("/Admin/ViewPharmacists"); setOpen(false); break;
-      case "Join Requests":  navigate("/Admin/ViewRequests"); setOpen(false); break;
+      case "View Admins": navigate("/Admin/ViewAdmins") ;setOpen(false); break;
+      case "View Patients":  navigate("/Admin/ViewPatients"); setOpen(false); break;
+      case "View Pharmacists": navigate("/Admin/ViewPharmacists"); setOpen(false); break;
+      case "View Join Requests":  navigate("/Admin/ViewRequests"); setOpen(false); break;
     }
   }
 
   const handleUserMenu = async (text) => {
     switch(text){
+      //add profile page
       case "Profile": navigate('/Admin'); break;
-      case "Account": navigate('/Admin/ViewAdmins'); setOpen(false); break;
-      case "Dashboard": navigate('/Admin/ViewDoctors'); setOpen(false); break;
       case "Change Password": navigate('/ChangePassword'); break;
       default: {
         const response = await fetch('/account/logout', {method: 'GET', credentials: 'include',});
@@ -136,6 +137,14 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
       };
     }
   }
+
+  useEffect(() => {
+    // Retrieve selected item from localStorage on component mount
+    const storedSelected = localStorage.getItem('selectedItem');
+    if (storedSelected) {
+      setSelected(storedSelected);
+    }
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -155,7 +164,6 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -166,7 +174,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
               textDecoration: 'none',
             }}
           >
-            El7a2ni
+            El7a2ni Pharmacy
           </Typography>
           
           <Box sx={{ flexGrow: 0 }}>
@@ -207,6 +215,10 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            //backgroundColor: 'rgba(200,0, 255, 0.8)'
+            //style={{
+              backgroundColor: 'rgba(10,52, 99, 1)'
+          //}}
           },
         }}
         variant="persistent"
@@ -214,17 +226,26 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} style={{color: 'white'}}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        <Divider />
+        {/* <Divider /> */}
         <List>
-          {['Dashboard', 'Admin','Patient', 'Pharmacist' ,'Join Requests'].map((text, index) => (
-            <ListItem key={text} disablePadding selected= {selected===text} >
+          {['Dashboard', 'View Admins','View Patients', 'View Pharmacists' ,'View Join Requests'].map((text, index) => (
+            <ListItem key={text} disablePadding selected= {selected===text} style={{color:'white', fontSize:'10px'}} sx={{
+              '&.Mui-selected': {
+                backgroundColor: 'rgb(255,255,255,0.2)', // Change 'yourSelectedColor' to your desired color
+                color: 'white',
+              },
+              fontSize: '10px',
+            }}>
               <ListItemButton onClick={() => handleClickAdmin(text)}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <ListItemIcon style={{color:'white'}}>
+                  {index===0? <DashboardIcon/> : 
+                    (index===1? <AdminIcon/> : 
+                    (index===2? <PatientIcon/> : 
+                    (index===3? <PharmacistIcon/> : <RequestIcon/>)))}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
