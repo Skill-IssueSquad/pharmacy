@@ -1,6 +1,6 @@
-# El7a2ni Clinic: A virtual online clinic
+# El7a2ni Pharmacy: A virtual online Pharmacy
 
-El7a2ni clinic is a virtual online clinic platform that enables patients and doctors to communicate and streamline the usually tedious process of booking visits and recieving prescriptions in the usual ohysical setting of traditional clinics.
+El7a2ni Pharmacy is a virtual online Pharmacy platform that enables patients and pharmacists to communicate and streamline the usually tedious process of buying medicines
 
 ---
 
@@ -30,11 +30,108 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 ## 1.4 | Tech and frameworks:
 
+|||
+| ----------- | ----------- |
+| [React](https://reactjs.org/) | ![React](	https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)|
+| [Node.js](https://nodejs.org/en/) | ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) |
+| [JWT](https://jwt.io/)| ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)|
+| [Express](https://expressjs.com/)| ![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge) |
+| [MongoDB](https://www.mongodb.com/)|![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)|
+| [Mongoose](https://mongoosejs.com/)| ![Mongoose](https://img.shields.io/badge/Mongoose-black.svg?style=for-the-badge&logo=mongoose&logoColor=orange)|
+| [Swagger](https://swagger.io/)| ![Swagger](https://img.shields.io/badge/Swagger-black.svg?style=for-the-badge&logo=swagger&logoColor=white)|
+| [Material-UI](https://material-ui.com/)| ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white) |
+| [Stripe](https://stripe.com/)|	![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white) |
+| [Typescript](https://www.typescriptlang.org/)|![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)|
+| [Git](https://git-scm.com/)| ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)|
+| [Github Actions](github.com/features/actions)|![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
+| [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)| ![MongoDB](https://img.shields.io/badge/MongoDB%20Atlas-white.svg?style=for-the-badge&logo=mongodb&logoColor=green)|
+| [Postman](https://www.postman.com/)|![Postman](https://img.shields.io/badge/postman-black.svg?style=for-the-badge&logo=postman&logoColor=orange)|
+| [VSCode](https://code.visualstudio.com/)|![VScode](https://img.shields.io/badge/VS%20code-black.svg?style=for-the-badge&logo=visualstudiocode&logoColor=blue)|
+
+
 ---
 
 # Section 2: Features
 
 ## 2.1 | Main features:
+
+> ⚠️: **Note:** Click to expand.
+
+
+<details>
+ <summary> As a Guest user, you can: </summary>
+ 
+-  register as a patient using username, name, email, password, date of birth, gender, mobile number, emergency contact (full name , mobile number, relation to the patient)
+-  submit a request to register as a pharmacist using username, name, email, password, date of birth, hourly rate, affiliation (hospital), educational background
+
+</details>
+
+
+<details>    
+ <summary> As a Administrator, you can: </summary>
+ 
+ -  view a list of all available medicines with all the relevant details
+ -  search for a medicine based on name or medical usage.
+ -  view a sales report based on a chosen month.
+ -  login using your username and password
+ -  logout
+ -  add another adminstrator with a set username and password.
+ -  remove a pharmacist/patient from the system.
+ -  view all of the information uploaded by a pharmacist to apply to join the platform.
+ -  accept or reject the request of a pharmacist to join the platform.
+ -  change my password
+ -  reset a forgotten password through OTP sent to email
+ -  view a pharmacist's information.
+ -  view a patients's basic information.
+
+
+</details>
+
+<details>
+    
+ <summary> As a Pharmacist, you can: </summary>
+ 
+- view a list of all available medicines with all the relevant details
+- search for a medicine based on name or medical usage.
+- add or edit a medicine with all its relevant details.
+- view a sales report based on a chosen month and can further filter it based on medicine/date.
+- view his/her wallet balance.
+- recevice a notification when a medicine is out of stock via email.
+- chat with a Doctor in the clinic.
+- chat with a Patient in the pharmacy
+- upload and submit required documents upon registration such as ID, pharmacy degree anf Working licenses
+- login using your username and password
+- logout
+- change my password
+-  reset a forgotten password through OTP sent to email
+
+  
+    
+</details>
+<details>
+    
+ <summary> As a Patient, you can: </summary>
+ 
+-  view a list of all available medicines with all the relevant details
+-  search for a medicine based on name or medical usage.
+-  add medicines to his/her cart if he is eligible to take it.
+-  view the medicines in the cart.
+-  remove or change the quantity of an item in the cart.
+-  checkout his/her order.
+-  add a new delivery address or choose from his previous delivery addresses.
+-  view his/her wallet balance.
+-  pay for his order using his/her wallet balance/credit card/Cash on delivery.
+-  view his/her current and past order details and its status.
+-  cancel his/her order.
+-  view alternative medicines for the medicines currently out of stock.
+-  chat with a Pharmacist in the pharmacy.
+-  login using your username and password
+-  logout
+- change my password
+-  reset a forgotten password through OTP sent to email
+
+
+</details>
 
 ## 2.2 | Complementary features:
 
@@ -45,6 +142,69 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 # Section 3: How to use
 
 ## 3.1 | API's:
+
+> ⚠️: **Note:** Click to expand.
+
+<details>
+    <summary>
+        Patient Routes (/patient)
+    </summary>
+
+    
+`router.post('/getPatient' , patientController.getPatient);` fetches a specific patient
+
+`router.post('/cart',patientController.getCart)`  Fetch the user's cart
+
+`router.post('/removeMedicineFromCart' , patientController.removeMedicine)` Removes a medicine from the user's cart
+
+`router.post('/addAddress' , patientController.addAddressToPatient);` adds an address to the list of addresses of the user
+
+`router.post('/addOrder' , patientController.addOrderToPatient);` adds an order to the list of orders for the patient
+
+`router.post('/deleteOrder' , patientController.deleteOrder);` deletes an order for the user
+
+`router.post('/clearCart',patientController.clearCart);` Removes all medicines in the user's cart
+
+
+`router.post('/saveCart',patientController.saveCart);` takes all the chosen medicinces by the user and add them to the cart
+
+`router.post('/getPrescription/sendPrescriptionMedicinesToPharmacy',patientController.getMedicinesFromClinc);` returns all medicines that are in the prescription of this patient.
+
+`router.post('/addAlternative',patientController.addToCart);` adds a chosen alternative medicine in the cart
+
+</details>
+
+
+<details>
+    <summary>
+        Patient Routes (/pharmacist/medicines)
+    </summary>
+
+    
+` router.post('/',upload.single('image'),AddMedicine);` Create new medicine
+
+`router.get('/',getMedicines);` Gets all medicines
+
+`router.get('/:id',medicinedetailsbyid);` gets all medicine details (by id of that medicine)
+
+`router.patch('/:id', updateMedicine);` updates the details of a specific medicine
+
+`router.post('/archive',archiveMedicine); ` archive/unarchive a specific medicine
+
+`router.post('/viewAlternative',getAlternativeMedicines)` gets all alternatives for a specific medicine based on the main ingredient
+
+`router.post('/getWalletBalance',getWalletBalancepharmacist); ` retrieves the wallet balance of a specific pharmacist 
+
+</details>
+
+
+
+
+1. http://localhost:8001/medicine
+2. http://localhost:8001/patient/getPatient
+3. http://localhost:8001/account/login
+4. 
+
 
 ## 3.2 | Testing:
 
@@ -103,24 +263,8 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 
 # pharmacy
 Skill_IssueSquad's Pharmacy
-Features .
-1. Pharmacist upload and submit required documents upon registration such as ID, pharmacy degree anf Working licenses
-2. Patient/Pharmacist/Administrator can view a list of all available medicines with all the relevant details
-3. Patient/Pharmacist/Administrator can search for a medicine based on name or medical usage.
-4. Pharmacist can add or edit a medicine with all its relevant details.
-5. Pharmacist/Administrator can view a sales report based on a chosen month and can further filter it based on medicine/date.
-6. Patient can add medicines to his/her cart if he is eligible to take it.
-7. Patient can view the medicines in the cart.
-8. Patient can remove or change the quantity of an item in the cart.
-9. Patient can checkout his/her order.
-10. Patient can add a new delivery address or choose from his previous delivery addresses.
-11. Patient/Pharmacist can view his/her wallet balance.
-12. Patient can pay for his order using his/her wallet balance/ credit card/ Cash on delivery.
-13. Patient can view his/her order details and its status.
-14. Patient can cancel his/her order.
-16. Patient can view alternative medicines for the medicines currently out of stock.
-17. Patient can chat with a Doctor/Pharmacist in the clinic.
-18. Pharmacist recevice a notification when a medicine is out of stock via email.
+
+
 
 List of available Medicines:
 ```
