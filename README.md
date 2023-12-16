@@ -210,6 +210,19 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 We used Postman to test our different API endpoints.
 
+API endpoint: http://localhost:8001/patient/cart
+
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/200f702c-d65a-4a3c-87f9-bf1271edaa2c)
+
+API endpoint: http://localhost:8001/patient/removeMedicineFromCart
+
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f16fc19d-dbd9-4447-a21f-9fcbc313c5db)
+
+API endpoint: http://localhost:8001/patient/getPatient
+
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f14c73df-18ea-4b19-9a51-f84ad4f78281)
+
+
 ## 3.3 | Contribution:
 
 Contributions are always welcome!
