@@ -30,7 +30,7 @@ import ForgotPassword from "./pages/Home/ForgotPassword";
 import ResetPassword from "./pages/Home/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import PharmacistRequest from "./pages/PharmacistRequest/PharmacistRequest";
-
+import Medicines from "./pages/Doctor/Medicines";
 
 function App() {
   return (
@@ -39,7 +39,7 @@ function App() {
       <AppBar hh="" gklh="" />
         <div className="pages">
           <Routes>
-          <Route path="/" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/ResetPassword" element={<ResetPassword />} />
            <Route path="/ChangePassword" element={<ChangePassword />} />
@@ -89,35 +89,17 @@ function App() {
               element={<ViewPharmReq />}
             />
 
-
-            
-
-
             <Route
               exact
               path="/medicinePatient"
-             
-              element={<MultiLevelFilterTable/>}
+              element={<MultiLevelFilterTable />}
             />
-             <Route
-              exact
-              path="/Cart"
-              element={<Cart/>}
-            />
-              <Route
-              exact
-              path="/Checkout"
-              element={<Checkout/>}
-            />
+            <Route exact path="/Cart" element={<Cart />} />
+            <Route exact path="/Checkout" element={<Checkout />} />
 
+            <Route exact path="/orderDetails" element={<OrderDetails />} />
 
-             <Route
-              exact
-              path="/orderDetails"
-              element={<OrderDetails/>}
-            />
-            
-
+            <Route exact path="/Doctor/Prescription" element={<Medicines />} />
           </Routes>
         </div>
       </BrowserRouter>
