@@ -249,8 +249,56 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 # Section 4: Credits and Licensing
 
 ## Credits:
+> ⚠️: **Note:** Click to expand.
+
+<details>
+    <summary> Documentations: </summary>
+    
+- [Clean code](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
+- [RESTful Web API Patterns and Practices Cookbook](https://learning.oreilly.com/library/view/restful-web-api/9781098106737/)
+- [Designing Data Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
+- [Mongoose docs](https://mongoosejs.com/docs/)
+- [Express docs](https://expressjs.com/en/4x/api.html)
+- [ReactJs docs](https://reactjs.org/docs/getting-started.html)
+- [NodeJs docs](https://nodejs.org/en/docs/)
+  
+</details>
+
+<details>
+    <summary> Youtube Videos and Playlists: </summary>
+
+- [REST API (YouTube)](https://www.youtube.com/watch?v=fgTGADljAeg&list=PLZlA0Gpn_vH_uZs4vJMIhcinABSTUH2bY&index=5)
+- [MERN Stack Playlist (YouTube)](https://www.youtube.com/watch?v=98BzS5Oz5E4&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE)
+- [React Playlist (YouTube)](https://www.youtube.com/playlist?list=PL4cUxeGkcC9gZD-Tvwfod2gaISzfRiP9d)
+- [MERN Authentication Playlist (YouTube)](https://youtube.com/playlist?list=PL4cUxeGkcC9g8OhpOZxNdhXggFz2lOuCT&si=GWBphc_N4Z70ez9Y)
+
+</details>
+
+
 
 ## License:
+
+**MIT License**
+
+*Copyright (c) 2023 Skill-IssueSquad*
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
 
