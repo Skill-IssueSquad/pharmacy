@@ -55,6 +55,84 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 ## 2.1 | Main features:
 
+> ⚠️: **Note:** Click to expand.
+
+
+<details>
+ <summary> As a Guest user, you can: </summary>
+ 
+-  register as a patient using username, name, email, password, date of birth, gender, mobile number, emergency contact (full name , mobile number, relation to the patient)
+-  submit a request to register as a pharmacist using username, name, email, password, date of birth, hourly rate, affiliation (hospital), educational background
+
+</details>
+
+
+<details>    
+ <summary> As a Administrator, you can: </summary>
+ 
+ -  view a list of all available medicines with all the relevant details
+ -  search for a medicine based on name or medical usage.
+ -  view a sales report based on a chosen month.
+ -  login using your username and password
+ -  logout
+ -  add another adminstrator with a set username and password.
+ -  remove a pharmacist/patient from the system.
+ -  view all of the information uploaded by a pharmacist to apply to join the platform.
+ -  accept or reject the request of a pharmacist to join the platform.
+ -  change my password
+ -  reset a forgotten password through OTP sent to email
+ -  view a pharmacist's information.
+ -  view a patients's basic information.
+
+
+</details>
+
+<details>
+    
+ <summary> As a Pharmacist, you can: </summary>
+ 
+- view a list of all available medicines with all the relevant details
+- search for a medicine based on name or medical usage.
+- add or edit a medicine with all its relevant details.
+- view a sales report based on a chosen month and can further filter it based on medicine/date.
+- view his/her wallet balance.
+- recevice a notification when a medicine is out of stock via email.
+- chat with a Doctor in the clinic.
+- chat with a Patient in the pharmacy
+- upload and submit required documents upon registration such as ID, pharmacy degree anf Working licenses
+- login using your username and password
+- logout
+- change my password
+-  reset a forgotten password through OTP sent to email
+
+  
+    
+</details>
+<details>
+    
+ <summary> As a Patient, you can: </summary>
+ 
+-  view a list of all available medicines with all the relevant details
+-  search for a medicine based on name or medical usage.
+-  add medicines to his/her cart if he is eligible to take it.
+-  view the medicines in the cart.
+-  remove or change the quantity of an item in the cart.
+-  checkout his/her order.
+-  add a new delivery address or choose from his previous delivery addresses.
+-  view his/her wallet balance.
+-  pay for his order using his/her wallet balance/credit card/Cash on delivery.
+-  view his/her current and past order details and its status.
+-  cancel his/her order.
+-  view alternative medicines for the medicines currently out of stock.
+-  chat with a Pharmacist in the pharmacy.
+-  login using your username and password
+-  logout
+- change my password
+-  reset a forgotten password through OTP sent to email
+
+
+</details>
+
 ## 2.2 | Complementary features:
 
 ## 2.3 | Code examples and screenshots:
@@ -127,24 +205,8 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 
 # pharmacy
 Skill_IssueSquad's Pharmacy
-Features .
-1. Pharmacist upload and submit required documents upon registration such as ID, pharmacy degree anf Working licenses
-2. Patient/Pharmacist/Administrator can view a list of all available medicines with all the relevant details
-3. Patient/Pharmacist/Administrator can search for a medicine based on name or medical usage.
-4. Pharmacist can add or edit a medicine with all its relevant details.
-5. Pharmacist/Administrator can view a sales report based on a chosen month and can further filter it based on medicine/date.
-6. Patient can add medicines to his/her cart if he is eligible to take it.
-7. Patient can view the medicines in the cart.
-8. Patient can remove or change the quantity of an item in the cart.
-9. Patient can checkout his/her order.
-10. Patient can add a new delivery address or choose from his previous delivery addresses.
-11. Patient/Pharmacist can view his/her wallet balance.
-12. Patient can pay for his order using his/her wallet balance/ credit card/ Cash on delivery.
-13. Patient can view his/her order details and its status.
-14. Patient can cancel his/her order.
-16. Patient can view alternative medicines for the medicines currently out of stock.
-17. Patient can chat with a Doctor/Pharmacist in the clinic.
-18. Pharmacist recevice a notification when a medicine is out of stock via email.
+
+
 
 List of available Medicines:
 ```
