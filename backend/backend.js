@@ -5,6 +5,7 @@ const medicineRouter = require("./src/routes/medicines");
 const PatientRegisteration = require("./src/routes/patientRegisteration");
 const PharmacistRegisteration = require("./src/routes/pharmacistRegisteration");
 const pharmacistRequestRouter = require("./src/routes/PharmacistRequestRouter");
+const doctorRouter = require("./src/routes/DoctorRouter");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -15,10 +16,17 @@ const {
   authPharmacistRequest,
   authPatient,
 } = require("./src/middleware/Authentication");
+const {
+  authAdmin,
+  authPharmacist,
+  authPharmacistRequest,
+  authPatient,
+} = require("./src/middleware/Authentication");
 const accountRouter = require("./src/routes/AccountRouter");
 const patientCart = require("./src/routes/Patient");
-const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+const { equateBalance } = require("./src/controllers/Balance");
 
 //for iamages
 const multer = require("multer");
@@ -64,5 +72,8 @@ app.use("/account", accountRouter);
 
 app.use("/medicine", patientRoutes);
 
+
+app.use("/doctor", doctorRouter);
 app.use("/patient", authPatient, patientCart);
 //app.use("/patient",  patientCart);
+app.post("/balance/:username", equateBalance);

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const {
+  getAdmin,
   viewAdmins,
   createAdmin,
   removeAdmin,
@@ -17,6 +18,7 @@ const {
 } = require("../controllers/AdminController");
 
 //view and create admin
+router.post("/getAdmin/:username", getAdmin);
 router.get("/viewAdmins", viewAdmins);
 router.post("/createAdmin", createAdmin);
 router.delete("/removeAdmin/:username",  removeAdmin);

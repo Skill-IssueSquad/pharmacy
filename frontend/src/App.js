@@ -7,9 +7,11 @@ import AddMedicine from "./pages/addmedicine";
 import UpdateMedicine from "./pages/updatemedicine";
 //import Home from "./pages/Home";
 import Admin from "./pages/Admin/Admin";
+import AdminChangePassword from "./pages/Admin/ChangePassword";
 import ViewAdmins from "./pages/Admin/ViewAdmins";
 import ViewPatients from "./pages/Admin/ViewPatients";
 import ViewPharmacists from "./pages/Admin/ViewPharmacists";
+import ViewProfile from "./pages/Admin/ViewProfile";
 import ViewRequests from "./pages/Admin/ViewRequests";
 
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
@@ -33,7 +35,7 @@ import ChangePassword from "./pages/ChangePassword";
 import AlternativesView from "./components/Alternatives";
 
 import PharmacistRequest from "./pages/PharmacistRequest/PharmacistRequest";
-
+import Medicines from "./pages/Doctor/Medicines";
 
 function App() {
   return (
@@ -42,7 +44,7 @@ function App() {
       <AppBar hh="" gklh="" />
         <div className="pages">
           <Routes>
-          <Route path="/" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/ResetPassword" element={<ResetPassword />} />
            <Route path="/ChangePassword" element={<ChangePassword />} />
@@ -70,10 +72,13 @@ function App() {
               element={<UpdateMedicine />}
             />
             <Route exact path="/Admin" element={<Admin />} />
+            <Route exact path="/Admin/ChangePassword" element={<AdminChangePassword />} />
             <Route exact path="/Admin/ViewAdmins" element={<ViewAdmins />} />
             <Route exact path="/Admin/ViewPatients" element={<ViewPatients />} />
             <Route exact path="/Admin/ViewPharmacists" element={<ViewPharmacists />}/>
             <Route exact path="/Admin/ViewRequests" element={<ViewRequests />}/>
+            <Route exact path="/Admin/ViewProfile" element={<ViewProfile />} />
+
 
             <Route exact path="/PharmacistRequest" element={<PharmacistRequest />}/>
 
@@ -115,28 +120,14 @@ function App() {
             <Route
               exact
               path="/medicinePatient"
-             
-              element={<MultiLevelFilterTable/>}
+              element={<MultiLevelFilterTable />}
             />
-             <Route
-              exact
-              path="/Cart"
-              element={<Cart/>}
-            />
-              <Route
-              exact
-              path="/Checkout"
-              element={<Checkout/>}
-            />
+            <Route exact path="/Cart" element={<Cart />} />
+            <Route exact path="/Checkout" element={<Checkout />} />
 
+            <Route exact path="/orderDetails" element={<OrderDetails />} />
 
-             <Route
-              exact
-              path="/orderDetails"
-              element={<OrderDetails/>}
-            />
-            
-            <Route
+            <Route exact path="/Doctor/Prescription" element={<Medicines />} />            <Route
               exact
               path="/viewAlternatives"
               element={<AlternativesView/>}
