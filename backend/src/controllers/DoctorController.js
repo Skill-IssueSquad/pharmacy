@@ -183,6 +183,8 @@ const getPharmacist = async (req, res) => {
 
 };
 
+
+
 module.exports = {
   submitPrescriptionToPharmacy,
   getPatients,

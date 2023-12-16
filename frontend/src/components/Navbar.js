@@ -83,6 +83,14 @@ const Navbar = () => {
             >
               Chat with patient
             </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/DoctorList");
+              }}
+            >
+              Chat with doctor
+            </Button>
           </Box>
 
           <Box>

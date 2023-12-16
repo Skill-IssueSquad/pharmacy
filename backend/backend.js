@@ -6,6 +6,7 @@ const PatientRegisteration = require("./src/routes/patientRegisteration");
 const PharmacistRegisteration = require("./src/routes/pharmacistRegisteration");
 const pharmacistRequestRouter = require("./src/routes/PharmacistRequestRouter");
 const doctorRouter = require("./src/routes/DoctorRouter");
+const { getPharmacist } = require("./src/controllers/DoctorController");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -51,7 +52,6 @@ io.on("connection", (socket) => {
   });
 });
 
-
 //for iamages
 const multer = require("multer");
 
@@ -94,7 +94,7 @@ app.use("/register/pharmacist", PharmacistRegisteration);
 app.use("/pharmacistRequest", authPharmacistRequest, pharmacistRequestRouter);
 
 app.use("/account", accountRouter);
-
+app.get("/getPharmacist", getPharmacist);
 app.use("/medicine", patientRoutes);
 
 app.use("/doctor", doctorRouter);
