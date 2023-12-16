@@ -72,7 +72,7 @@ function App() {
         }
         else{
             try{
-                const response = await fetch('http://localhost:8000/account/login', {method: 'POST', 
+                const response = await fetch('http://localhost:8001/account/login', {method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -90,6 +90,9 @@ function App() {
                     const role = json.role;
                     //setToken(json.data);
                     localStorage.setItem('token',json.data);
+                    document.cookie = "token=" + json.data + "; HttpOnly; path=/";
+                    //console.log("JSON DATAAAA:: ", json.data);
+                    console.log("GET RES: ",localStorage.getItem('token'));
                     localStorage.setItem('role',role);
                     localStorage.setItem('username',data.username);
                     switch(role)

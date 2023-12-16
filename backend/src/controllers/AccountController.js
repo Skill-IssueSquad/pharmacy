@@ -209,7 +209,7 @@ const login = async (req,res) => {
         if (bool){
           const maxAge = 3 * 24 * 60 * 60;
           const token =  jwt.sign({ username, role: role}, jwtSecret, {expiresIn: maxAge});
-          res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 ,  sameSite: 'None'});
+          res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 ,  sameSite: 'None', secure: true});
           reply = {
             success: true,
             data: token,

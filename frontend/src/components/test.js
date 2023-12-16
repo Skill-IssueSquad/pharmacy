@@ -35,7 +35,7 @@ const MultiLevelFilterTable = () => {
     discount: 0,
     netPrice: 0,
   });  
-  var userName = "regtest"; 
+  var userName = localStorage.getItem('username'); 
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();

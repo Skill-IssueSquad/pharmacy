@@ -4,20 +4,24 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "./navBarC";
+import { auth } from "../pages/Protected/AuthProvider";
 const MyContext = React.createContext();
 
 const Cart = () => {
-  var userName = "regtest";
+  auth();
+  var userName = localStorage.getItem("username");
   const [cartItems, setCartItems] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [changedCart, setChangedCart] = useState(0);
 
   const addQuantity = (id) => {
+    
     fetch(`http://localhost:8001/medicine/addToCart/${userName}/${id}/1`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       // body: JSON.stringify({
       //   userName: userName,
       //   medicineId: "616f1a5c1b1b7f2f4c6e8a5f",
@@ -74,11 +78,13 @@ const Cart = () => {
 
     console.log(index);
     if (updatedCartItems[index].quantity === 1) {
+      
       fetch("http://localhost:8001/patient/removeMedicineFromCart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ userName, medicineId: id }),
       })
         .then((response) => {
@@ -115,11 +121,13 @@ const Cart = () => {
   };
 
   const removeItemFromCart = (id) => {
+    
     fetch("http://localhost:8001/patient/removeMedicineFromCart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({ userName, medicineId: id }),
     })
       .then((response) => {
@@ -155,10 +163,12 @@ const Cart = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(requestData),
     };
 
     // Fetch cart items when the component mounts
+    
     fetch("http://localhost:8001/patient/cart", requestOptions)
       .then((response) => {
         if (response.ok) {
@@ -211,12 +221,16 @@ const Cart = () => {
   useEffect(() => {
     const fetchMedicines = (cartItems) => {
       // Send a request to your server with the list of medicine IDs
+
+      
+      
       fetch("http://localhost:8001/medicine/getArrayMedicinesByID", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ cartItems }),
+        credentials: "include",
       })
         .then((response) => {
           if (response.ok) {
@@ -238,7 +252,7 @@ const Cart = () => {
   // // const fetchMedicines = async () => {
   // //     try {
   // //       console.log("HERE:");
-  // //       const response = await fetch("http://localhost:8001/medicine");
+  // //       const response = await fetch("https://localhost:8001/medicine");
   // //       console.log("Response status:", response.status);
 
   // //       if (!response.ok) {
@@ -255,7 +269,7 @@ const Cart = () => {
   // //   };
   // const fetchMedicines = (medicineIds) => {
   //     // Send a request to your server with the list of medicine IDs
-  //     fetch('http://localhost:8001/medicines', {
+  //     fetch('https://localhost:8001/medicines', {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',

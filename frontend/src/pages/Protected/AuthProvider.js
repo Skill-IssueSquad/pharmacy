@@ -9,6 +9,7 @@ const AuthProvider = () => {
 
 export const auth = () =>{
   const token = (localStorage.getItem('token')) ;
+  console.log("From auth: ",token);
 
   if(token){
     return true;

@@ -18,7 +18,7 @@ import { useState,useEffect } from 'react';
 
 const pages = ['Home', 'Cart', 'Orders','Change Password'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const username ="testuser";
+const username = localStorage.getItem('username');
 
 
 function ResponsiveAppBar() {

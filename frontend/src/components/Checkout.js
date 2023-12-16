@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { useNavigate } from 'react-router-dom';
 
 const MyContext = React.createContext();
-const username ="regtest";
+const username = localStorage.getItem('username');
 
 
 const Checkout = () => {

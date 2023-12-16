@@ -48,7 +48,7 @@ const PatientRegisterationForm = () => {
       patient
     );
 
-    const patientData = await json(response);
+    const patientData = json(response);
 
     if (!response) {
       setError(patientData.message);

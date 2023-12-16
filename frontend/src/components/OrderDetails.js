@@ -22,7 +22,7 @@ const OrderDetails = () => {
   const [order, setOrder] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const username = "regtest";
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     const fetchUser = async () => {

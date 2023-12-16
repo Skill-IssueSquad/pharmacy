@@ -18,7 +18,7 @@ const Admin = () => {
   const submitAdmin = async (formData) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/admin/createAdmin",
+        "http://localhost:8001/admin/createAdmin",
         formData
       );
       console.log(res.data);
@@ -42,7 +42,7 @@ const Admin = () => {
         <p></p>
         <ViewAdmins
           columns={["username"]}
-          API_GET_URL={"http://localhost:8000/admin/viewAdmins"}
+          API_GET_URL={"http://localhost:8001/admin/viewAdmins"}
         />
       </div>) :
       (<h2>No access</h2>)

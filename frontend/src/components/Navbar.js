@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 const Navbar = () => {
 
 
-const username ="fewf";
+const username = localStorage.getItem('username');
 
 const [walletBalance, setWalletBalance] = useState(0);
 

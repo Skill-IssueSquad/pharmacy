@@ -56,7 +56,7 @@ const MedicineItem = ({ alternative }) => (
 );
 
 const AlternativesView = () => {
-  const username = "regtest";
+  const username = localStorage.getItem("username");
   const navigate = useNavigate();
   const location = useLocation();
   const { medicineName } = location.state;
