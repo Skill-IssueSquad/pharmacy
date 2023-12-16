@@ -36,7 +36,8 @@ import AlternativesView from "./components/Alternatives";
 
 import PharmacistRequest from "./pages/PharmacistRequest/PharmacistRequest";
 import Medicines from "./pages/Doctor/Medicines";
-
+import PharmacistList from "./pages/PharmacistList";
+import Chat from "./pages/Chat";
 function App() {
   return (
     <div className="app" style={{backgroundColor: '#f0f0f0', minHeight: '727px'}}>
@@ -77,10 +78,12 @@ function App() {
             <Route exact path="/Admin/ViewPatients" element={<ViewPatients />} />
             <Route exact path="/Admin/ViewPharmacists" element={<ViewPharmacists />}/>
             <Route exact path="/Admin/ViewRequests" element={<ViewRequests />}/>
-            <Route exact path="/Admin/ViewProfile" element={<ViewProfile />} />
+            <Route exact path="/Admin/ViewProfile" element={<ViewProfile /> } />
+            <Route exact path="/Chat" element={<Chat />} />
 
 
             <Route exact path="/PharmacistRequest" element={<PharmacistRequest />}/>
+            <Route exact path="/chatPharm" element={<PharmacistList />} />
 
             <Route
               exact

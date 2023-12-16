@@ -130,6 +130,34 @@ const submitPrescriptionToPharmacy = async (req, res) => {
   }
 };
 
+const getPatients = async (req, res) => {
+  try {
+    const patients = await Patient.find({});
+    var patientList = [];
+    for (var patient of patients) {
+      patientList.push({
+        name: `${patient.name}(${patient.username})`,
+        username: patient.username,
+      });
+    }
+    const send = {
+      success: true,
+      data: patientList,
+      message: "Patients fetched successfully",
+    };
+    res.status(200).json(send);
+  } catch (error) {
+    const send = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(send);
+  }
+
+}
+
 module.exports = {
   submitPrescriptionToPharmacy,
+  getPatients
 };
