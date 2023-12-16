@@ -40,6 +40,7 @@ const MultiLevelFilterTable = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           appID,
         }),
@@ -101,7 +102,9 @@ const MultiLevelFilterTable = () => {
   const fetchMedicines = async () => {
     try {
       console.log("HERE:");
-      const response = await fetch("http://localhost:8001/medicine");
+      const response = await fetch("http://localhost:8001/medicine", {
+        credentials: "include",
+      });
       console.log("Response status:", response.status);
 
       if (!response.ok) {
@@ -157,6 +160,7 @@ const MultiLevelFilterTable = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         appID,
         myMedicines,
@@ -178,6 +182,7 @@ const MultiLevelFilterTable = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           appID,
           medicineName: medicine.medicineName,
@@ -216,6 +221,7 @@ const MultiLevelFilterTable = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           appID,
           medicineID: medicine._id,
@@ -252,6 +258,7 @@ const MultiLevelFilterTable = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           appID,
           additionalMedicines,

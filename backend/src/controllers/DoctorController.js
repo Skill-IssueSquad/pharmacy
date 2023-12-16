@@ -4,9 +4,10 @@ const submitPrescriptionToPharmacy = async (req, res) => {
   try {
     const { appID, myMedicines } = req.body;
     const response = await fetch(
-      `http://localhost:8000/doctor/getPatient/${appID}`
+      `http://localhost:8000/getPatient/${appID}`
     );
     const resData = await response.json();
+    console.log(resData);
     const patientClinic = resData.data.patient;
     const discount = resData.data.discount / 100;
     const username = patientClinic.username;
