@@ -5,6 +5,9 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "./navBarC";
 import { auth } from "../pages/Protected/AuthProvider";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Typography } from '@mui/material';
+
 const MyContext = React.createContext();
 
 const Cart = () => {
@@ -13,7 +16,7 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [changedCart, setChangedCart] = useState(0);
-
+  const [loading, setLoading] = useState(true); 
   const addQuantity = (id) => {
     
     fetch(`http://localhost:8001/medicine/addToCart/${userName}/${id}/1`, {
@@ -243,6 +246,7 @@ const Cart = () => {
           // Here, you have the specific medicines, and you can update your component state accordingly
           setMedicines(medicineOutputs);
           console.log("Medicines:", medicines);
+        setLoading(false);
         })
         .catch((error) => console.error("Error fetching medicines:", error));
     };
@@ -291,6 +295,19 @@ const Cart = () => {
   //   };
   // console.log(cartItems);
   var i = 0;
+
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <CircularProgress />
+        <Typography variant="h6" style={{ marginLeft: '10px' }}>
+          Loading...
+        </Typography>
+      </div>
+    );
+  }
+  else{
   return (
     <div>
       <ResponsiveAppBar />
@@ -397,6 +414,7 @@ const Cart = () => {
       </MyContext.Provider>
     </div>
   );
+}
 };
 export default Cart;
 

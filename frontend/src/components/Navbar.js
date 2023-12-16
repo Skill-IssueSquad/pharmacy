@@ -1,43 +1,39 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useState,useEffect } from 'react';
-import Box from '@mui/material/Box';
-
-
+import React from "react";
+import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const username = localStorage.getItem("username");
+  const navigate = useNavigate();
+  const [walletBalance, setWalletBalance] = useState(0);
 
-
-const username = localStorage.getItem('username');
-
-const [walletBalance, setWalletBalance] = useState(0);
-
-
-const getWalletBalance = (username) => {
-  fetch('http://localhost:8001/pharmacist/medicines/getWalletBalance', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username }),
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json(); // Return the JSON response
-      } else {
-        throw new Error('Network response was not ok');
-      }
+  const getWalletBalance = (username) => {
+    fetch("http://localhost:8001/pharmacist/medicines/getWalletBalance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username }),
     })
-    .then((data) => {
-      console.log(data.data.walletBalance);
-      //walletBalance = data.data.walletBalance;
+      .then((response) => {
+        if (response.ok) {
+          return response.json(); // Return the JSON response
+        } else {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .then((data) => {
+        console.log(data.data.walletBalance);
+        //walletBalance = data.data.walletBalance;
 
-      setWalletBalance(data.data);
-    })
-    .catch((error) => console.error('Error fetching wallet balance:', error));
-};
+        setWalletBalance(data.data);
+      })
+      .catch((error) => console.error("Error fetching wallet balance:", error));
+  };
 
-getWalletBalance(username);
+  getWalletBalance(username);
   return (
     <AppBar position="static">
       <Container>
@@ -56,40 +52,57 @@ getWalletBalance(username);
             Sales
           </Button>
           <Box>
-          <Button
-            component={Link}
-            to="/pharmacist/medicines/salesreport"
-            color="inherit"
-          >
-            Sales Report
-          </Button>
+            <Button
+              component={Link}
+              to="/pharmacist/medicines/salesreport"
+              color="inherit"
+            >
+              Sales Report
+            </Button>
 
-          <Button
-            component={Link}
-            to="/pharmacist/medicines/monthlysalesreport"
-            color="inherit"
-          >
-            Monthly Sales Report
-          </Button>
+            <Button
+              component={Link}
+              to="/pharmacist/medicines/monthlysalesreport"
+              color="inherit"
+            >
+              Monthly Sales Report
+            </Button>
 
-
-
-          <Button
-            component={Link}
-            to="/pharmacist/medicines/addmedicine"
-            color="inherit"
-          >
-            AddMedicine
-          </Button>
+            <Button
+              component={Link}
+              to="/pharmacist/medicines/addmedicine"
+              color="inherit"
+            >
+              AddMedicine
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/PatientList");
+              }}
+            >
+              Chat with patient
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate("/DoctorList");
+              }}
+            >
+              Chat with doctor
+            </Button>
           </Box>
-          <Box >
-            <div style={{ marginLeft: '20px', marginBottom: '12px' }}>
-            <Typography variant="body1" style={{ marginTop: '10px', marginRight: '10px' }}>
-              Wallet Balance: {walletBalance}
-            </Typography>
-        </div>
+
+          <Box>
+            <div style={{ marginLeft: "20px", marginBottom: "12px" }}>
+              <Typography
+                variant="body1"
+                style={{ marginTop: "10px", marginRight: "10px" }}
+              >
+                Wallet Balance: {walletBalance}
+              </Typography>
+            </div>
           </Box>
-         
         </Toolbar>
       </Container>
     </AppBar>
