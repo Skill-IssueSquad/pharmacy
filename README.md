@@ -198,14 +198,6 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 </details>
 
 
-
-
-1. http://localhost:8001/medicine
-2. http://localhost:8001/patient/getPatient
-3. http://localhost:8001/account/login
-4. 
-
-
 ## 3.2 | Testing:
 
 We used Postman to test our different API endpoints.
