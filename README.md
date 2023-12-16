@@ -226,8 +226,35 @@ const getPatient = async (req, res) => {
 };
 
 ```
+Clear cart of a patient
 
----
+```
+const clearCart = async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    const patient = await Patient.findOne({ username: username });
+
+    if (patient == null) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Patient not found", data: null });
+    } else {
+      patient.cart = {};
+      await patient.save();
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Cart Cleared", data: patient.cart });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message, data: null });
+  }
+};
+
+```
 
 # Section 3: How to use
 
