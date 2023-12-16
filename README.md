@@ -133,7 +133,7 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 </details>
 
-## 2.3 | Code examples and screenshots:
+## 2.2 | Code examples and screenshots:
 Get Cart of Patient
 
 ```
