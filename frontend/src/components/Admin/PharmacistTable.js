@@ -26,7 +26,7 @@ export default function DataTable() {
       {<HomeIcon style={{color: 'blue', opacity: 0.5}}></HomeIcon>}
       </Link>,
       <Typography key="3" color="grey">
-        View Doctors
+        View Pharmacists
       </Typography>,
     ];
     const handleOpen = () => {

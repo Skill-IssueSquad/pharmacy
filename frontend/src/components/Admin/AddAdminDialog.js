@@ -102,7 +102,7 @@ export default function FormDialog() {
     }
     else{
         try{
-            const response = await fetch('http://localhost:8000/admin/createAdmin/', {method: 'POST', 
+            const response = await fetch('/admin/createAdmin/', {method: 'POST', 
             headers: {
                 'Content-Type': 'application/json',
             },
