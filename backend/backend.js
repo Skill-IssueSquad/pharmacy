@@ -18,6 +18,7 @@ const {
   authPharmacistRequest,
   authPatient,
 } = require("./src/middleware/Authentication");
+
 const accountRouter = require("./src/routes/AccountRouter");
 const patientCart = require("./src/routes/Patient");
 const jwt = require("jsonwebtoken");
