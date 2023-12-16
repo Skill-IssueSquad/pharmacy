@@ -315,9 +315,33 @@ const clearCart = async (req, res) => {
 
 We used Postman to test our different API endpoints.
 
-API endpoint: http://localhost:8001/patient/cart
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/200f702c-d65a-4a3c-87f9-bf1271edaa2c)
+
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/cart`                                                                                     |
+| Test Body JSON: | `{ "username":"omarS"}` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Cart returened",
+    "data": {
+        "medicines": [
+            {
+                "medicine_id": "6526d02ddc980ba82a4a62bb",
+                "quantity": 2,
+                "_id": "657e34c15228f58a6f07d83d"
+            }
+        ],
+        "netPrice": 40,
+        "totalPrice": 40
+    }
+}
+```
 
 API endpoint: http://localhost:8001/patient/removeMedicineFromCart
 
