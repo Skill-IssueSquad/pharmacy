@@ -266,7 +266,7 @@ const deleteOrder = async (req, res) => {
         medicine.quantity = medicine.quantity + medicines[i].quantity;
         await medicine.save();
       }
-      if (patient.orders[index].paymentMethod === "stripe") {
+      if (patient.orders[index].paymentMethod === "stripe" || patient.orders[index].paymentMethod === "wallet") {
         if (patient.walletBalance == undefined)
           patient.walletBalance = orders[index].netPrice;
         else
@@ -274,8 +274,16 @@ const deleteOrder = async (req, res) => {
             patient.walletBalance + orders[index].netPrice;
       }
 
-      const newOrders = orders.filter((order) => order._id != orderID);
-      patient.orders = newOrders;
+      //const orderIndex = orders.findIndex((order) => order._id === orderID);
+
+     // if (orderIndex !== -1) {
+        patient.orders[index].status = "cancelled";
+      
+      
+     //   await patient.save();
+     // } else {
+       // console.error("Order not found."); 
+      //  }
       await patient.save();
 
       console.log(patient);

@@ -15,6 +15,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CircularProgress
 } from '@mui/material';
 import { json } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ const OrderDetails = () => {
   const [medicines, setMedicines] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const username = localStorage.getItem('username');
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -68,9 +70,11 @@ const OrderDetails = () => {
   
           setOrder(fetchedOrders);
           setSelectedOrder(fetchedOrders[fetchedOrders.length - 1]);
+          setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
+        setLoading(false);
       }
     };
   
@@ -176,7 +180,16 @@ const OrderDetails = () => {
   // if (!medicines || medicines.length === 0) {
   //   return <p>Loading Orders...</p>;
   // }
-
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <CircularProgress />
+        <Typography variant="h6" style={{ marginLeft: '10px' }}>
+          Loading...
+        </Typography>
+      </div>
+    );
+  }else{
   return (
     <div>
             <ResponsiveAppBar/>
@@ -227,7 +240,7 @@ const OrderDetails = () => {
                     <TableCell>{formatDate(orderItem.date)}</TableCell>
                     <TableCell>{orderItem.discount}</TableCell>
                     <TableCell>{orderItem.netPrice}</TableCell>
-                    <TableCell><button onClick={DeleteOrder}>Cancel Order</button></TableCell>
+                    <TableCell><button  disabled={orderItem.status === "cancelled"} onClick={DeleteOrder}>Cancel Order</button></TableCell>
                   </>
                 ) : null}
               </TableRow>
@@ -278,6 +291,6 @@ const OrderDetails = () => {
     </Container>
     </div>
   );
-};
+}};
 
 export default OrderDetails;
