@@ -1,11 +1,10 @@
 const Patient = require("../models/Patient");
 const Medicine = require("../models/Medicines");
+const Pharmacist = require("../models/Pharmacist");
 const submitPrescriptionToPharmacy = async (req, res) => {
   try {
     const { appID, myMedicines } = req.body;
-    const response = await fetch(
-      `http://localhost:8000/getPatient/${appID}`
-    );
+    const response = await fetch(`http://localhost:8000/getPatient/${appID}`);
     const resData = await response.json();
     console.log(resData);
     const patientClinic = resData.data.patient;
@@ -130,6 +129,62 @@ const submitPrescriptionToPharmacy = async (req, res) => {
   }
 };
 
+const getPatients = async (req, res) => {
+  try {
+    const patients = await Patient.find({});
+    var patientList = [];
+    for (var patient of patients) {
+      patientList.push({
+        name: `${patient.name}(${patient.username})`,
+        username: patient.username,
+      });
+    }
+    const send = {
+      success: true,
+      data: patientList,
+      message: "Patients fetched successfully",
+    };
+    res.status(200).json(send);
+  } catch (error) {
+    const send = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(send);
+  }
+};
+
+const getPharmacist = async (req, res) => {
+
+  try {
+    const patients = await Pharmacist.find({});
+    var patientList = [];
+    for (var patient of patients) {
+      patientList.push({
+        name: `${patient.name}(${patient.username})`,
+        username: patient.username,
+      });
+    }
+    const send = {
+      success: true,
+      data: patientList,
+      message: "Pharmacists fetched successfully",
+    };
+    res.status(200).json(send);
+  } catch (error) {
+    const send = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(send);
+  }
+
+};
+
 module.exports = {
   submitPrescriptionToPharmacy,
+  getPatients,
+  getPharmacist,
 };

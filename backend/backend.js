@@ -9,6 +9,7 @@ const doctorRouter = require("./src/routes/DoctorRouter");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const { Server } = require("socket.io");
 const path = require("path");
 const {
   authAdmin,
@@ -21,6 +22,35 @@ const patientCart = require("./src/routes/Patient");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const { equateBalance } = require("./src/controllers/Balance");
+
+const io = new Server(process.env.SOCKET_PORT, {
+  cors: {
+    origin: "http://localhost:3001",
+  },
+});
+
+io.on("connection", (socket) => {
+  // console.log(`Socket ID : ${socket.id}`);
+  socket.on("join-room", (data) => {
+    //console.log(data);
+    socket.join(data.roomId);
+    console.log("Joined room ", data.roomId);
+  });
+  socket.on("send-message", (data) => {
+    // console.log(data);
+    const send = {
+      message: data.message,
+      time: data.time,
+      roomId: data.roomId,
+    };
+    socket.to(data.roomId).emit("receive-message", send);
+  });
+
+  socket.on("disconnect", () => {
+    // console.log("User disconnected");
+  });
+});
+
 
 //for iamages
 const multer = require("multer");
