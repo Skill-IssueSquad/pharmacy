@@ -16,16 +16,10 @@ const {
   authPharmacistRequest,
   authPatient,
 } = require("./src/middleware/Authentication");
-const {
-  authAdmin,
-  authPharmacist,
-  authPharmacistRequest,
-  authPatient,
-} = require("./src/middleware/Authentication");
 const accountRouter = require("./src/routes/AccountRouter");
 const patientCart = require("./src/routes/Patient");
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const { equateBalance } = require("./src/controllers/Balance");
 
 //for iamages
@@ -50,8 +44,9 @@ app.use("/documents", express.static("documents"));
 mongoose
   .connect(process.env.DATABASE_URL, { useNewUrlParser: true })
   .then(() => {
-    app.listen(process.env.PORT, () => console.log("Server Started on Port " + process.env.PORT));
-    
+    app.listen(process.env.PORT, () =>
+      console.log("Server Started on Port " + process.env.PORT)
+    );
   })
   .catch((err) => console.log(err));
 
@@ -71,7 +66,6 @@ app.use("/pharmacistRequest", authPharmacistRequest, pharmacistRequestRouter);
 app.use("/account", accountRouter);
 
 app.use("/medicine", patientRoutes);
-
 
 app.use("/doctor", doctorRouter);
 app.use("/patient", authPatient, patientCart);
