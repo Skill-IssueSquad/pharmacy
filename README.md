@@ -133,9 +133,7 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 </details>
 
-## 2.2 | Complementary features:
-
-## 2.3 | Code examples and screenshots:
+## 2.2 | Code examples and screenshots:
 Get Cart of Patient
 
 ```
@@ -226,8 +224,35 @@ const getPatient = async (req, res) => {
 };
 
 ```
+Clear cart of a patient
 
----
+```
+const clearCart = async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    const patient = await Patient.findOne({ username: username });
+
+    if (patient == null) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Patient not found", data: null });
+    } else {
+      patient.cart = {};
+      await patient.save();
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Cart Cleared", data: patient.cart });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message, data: null });
+  }
+};
+
+```
 
 # Section 3: How to use
 
@@ -381,90 +406,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# pharmacy
-Skill_IssueSquad's Pharmacy
-
-
-
-List of available Medicines:
-```
-const getAllMedicine = async (req, res) => {
-  try {
-    const medicine = await Medicine.find({ isArchived: false });
-    res.status(200).json(medicine);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
- ```
-Search for a medcine based on name or medical usage
-```
-const getMedicineByName = (req, res) => {
-  const medicineName = req.params.name;
-  if (!medicineName || medicineName === "") {
-    console.log("EMPTY SEARCH");
-    res.status(200).json([]);
-  } else {
-    Medicine.find({ medicineName: medicineName, isArchived: false })
-      .then((medicine) => {
-        if (medicine) {
-          res.status(200).json(medicine);
-        } else {
-          res.status(404).json({ error: "Medicine not found" });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({ error: "Internal server error" });
-      });
-
-  }
-};
-
-const getMedicineByMedicalUse = (req, res) => {
-  const medicinalUsage = req.params.medical_use;
-
-  if (!medicinalUsage || medicinalUsage === "") {
-    console.log("EMPTY SEARCH");
-    res.status(200).json([]);
-  } else {
-    Medicine.find({ medicinalUsage: medicinalUsage, isArchived: false })
-      .then((medicine) => {
-        if (medicine) {
-          res.status(200).json(medicine);
-        } else {
-          res.status(404).json({ error: "Medicine not found" });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({ error: "Internal server error" });
-      });
-  }
-};
-
-
-
-
-```
