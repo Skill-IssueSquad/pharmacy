@@ -99,7 +99,7 @@ function App() {
                     {
                         case "Admin" : navigate('/admin'); break;
                         // what is the url?
-                        case "Pharmacist": navigate('/pharmacist/medecines'); break;
+                        case "Pharmacist": navigate('/pharmacist/medicines'); break;
                         //check here
                         case "PharmacistRequest": navigate('/PharmacistRequest'); break;
                         default:  navigate('/patient');

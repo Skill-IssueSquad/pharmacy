@@ -1,13 +1,55 @@
 const Patient = require("../models/Patient");
 const Medicine = require("../models/Medicines");
+const Pharmacist = require("../models/Pharmacist");
+const nodeMailer = require("nodemailer");
+
+const sendEmailFunc = async (email, message, subject) => {
+  const transporter = await nodeMailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "el7a2ni.virtual@gmail.com",
+      pass: "zijy ztiz drcn ioxq",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  return await transporter
+    .sendMail({
+      from: "SkillIssue <el7a2ni.virtual@gmail.com>",
+      to: email,
+      subject: subject,
+      text: message,
+    })
+    .then((info) => {
+      if (info) {
+        console.log("email sent");
+        return true;
+      }
+    })
+    .catch((err) => {
+      if (err) {
+        console.log("it has an error", err);
+        return false;
+      }
+    });
+};
+
 const submitPrescriptionToPharmacy = async (req, res) => {
   try {
     const { appID, myMedicines } = req.body;
-    const response = await fetch(
-      `http://localhost:8000/doctor/getPatient/${appID}`
-    );
+    const response = await fetch(`http://localhost:8000/getPatient/${appID}`, {
+      credentials: "include",
+    });
+    console.log("The response was : ", response);
     const resData = await response.json();
+    console.log(resData);
     const patientClinic = resData.data.patient;
+    const docName = resData.data.docName;
     const discount = resData.data.discount / 100;
     const username = patientClinic.username;
     var patientPharmacy = await Patient.findOne({ username: username });
@@ -101,7 +143,7 @@ const submitPrescriptionToPharmacy = async (req, res) => {
     if (hadNoAccount) {
       await patientPharmacy.save();
     } else {
-      await Patient.findByIdAndUpdate(patientPharmacy._id, {
+      patientPharmacy = await Patient.findByIdAndUpdate(patientPharmacy._id, {
         $set: {
           cart: {
             medicines: patientPharmacy.cart.medicines,
@@ -111,6 +153,18 @@ const submitPrescriptionToPharmacy = async (req, res) => {
           },
         },
       });
+    }
+
+    var subject = "Pharmacy Cart";
+    var message = `Dear ${patientPharmacy.name},\n\nYour doctor ( ${docName} ) has added prescription medicines into your cart in the pharmacy.\n\nBest Regards,\nSkillIssue Team`;
+    let sent = await sendEmailFunc(patientPharmacy.email, message, subject);
+    if (!sent) {
+      res.status(500).json({
+        success: false,
+        data: null,
+        message: "Some error occurred while sending email.",
+      });
+      return;
     }
 
     const send = {
@@ -129,6 +183,60 @@ const submitPrescriptionToPharmacy = async (req, res) => {
   }
 };
 
+const getPatients = async (req, res) => {
+  try {
+    const patients = await Patient.find({});
+    var patientList = [];
+    for (var patient of patients) {
+      patientList.push({
+        name: `${patient.name}(${patient.username})`,
+        username: patient.username,
+      });
+    }
+    const send = {
+      success: true,
+      data: patientList,
+      message: "Patients fetched successfully",
+    };
+    res.status(200).json(send);
+  } catch (error) {
+    const send = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(send);
+  }
+};
+
+const getPharmacist = async (req, res) => {
+  try {
+    const patients = await Pharmacist.find({});
+    var patientList = [];
+    for (var patient of patients) {
+      patientList.push({
+        name: `${patient.name}(${patient.username})`,
+        username: patient.username,
+      });
+    }
+    const send = {
+      success: true,
+      data: patientList,
+      message: "Pharmacists fetched successfully",
+    };
+    res.status(200).json(send);
+  } catch (error) {
+    const send = {
+      success: false,
+      data: null,
+      message: error.message,
+    };
+    return res.status(500).json(send);
+  }
+};
+
 module.exports = {
   submitPrescriptionToPharmacy,
+  getPatients,
+  getPharmacist,
 };
