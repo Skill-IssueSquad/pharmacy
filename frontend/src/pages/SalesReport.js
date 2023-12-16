@@ -9,7 +9,7 @@ import {
   Paper,
   TextField,
 } from '@mui/material';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navBarPharmacist';
 import { format } from 'date-fns';
 
 const SalesReport = () => {
@@ -57,8 +57,8 @@ const SalesReport = () => {
   };
 
   return (
-    <div className="search_and_filter" style={{ padding: '20px' }}>
-      <Navbar />
+    <div className="search_and_filter" >
+      <Navbar button={"Sales Report"}/>
       <h1>Medicine Sales</h1>
 
       <TextField

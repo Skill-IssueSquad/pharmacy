@@ -48,7 +48,6 @@ function App() {
       style={{ backgroundColor: "#f0f0f0", minHeight: "727px" }}
     >
       <BrowserRouter>
-        <AppBar hh="" gklh="" />
         <div className="pages">
           <Routes>
             <Route path="/" element={<Login />} />

@@ -19,10 +19,13 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountIcon from '@mui/icons-material/AccountCircle'
 
 const pages = [
-  "Home",
-  "Cart",
-  "Orders",
-  "Chat with Pharmacist",
+  "Medicines",
+  "Sales",
+  "Sales Report",
+  "Monthly Sales Report",
+  "Add Medicine",
+  "Chat with Patient",
+  "Chat with Doctor",
   "Change Password",
 ];
 const settings = ["Logout"];
@@ -64,11 +67,10 @@ function ResponsiveAppBar({button}) {
     }
   };
 
-
   const [walletBalance, setWalletBalance] = useState(0);
 
   const getWalletBalance = (username) => {
-    fetch("http://localhost:8001/patient/getPatient", {
+    fetch("http://localhost:8001/pharmacist/medicines/getWalletBalance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +88,7 @@ function ResponsiveAppBar({button}) {
         console.log(data.data.walletBalance);
         //walletBalance = data.data.walletBalance;
 
-        setWalletBalance(data.data.walletBalance);
+        setWalletBalance(data.data);
       })
       .catch((error) => console.error("Error fetching wallet balance:", error));
   };
@@ -103,20 +105,22 @@ function ResponsiveAppBar({button}) {
             onClick={() => navigate(-1)} // Add this line
             color="inherit"
           >
-            <ArrowBackIcon />
+            <ArrowBackIcon style={{position: 'absolute', marginRight:'20px'}}/>
           </IconButton>
           <Typography
             variant="h6"
             noWrap
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                //fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+                fontSize: '20px'
             }}
+            style={{marginRight:'15px'}}
           >
             El7a2ni Pharmacy
           </Typography>
@@ -159,27 +163,34 @@ function ResponsiveAppBar({button}) {
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, marginLeft: '-10px' }}>
             {pages.map((page) => {
-              let url = "/patient/";
-              if (page === "Home") {
-                url = "/medicinePatient/";
-              } else if (page === "Cart") {
-                url = "/Cart/";
-              } else if (page === "Orders") {
-                url = "/orderDetails/";
-              } else if (page === "Change Password") {
-                url = "/ChangePassword/";
-              }
-              else if (page === "Chat with Pharmacist") {
-                url = "/chatPharm";
-              }
+              let url = "/pharmacist/medicines/";
+              if (page === "Medicines") {
+                url = "/pharmacist/medicines/";
+              } else if (page === "Sales") {
+                url = "/pharmacist/medicines/sales/";
+              } else if (page === "Sales Report") {
+                url = "/pharmacist/medicines/salesreport/";
+                } else if (page === "Monthly Sales Report") {
+                url = "/pharmacist/medicines/monthlysalesreport/";
+                }else if (page === "Add Medicine") {
+                url = "/pharmacist/medicines/addmedicine/";
+                }
+                else if (page === "Chat with Patient") {
+                url = "/PatientList/";
+                }
+                else if (page === "Chat with Doctor") {
+                url = "/DoctorList";
+                } else if (page === "Change Password") {
+                    url = "/ChangePassword/";
+                }
               return (
                 <Button
                   key={page}
                   onClick={() => navigate(url)}
                   sx={{ my: 2, color: "black", display: "block" }}
-                  style={{fontSize:'14px', margin:'10px', marginTop: '20px', 
+                  style={{fontSize:'14px', margin:'5px', marginTop: '20px', marginLeft:'1px',marginRight:'-5px',
                   backgroundColor: button === page? 'white' : 'transparent'}}
                 >
                   {page}
@@ -188,10 +199,10 @@ function ResponsiveAppBar({button}) {
             })}
           </Box>
           <Box>
-            <div style={{ marginLeft: "20px", marginTop: "10px" , width:140}}>
+            <div style={{ marginLeft: "-75px", marginTop: "5px", width:10 }}>
               <Typography
                 variant="body1"
-                style={{ marginTop: "px", marginRight: "20px" }}
+                style={{ marginTop: "15px", marginRight: "-20px" }}
               >
                 Wallet Balance: {walletBalance}
               </Typography>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navBarPharmacist';
 
 import {
   Grid,
@@ -83,8 +83,8 @@ const MedicineSales = () => {
   );
 
   return (
-    <div className="search_and_filter" style={{ padding: '20px' }}>
-         <Navbar/>
+    <div className="search_and_filter" >
+         <Navbar button={"Sales"}/>
       <h1>Available Medicines</h1>
       <div className="TextFields">
         <div className="input-container">

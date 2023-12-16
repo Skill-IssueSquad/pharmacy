@@ -310,7 +310,7 @@ const Cart = () => {
   else{
   return (
     <div>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar button={"Cart"}/>
       <MyContext.Provider value={cartItems}>
         <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
           <h2>Cart Items</h2>

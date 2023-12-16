@@ -43,7 +43,7 @@ const ViewInfo = () => {
       formData.append("documents", selectedDegree);
 
       const response = await axios.patch(
-        "http://localhost:8000/pharmacistRequest/updateInfo/" + username,
+        "/pharmacistRequest/updateInfo/" + username,
         formData,
         {
           //withCredentials: true,
@@ -69,7 +69,7 @@ const ViewInfo = () => {
       try {
         console.log(username);
         const response = await fetch(
-          "http://localhost:8000/pharmacistRequest/viewInfo",
+          "pharmacistRequest/viewInfo",
           {
             method: "POST",
             headers: {

@@ -16,6 +16,9 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import ResponsiveAppBar from "../components/navBarC";
+
+
 const PharmacistList = () => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
@@ -40,8 +43,8 @@ const PharmacistList = () => {
 
   return (
     <div>
-      <h1>Chat with pharmacists</h1>
-      <div style={{ maxWidth: 450 }}>
+      <ResponsiveAppBar button={"Chat with Pharmacist"}/>
+      <div style={{ maxWidth: 450 , marginLeft: '500px', marginTop: '100px'}}>
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 300 }} aria-label="simple table">
             <TableHead>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navBarPharmacist";
 import axios from 'axios'; // Import axios
 //import ImageUploadForm from '../components/ImageUploadForm'; // Import the ImageUploadForm component
 
@@ -131,7 +131,7 @@ const AddMedicine = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <Navbar />
+        <Navbar button={"Add Medicine"}/>
         <Grid container spacing={3}>
           {isMedicineAdded && (
             <Grid item xs={12}>

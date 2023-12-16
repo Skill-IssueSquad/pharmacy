@@ -16,6 +16,9 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import Navbar from "../components/navBarPharmacist";
+
+
 const DocChat = () => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
@@ -40,6 +43,7 @@ const DocChat = () => {
 
   return (
     <div>
+      <Navbar button={"Chat with Doctor"}/>
       <h1>Chat with doctors</h1>
       <div style={{ maxWidth: 300 }}>
         <TableContainer component={Paper}>

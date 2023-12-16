@@ -24,9 +24,6 @@ const PatientHome = () => {
     <div>
     {show? (
       <div className="home">
-        {/*<SearchComponent updateFilteredMedicines={updateFilteredMedicines} />
-        <SearchComponentMedicalUse updateFilteredMedicines={updateFilteredMedicines} />
-    <MedicinePatients medicines={filteredMedicines} />*/}
 
         <MultiLevelFilterTable />
       </div>) :

@@ -91,7 +91,7 @@ getWalletBalance(username);
               textDecoration: 'none',
             }}
           >
-            Patient Dashboard
+            El7a2ni Pharmacy
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

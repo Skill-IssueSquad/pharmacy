@@ -13,25 +13,21 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountIcon from '@mui/icons-material/AccountCircle'
+import { useEffect } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const pages = [
-  "Home",
-  "Cart",
-  "Orders",
-  "Chat with Pharmacist",
-  "Change Password",
+
+let pages = [
+  "Profile",
 ];
 const settings = ["Logout"];
-const username = localStorage.getItem("username");
 
-function ResponsiveAppBar({button}) {
+const ResponsiveAppBar = ({ username, button }) => {
   let navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -63,41 +59,12 @@ function ResponsiveAppBar({button}) {
       }
     }
   };
-
-
-  const [walletBalance, setWalletBalance] = useState(0);
-
-  const getWalletBalance = (username) => {
-    fetch("http://localhost:8001/patient/getPatient", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json(); // Return the JSON response
-        } else {
-          throw new Error("Network response was not ok");
-        }
-      })
-      .then((data) => {
-        console.log(data.data.walletBalance);
-        //walletBalance = data.data.walletBalance;
-
-        setWalletBalance(data.data.walletBalance);
-      })
-      .catch((error) => console.error("Error fetching wallet balance:", error));
-  };
-
-  getWalletBalance(username);
-
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <IconButton
+      <IconButton
             size="large"
             aria-label="back"
             onClick={() => navigate(-1)} // Add this line
@@ -157,22 +124,12 @@ function ResponsiveAppBar({button}) {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          
+          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => {
-              let url = "/patient/";
-              if (page === "Home") {
-                url = "/medicinePatient/";
-              } else if (page === "Cart") {
-                url = "/Cart/";
-              } else if (page === "Orders") {
-                url = "/orderDetails/";
-              } else if (page === "Change Password") {
-                url = "/ChangePassword/";
-              }
-              else if (page === "Chat with Pharmacist") {
-                url = "/chatPharm";
+              let url;
+              if (page === "Profile") {
+                url = "/PharmacistRequest/";
               }
               return (
                 <Button
@@ -187,20 +144,11 @@ function ResponsiveAppBar({button}) {
               );
             })}
           </Box>
-          <Box>
-            <div style={{ marginLeft: "20px", marginTop: "10px" , width:140}}>
-              <Typography
-                variant="body1"
-                style={{ marginTop: "px", marginRight: "20px" }}
-              >
-                Wallet Balance: {walletBalance}
-              </Typography>
-            </div>
-          </Box>
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountIcon style={{color: 'white'}}/>
+              <AccountIcon style={{color:'white'}}/>
               </IconButton>
             </Tooltip>
             <Menu
@@ -219,7 +167,7 @@ function ResponsiveAppBar({button}) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-               {settings.map((text) => (
+              {settings.map((text) => (
                 <MenuItem key={text} onClick={() => handleUserMenu(text)}>
                   <Typography textAlign="center">{text}</Typography>
                 </MenuItem>
@@ -230,5 +178,5 @@ function ResponsiveAppBar({button}) {
       </Container>
     </AppBar>
   );
-}
+};
 export default ResponsiveAppBar;

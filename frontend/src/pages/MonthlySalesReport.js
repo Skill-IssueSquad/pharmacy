@@ -9,7 +9,7 @@ import {
   Paper,
   TextField,
 } from '@mui/material';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navBarPharmacist';
 
 const MonthlySalesReport = () => {
   const [medicines, setMedicines] = useState([]);
@@ -42,8 +42,8 @@ const MonthlySalesReport = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Navbar />
+    <div >
+      <Navbar button={"Monthly Sales Report"}/>
       <h1>Total Sales Report</h1>
 
       <TextField
