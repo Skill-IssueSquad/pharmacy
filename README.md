@@ -142,6 +142,64 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 # Section 3: How to use
 
 ## 3.1 | API's:
+
+> ⚠️: **Note:** Click to expand.
+
+<details>
+    <summary>
+        Patient Routes (/patient)
+    </summary>
+
+    
+`router.post('/getPatient' , patientController.getPatient);` fetches a specific patient
+
+`router.post('/cart',patientController.getCart)`  Fetch the user's cart
+
+`router.post('/removeMedicineFromCart' , patientController.removeMedicine)` Removes a medicine from the user's cart
+
+`router.post('/addAddress' , patientController.addAddressToPatient);` adds an address to the list of addresses of the user
+
+`router.post('/addOrder' , patientController.addOrderToPatient);` adds an order to the list of orders for the patient
+
+`router.post('/deleteOrder' , patientController.deleteOrder);` deletes an order for the user
+
+`router.post('/clearCart',patientController.clearCart);` Removes all medicines in the user's cart
+
+
+`router.post('/saveCart',patientController.saveCart);` takes all the chosen medicinces by the user and add them to the cart
+
+`router.post('/getPrescription/sendPrescriptionMedicinesToPharmacy',patientController.getMedicinesFromClinc);` returns all medicines that are in the prescription of this patient.
+
+`router.post('/addAlternative',patientController.addToCart);` adds a chosen alternative medicine in the cart
+
+</details>
+
+
+<details>
+    <summary>
+        Patient Routes (/pharmacist/medicines)
+    </summary>
+
+    
+` router.post('/',upload.single('image'),AddMedicine);` Create new medicine
+
+`router.get('/',getMedicines);` Gets all medicines
+
+`router.get('/:id',medicinedetailsbyid);` gets all medicine details (by id of that medicine)
+
+`router.patch('/:id', updateMedicine);` updates the details of a specific medicine
+
+`router.post('/archive',archiveMedicine); ` archive/unarchive a specific medicine
+
+`router.post('/viewAlternative',getAlternativeMedicines)` gets all alternatives for a specific medicine based on the main ingredient
+
+`router.post('/getWalletBalance',getWalletBalancepharmacist); ` retrieves the wallet balance of a specific pharmacist 
+
+</details>
+
+
+
+
 1. http://localhost:8001/medicine
 2. http://localhost:8001/patient/getPatient
 3. http://localhost:8001/account/login
