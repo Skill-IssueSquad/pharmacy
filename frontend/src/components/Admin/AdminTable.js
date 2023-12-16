@@ -88,7 +88,7 @@ export default function DataTable() {
     const fetchDataFromDatabase = async () => {
         try {
             // Fetch data from the database
-            const response = await fetch('http://localhost:8000/admin/viewAdmins' , {method: 'GET',
+            const response = await fetch('/admin/viewAdmins' , {method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },

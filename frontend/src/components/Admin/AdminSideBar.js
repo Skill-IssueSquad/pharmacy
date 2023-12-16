@@ -290,7 +290,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
           ))}
         </List>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} style={{marginTop:'50px'}}>
         {viewComponent}
       </Main>
     </Box>

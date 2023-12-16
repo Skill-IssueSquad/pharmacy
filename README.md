@@ -133,9 +133,7 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 </details>
 
-## 2.2 | Complementary features:
-
-## 2.3 | Code examples and screenshots:
+## 2.2 | Code examples and screenshots:
 Get Cart of Patient
 
 ```
@@ -331,6 +329,10 @@ API endpoint: http://localhost:8001/patient/getPatient
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f14c73df-18ea-4b19-9a51-f84ad4f78281)
 
+
+API endpoint: http://localhost:8001/patient/clearCart
+
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/062565b0-2e59-4d02-b896-cf5581547d16)
 
 ## 3.3 | Contribution:
 
