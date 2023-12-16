@@ -30,7 +30,7 @@ const Chat = () => {
     }
 
     if (localStorage.getItem("role") === "Patient") {
-      patientUsername = localStorage.getItem("Patient");
+      patientUsername = localStorage.getItem("username");
       doctorUsername = location.state.username;
       console.log("I'm a patient");
       console.log(doctorUsername);

@@ -16,7 +16,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-const PharmacistList = () => {
+const PatList = () => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ const PharmacistList = () => {
   useEffect(() => {
     const f = async () => {
       setLoading(true);
-      const response = await fetch("/doctor/chat/getPharmacist", {
+      const response = await fetch("/doctor/chat/getPatients", {
         credentials: "include",
       });
       const data = await response.json();
@@ -40,8 +40,8 @@ const PharmacistList = () => {
 
   return (
     <div>
-      <h1>Chat with pharmacists</h1>
-      <div style={{ maxWidth: 450 }}>
+      <h1>Chat with patients</h1>
+      <div style={{ maxWidth: 300 }}>
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 300 }} aria-label="simple table">
             <TableHead>
@@ -81,4 +81,4 @@ const PharmacistList = () => {
   );
 };
 
-export default PharmacistList;
+export default PatList;
