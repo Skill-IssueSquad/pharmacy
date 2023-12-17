@@ -132,7 +132,8 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 </details>
 
 ## 2.2 | Code examples and screenshots:
-Get Cart of Patient
+<details>
+<summary>Get Cart of Patient</summary>
 
 ```
 const getCart = async (req, res) => {
@@ -157,8 +158,11 @@ const getCart = async (req, res) => {
     return res.status(500).json(reply);
   }
 };
+
 ```
-Remove Medicine From Cart
+</details>
+<details>
+<summary>Remove Medicine From Cart</summary>
 
 ```
 const removeMedicine = async (req, res) => {
@@ -193,11 +197,14 @@ const removeMedicine = async (req, res) => {
       .json({ success: false, message: error.message, data: null });
   }
 };
-```
-
-Get Patient
 
 ```
+</details>
+<details>
+<summary>Get Patient</summary>
+
+```
+
 const getPatient = async (req, res) => {
   const { username } = req.body;
   try {
@@ -222,9 +229,12 @@ const getPatient = async (req, res) => {
 };
 
 ```
-Clear cart of a patient
+</details>
+<details>
+<summary>Clear cart of a patient</summary>
 
 ```
+
 const clearCart = async (req, res) => {
   const { username } = req.body;
 
@@ -251,6 +261,7 @@ const clearCart = async (req, res) => {
 };
 
 ```
+</details>
 
 # Section 3: How to use
 
