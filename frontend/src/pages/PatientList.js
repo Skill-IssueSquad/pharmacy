@@ -43,9 +43,9 @@ const PatList = () => {
   return (
     <div>
       <Navbar button={"Chat with Patient"}/>
-      <h1>Chat with patients</h1>
+      <h1 style={{marginLeft: 500}}>Chat with patients</h1>
       <div style={{ maxWidth: 300 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{marginLeft:500}}>
           <Table sx={{ maxWidth: 300 }} aria-label="simple table">
             <TableHead>
               <TableRow>

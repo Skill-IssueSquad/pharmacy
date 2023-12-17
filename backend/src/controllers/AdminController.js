@@ -441,8 +441,7 @@ const viewallorders = async (req, res) => {
 
 const viewallordersbymonth = async (req, res) => {
   try {
-    const selectedMonth = req.query.month;
-
+    const selectedMonth = req.params.selectedMonth;
     // Find all patients and populate the 'orders' field with necessary fields
     const patients = await Patient.find()
       .populate({

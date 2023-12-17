@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { auth } from "./Protected/AuthProvider";
 import io from "socket.io-client";
 import { Typography, TextField, Button, Paper } from "@mui/material";
+import ResponsiveAppBar from "../components/navBarC";
 
 const socket = io.connect("http://localhost:8004");
 const Chat = () => {
@@ -105,12 +106,14 @@ const Chat = () => {
     <div>
     
       {show ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{  justifyContent: "center" }}>
+          <ResponsiveAppBar />
           <Paper
             style={{
               padding: "20px",
-              marginTop: "20px",
+              marginTop: "60px",
               width: "400px",
+              marginLeft: 500
             }}
           >
             <Typography variant="h4" align="center" gutterBottom>

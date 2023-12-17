@@ -44,7 +44,10 @@ const PharmacistList = () => {
   return (
     <div>
       <ResponsiveAppBar button={"Chat with Pharmacist"}/>
-      <div style={{ maxWidth: 450 , marginLeft: '500px', marginTop: '100px'}}>
+      <div style={{ maxWidth: 450 , marginLeft: '500px', marginTop: '30px'}}>
+        <h1 style={{marginBottom: 20, fontWeight:'400', marginLeft:20}}>
+        Chat with a Pharmacist
+        </h1>
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 300 }} aria-label="simple table">
             <TableHead>

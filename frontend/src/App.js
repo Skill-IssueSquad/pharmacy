@@ -13,6 +13,7 @@ import ViewPatients from "./pages/Admin/ViewPatients";
 import ViewPharmacists from "./pages/Admin/ViewPharmacists";
 import ViewProfile from "./pages/Admin/ViewProfile";
 import ViewRequests from "./pages/Admin/ViewRequests";
+import ViewSales from "./pages/Admin/ViewSales";
 
 import MedicinesForAdmin from "./pages/MedicinesForAdmin";
 import ViewAccsInfo from "./pages/ViewAccsInfo";
@@ -106,6 +107,7 @@ function App() {
               element={<ViewRequests />}
             />
             <Route exact path="/Admin/ViewProfile" element={<ViewProfile />} />
+            <Route exact path="/Admin/ViewSales" element={<ViewSales />} />
             <Route exact path="/Chat" element={<Chat />} />
             <Route exact path="/PatientList" element={<PatList />} />
             <Route exact path="/DoctorList" element={<DocList />} />

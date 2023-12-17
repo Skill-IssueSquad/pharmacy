@@ -29,6 +29,7 @@ import AdminIcon from '@mui/icons-material/ManageAccounts'
 import PatientIcon from '@mui/icons-material/People'
 import PharmacistIcon from '@mui/icons-material/HealthAndSafety'
 import RequestIcon from '@mui/icons-material/AddCircle'
+import ReportIcon from '@mui/icons-material/Description'
 import AccountIcon from '@mui/icons-material/AccountCircle'
 import PasswordIcon from '@mui/icons-material/Lock'
 
@@ -118,6 +119,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
       case "View Patients":  navigate("/Admin/ViewPatients"); setOpen(false); break;
       case "View Pharmacists": navigate("/Admin/ViewPharmacists"); setOpen(false); break;
       case "View Join Requests":  navigate("/Admin/ViewRequests"); setOpen(false); break;
+      case "View Sales Report":  navigate("/Admin/ViewSales"); setOpen(false); break;
       case "View Profile": navigate("/Admin/ViewProfile"); setOpen(false); break;
       case "Change Password": navigate("/Admin/ChangePassword"); setOpen(false);
     }
@@ -251,7 +253,7 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
         </ListItem>
         <a style={{marginLeft:'20px', marginTop:'15px', color:'grey', fontSize:'14px'}}> PAGES</a>
         <List>
-          {['View Admins','View Patients', 'View Pharmacists' ,'View Join Requests'].map((text, index) => (
+          {['View Admins','View Patients', 'View Pharmacists' ,'View Join Requests', "View Sales Report"].map((text, index) => (
             <ListItem key={text} disablePadding selected= {selected===text} style={{color:'white', fontSize:'10px'}} sx={{
               '&.Mui-selected': {
                 backgroundColor: 'rgb(255,255,255,0.2)', // Change 'yourSelectedColor' to your desired color
@@ -263,7 +265,8 @@ export default function PersistentDrawerLeft({flag, ViewComponent, item}) {
                 <ListItemIcon style={{color:'white'}}>
                   { (index===0? <AdminIcon/> : 
                     (index===1? <PatientIcon/> : 
-                    (index===2? <PharmacistIcon/> : <RequestIcon/>)))}
+                    (index===2? <PharmacistIcon/> : 
+                    (index===3? <RequestIcon/>: <ReportIcon/>))))}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
