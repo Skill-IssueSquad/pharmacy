@@ -573,7 +573,7 @@ We used Postman to test our different API endpoints.
     "message": "Cart Cleared",
     "data": {}
 }
-
+```
 ## 3.3 | Contribution:
 
 Contributions are always welcome!
@@ -595,7 +595,7 @@ Please adhere to this project's code of conduct.
 
 This project follows the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/). Please read the [full text](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) so that you can understand what actions will and will not be tolerated.
 
----
+
 
 
 # Section 4: Credits and Licensing
