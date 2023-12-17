@@ -8,7 +8,7 @@ El7a2ni Pharmacy is a virtual online Pharmacy platform that enables patients and
 
 ## 1.1 | Motiviation:
 
-This project was motivated by the very dire need for a more accessible and streamlined way of communication between doctors and patients unlike what is usually present in the real world. Most traditional clinics are usually limited by how many patients they can take in a day and how many of the staff is able to work on any given day. Most tasks have the ability to be automated and streamlined using software solutions that will subsequently increase the capacity of doctors to receive more patients and the ability of patients to communicate with more doctors effeciently; All while keeping their prescriptions and visit statuses organized and accessible any time without the need to call in and ask a staff member.
+This project was motivated by the very dire need for a more accessible way of buying medicines and contacting pharmacists unlike what is usually present in the real world. Most traditional pharmacies are usually limited by how many patients they can serve at the same time and how many of the staff is able to work on any given day. Most tasks have the ability to be automated and streamlined using software solutions that will subsequently increase the capacity of pharmacies to serve more patients and the ability of patients to communicate with more pharmacists effeciently.
 
 ## 1.2 | Build Status:
 
@@ -135,12 +135,57 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 <details>
  
  <summary>Pharmacist chat with a patient</summary>
-
  
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/3ccb12f1-90b6-4937-a6d9-64087fd52143)
+
+</details>
+
+
+<details>
+ 
+ <summary>Patient can buy medicines</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/bc8b4d21-946e-4752-863b-88fa892908fd)
+
+
+</details>
+
+
+<details>
+ <summary>Cart of the patient</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/7116c799-dde6-4d92-ab50-933af2198f36)
+
+ 
+</details>
+
+
+<details>
+ <summary>Check out of the patient</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/c3b1a426-e8f7-4dad-92de-7eaa10dd9f8e)
+
+
+ 
+</details>
+
+<details>
+ <summary>Patient can view orders</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/c3b1a426-e8f7-4dad-92de-7eaa10dd9f8e)
+
+ </details>
+
+### Project structure:
+<details>
+    <summary> Project structure  </summary>
+ 
+[View Here](https://github.com/Skill-IssueSquad/pharmacy/blob/MileStone_Three_Branch_Patient/Structure_pharmacy.txt)
+
 </details>
 
 ### Code Examples
+
 <details>
 <summary>Get Cart of Patient</summary>
 
@@ -310,7 +355,7 @@ const clearCart = async (req, res) => {
 
 <details>
     <summary>
-        Patient Routes (/pharmacist/medicines)
+        pharmacist Routes (/pharmacist/medicines)
     </summary>
 
     
@@ -331,6 +376,33 @@ const clearCart = async (req, res) => {
 </details>
 
 
+
+
+
+
+
+<details>
+    <summary>
+        patient extra Routes (/medicine)
+    </summary>
+
+    
+`router.get('/' , medicineController.getAllMedicine)` Fetches all medicines
+
+`router.get('/searchByName/:name?' , medicineController.getMedicineByName)` fillter on the medicines by a specific name
+
+`router.get('/searchByMedial_use/:medical_use?' , medicineController.getMedicineByMedicalUse)` fillter on the medicines by a specific medical usage
+
+`router.post('/addToCart/:userName/:medicineId/:quantity' , medicineController.AddToCart);` Adds the selected medicine to the patient cart
+
+`router.post('/getArrayMedicinesByID',medicineController.getArrayOfMedicine);` returns the medicines in the cart of the patient
+
+</details>
+
+
+
+
+
 <details>
     <summary>
         Doctor Routes (/doctor)
@@ -344,6 +416,63 @@ const clearCart = async (req, res) => {
 `router.get("/chat/getPharmacist/", getPharmacist);` fetches a list of all pharmacist that a doctor or a patient can chat with.
 
 </details>
+
+<details>
+    <summary>
+      Admin Routes (/admin)
+    </summary>
+
+`router.post("/getAdmin/:username")` Gets an admin with a specified username
+
+`router.get("/viewAdmins")` Views all admins
+
+`router.post("/createAdmin")` Creates an admin and adds it to the DB
+`router.delete("/removeAdmin/:username")` Removes the admin with the specified username from the DB
+
+`router.get("/viewPharmacistInfo/", viewPharmacistInfo);` Allows an admin to view the pharmacist information
+
+`router.delete("/removePharmacist/:username", removePharmacist);` Allows an admin to remove pharmacist with a specified username from the system
+
+`router.get("/viewPatientInfo/", viewPatientInfo);` Allows an admin to view all registered patients on the system
+
+`router.delete("/removePatient/:username")` Allows an admin to remove a patient with the specified username from the system
+
+`router.get("/viewPharmacistRequests", viewPharmacistRequests);` Allows admin to view all pending pharmacist applications.
+
+`router.get('/orders' ,viewallorders)` Allows an admin to view all orders in the system
+
+`router.get('/ordersbymonth' ,viewallordersbymonth)` Allows an admin to view orders in a specific month
+
+`router.get("/medicines", getMedicines);` Allows an admin to view all medicines in the system
+
+`router.get("/findMedicine", findMedicine);` Allows an admin to get a specific medicine based on the medicine name
+
+`router.post("/acceptPharmacist", acceptPharmacist);` allows an admin to accept a pharmacist application.
+
+`router.post("/rejectPharmacist", rejectPharmacist);` Allows an admin to reject a pharmacist application.
+
+</details>
+
+<details>
+    <summary>
+      Account Router (/account)
+    </summary>
+
+`router.post("/registerPatient")` Registers a new patinent to the platorm
+
+`router.post("/registerDoctor")` Registers a new doctor to the platform
+
+`router.post("/login")` Allows for the login functionality
+
+`router.get("/logout")` allows for the logout functionality
+
+`router.post("/forgotPassword")` `router.post("/resetPassword")`allows an account to reset their password in case they forgot it
+
+`router.post("/verifyOTP")` Allows for OTP verification
+
+</details>
+
+
 
 
 ## 3.2 | Testing:
