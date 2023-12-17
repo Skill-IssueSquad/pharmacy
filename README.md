@@ -365,9 +365,184 @@ We used Postman to test our different API endpoints.
     }
 }
 ```
-API endpoint: http://localhost:8001/patient/getPatient
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f14c73df-18ea-4b19-9a51-f84ad4f78281)
+
+
+
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/getPatient`                                                                                     |
+| Test Body JSON: | `{ "username":"omarS" }` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Patient returened",
+    "data": {
+        "emergencyContact": {
+            "fullName": "khaled",
+            "mobileNumber": "012321321321",
+            "relationToPatient": "son"
+        },
+        "cart": {
+            "medicines": [],
+            "netPrice": 40,
+            "totalPrice": 40
+        },
+        "_id": "657dcc49774ada6dbb291d57",
+        "username": "omarS",
+        "name": "omar shaaban",
+        "email": "omarS@gmail.com",
+        "password": "$2b$10$kh6VAn5iOKgLlg.nVCAPAOagTUqg7TYYRq0BHtujFHxPzNT3qyQO2",
+        "dateOfBirth": "2023-11-28T00:00:00.000Z",
+        "gender": "M",
+        "mobileNumber": "01232322323",
+        "deliveryAddresses": [
+            {
+                "streetName": "nour",
+                "propertyNum": 12,
+                "floorNum": 15,
+                "apartNum": 15,
+                "extraLandMarks": "LandM",
+                "_id": "657dcf48774ada6dbb291e86"
+            }
+        ],
+        "orders": [
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "medicine_id": "6526d02ddc980ba82a4a62bb",
+                            "quantity": 2,
+                            "_id": "657dd05f673a216be3b3b31d"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "nour",
+                    "propertyNum": 12,
+                    "floorNum": 15,
+                    "apartNum": 15,
+                    "extraLandMarks": "LandM"
+                },
+                "status": "cancelled",
+                "date": "2023-12-16T16:29:24.151Z",
+                "paymentMethod": "wallet",
+                "discount": 0,
+                "netPrice": 40,
+                "_id": "657dd064673a216be3b3b372"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "medicine_id": "6526d02ddc980ba82a4a62bb",
+                            "quantity": 3,
+                            "_id": "657ddf4ef9b20f3d2a13e7f4"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "nour",
+                    "propertyNum": 12,
+                    "floorNum": 15,
+                    "apartNum": 15,
+                    "extraLandMarks": "LandM"
+                },
+                "status": "cancelled",
+                "date": "2023-12-16T17:48:32.453Z",
+                "paymentMethod": "cash",
+                "discount": 0,
+                "netPrice": 60,
+                "_id": "657de2f0f9b20f3d2a13ea59"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "medicine_id": "6526d02ddc980ba82a4a62bb",
+                            "quantity": 2,
+                            "_id": "657df1034788ad4e11ef76ac"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "nour",
+                    "propertyNum": 12,
+                    "floorNum": 15,
+                    "apartNum": 15,
+                    "extraLandMarks": "LandM"
+                },
+                "status": "cancelled",
+                "date": "2023-12-16T18:48:41.179Z",
+                "paymentMethod": "cash",
+                "discount": 0,
+                "netPrice": 40,
+                "_id": "657df1094788ad4e11ef7755"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "quantity": 2,
+                            "_id": "657e2ed517813e9969dfaf75"
+                        },
+                        {
+                            "quantity": 1,
+                            "_id": "657e2ed517813e9969dfaf76"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "Main Street",
+                    "propertyNum": 10,
+                    "floorNum": 3,
+                    "apartNum": 2,
+                    "extraLandMarks": "Near the post office"
+                },
+                "status": "pending",
+                "date": "2023-12-16T00:00:00.000Z",
+                "paymentMethod": "card",
+                "discount": 10,
+                "netPrice": 50,
+                "_id": "657e2ed517813e9969dfaf74"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "quantity": 2,
+                            "_id": "657e2f2517813e9969dfaf85"
+                        },
+                        {
+                            "quantity": 1,
+                            "_id": "657e2f2517813e9969dfaf86"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "Main Street",
+                    "propertyNum": 10,
+                    "floorNum": 3,
+                    "apartNum": 2,
+                    "extraLandMarks": "Near the post office"
+                },
+                "status": "pending",
+                "date": "2023-12-16T00:00:00.000Z",
+                "paymentMethod": "card",
+                "discount": 10,
+                "netPrice": 50,
+                "_id": "657e2f2517813e9969dfaf84"
+            }
+        ],
+        "__v": 19,
+        "walletBalance": 200
+    }
+}
+```
 
 
 API endpoint: http://localhost:8001/patient/clearCart
