@@ -345,6 +345,56 @@ const clearCart = async (req, res) => {
 
 </details>
 
+<details>
+    <summary>
+      Admin Routes (/admin)
+    </summary>
+
+`router.post("/getAdmin/:username")` Gets an admin with a specified username
+
+`router.get("/viewAdmins")` Views all admins
+
+`router.post("/createAdmin")` Creates an admin and adds it to the DB
+`router.delete("/removeAdmin/:username")` Removes the admin with the specified username from the DB
+
+`router.get("/viewDoctors")` Allows an admin to view all registered doctors on a system
+
+`router.delete("/removeDoctor/:username")` Allows an admin to remove a doctor with the specified username from the system
+
+`router.get("/viewPatients")` Allows an admin to view all registered patients on the system
+
+`router.delete("/removePatient/:username")` Allows an admin to remove a patient with the specified username from the system
+
+`router.get("/viewInfo")` Allows admin to view all pending doctor applications.
+
+`router.post("/acceptDoctor", acceptDoctor)` and `router.post("/rejectDoctor")` allow an admin to accept or request a doctor's application on the system.
+
+`router.get("/viewPackages")`
+`router.post("/addPackage")`
+`router.patch("/updatePackage/:packageType")`
+`router.delete("/deletePackage/:packageType")` allow an admin to create, update, view and delete a health package from the system
+
+</details>
+
+<details>
+    <summary>
+      Account Router (/account)
+    </summary>
+
+`router.post("/registerPatient")` Registers a new patinent to the platorm
+
+`router.post("/registerDoctor")` Registers a new doctor to the platform
+
+`router.post("/login")` Allows for the login functionality
+
+`router.get("/logout")` allows for the logout functionality
+
+`router.post("/forgotPassword")` `router.post("/resetPassword")`allows an account to reset their password in case they forgot it
+
+`router.post("/verifyOTP")` Allows for OTP verification
+
+</details>
+
 
 ## 3.2 | Testing:
 
