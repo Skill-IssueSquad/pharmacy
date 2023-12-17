@@ -30,24 +30,22 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 ## 1.4 | Tech and frameworks:
 
-|||
-| ----------- | ----------- |
-| [React](https://reactjs.org/) | ![React](	https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)|
-| [Node.js](https://nodejs.org/en/) | ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) |
-| [JWT](https://jwt.io/)| ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)|
-| [Express](https://expressjs.com/)| ![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge) |
-| [MongoDB](https://www.mongodb.com/)|![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)|
-| [Mongoose](https://mongoosejs.com/)| ![Mongoose](https://img.shields.io/badge/Mongoose-black.svg?style=for-the-badge&logo=mongoose&logoColor=orange)|
-| [Swagger](https://swagger.io/)| ![Swagger](https://img.shields.io/badge/Swagger-black.svg?style=for-the-badge&logo=swagger&logoColor=white)|
-| [Material-UI](https://material-ui.com/)| ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white) |
-| [Stripe](https://stripe.com/)|	![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white) |
-| [Typescript](https://www.typescriptlang.org/)|![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)|
-| [Git](https://git-scm.com/)| ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)|
-| [Github Actions](github.com/features/actions)|![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
-| [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)| ![MongoDB](https://img.shields.io/badge/MongoDB%20Atlas-white.svg?style=for-the-badge&logo=mongodb&logoColor=green)|
-| [Postman](https://www.postman.com/)|![Postman](https://img.shields.io/badge/postman-black.svg?style=for-the-badge&logo=postman&logoColor=orange)|
-| [VSCode](https://code.visualstudio.com/)|![VScode](https://img.shields.io/badge/VS%20code-black.svg?style=for-the-badge&logo=visualstudiocode&logoColor=blue)|
-
+|                                                      |                                                                                                                      |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [React](https://reactjs.org/)                        | ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)                  |
+| [Node.js](https://nodejs.org/en/)                    | ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)              |
+| [JWT](https://jwt.io/)                               | ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)                          |
+| [Express](https://expressjs.com/)                    | ![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express&logoColor=blue)           |
+| [MongoDB](https://www.mongodb.com/)                  | ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)      |
+| [Mongoose](https://mongoosejs.com/)                  | ![Mongoose](https://img.shields.io/badge/Mongoose-black.svg?style=for-the-badge&logo=mongoose&logoColor=orange)      |
+| [Material-UI](https://material-ui.com/)              | ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)                  |
+| [Stripe](https://stripe.com/)                        | ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white)                |
+| [Git](https://git-scm.com/)                          | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)                  |
+| [Github Actions](github.com/features/actions)        | ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)         |
+| [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) | ![MongoDB](https://img.shields.io/badge/MongoDB%20Atlas-white.svg?style=for-the-badge&logo=mongodb&logoColor=green)  |
+| [Postman](https://www.postman.com/)                  | ![Postman](https://img.shields.io/badge/postman-black.svg?style=for-the-badge&logo=postman&logoColor=orange)         |
+| [VSCode](https://code.visualstudio.com/)             | ![VScode](https://img.shields.io/badge/VS%20code-black.svg?style=for-the-badge&logo=visualstudiocode&logoColor=blue) |
+| [JavaScript](https://www.javascript.com/)            | ![JS](https://img.shields.io/badge/JavaScript-black.svg?style=for-the-badge&logo=javascript&logoColor=yellow)        |
 
 ---
 
@@ -134,7 +132,17 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 </details>
 
 ## 2.2 | Code examples and screenshots:
-Get Cart of Patient
+<details>
+ 
+ <summary>Pharmacist chat with a patient</summary>
+
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/3ccb12f1-90b6-4937-a6d9-64087fd52143)
+</details>
+
+### Code Examples
+<details>
+<summary>Get Cart of Patient</summary>
 
 ```
 const getCart = async (req, res) => {
@@ -159,8 +167,11 @@ const getCart = async (req, res) => {
     return res.status(500).json(reply);
   }
 };
+
 ```
-Remove Medicine From Cart
+</details>
+<details>
+<summary>Remove Medicine From Cart</summary>
 
 ```
 const removeMedicine = async (req, res) => {
@@ -195,11 +206,14 @@ const removeMedicine = async (req, res) => {
       .json({ success: false, message: error.message, data: null });
   }
 };
-```
-
-Get Patient
 
 ```
+</details>
+<details>
+<summary>Get Patient</summary>
+
+```
+
 const getPatient = async (req, res) => {
   const { username } = req.body;
   try {
@@ -224,9 +238,12 @@ const getPatient = async (req, res) => {
 };
 
 ```
-Clear cart of a patient
+</details>
+<details>
+<summary>Clear cart of a patient</summary>
 
 ```
+
 const clearCart = async (req, res) => {
   const { username } = req.body;
 
@@ -253,6 +270,7 @@ const clearCart = async (req, res) => {
 };
 
 ```
+</details>
 
 # Section 3: How to use
 
@@ -313,23 +331,273 @@ const clearCart = async (req, res) => {
 </details>
 
 
+<details>
+    <summary>
+        Doctor Routes (/doctor)
+    </summary>
+
+    
+`router.post("/createPatient", submitPrescriptionToPharmacy);` The doctor creates an account for the patient and puts the medicine in cart if the patient does not have an account otherwise puts the medicine in the cart directly
+
+`router.get("/chat/getPatients/", getPatients);` fetches a list of all patients that the pharmacist can chat with.
+
+`router.get("/chat/getPharmacist/", getPharmacist);` fetches a list of all pharmacist that a doctor or a patient can chat with.
+
+</details>
+
+
 ## 3.2 | Testing:
 
 We used Postman to test our different API endpoints.
 
-API endpoint: http://localhost:8001/patient/cart
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/200f702c-d65a-4a3c-87f9-bf1271edaa2c)
 
-API endpoint: http://localhost:8001/patient/removeMedicineFromCart
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/cart`                                                                                     |
+| Test Body JSON: | `{ "username":"omarS"}` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Cart returened",
+    "data": {
+        "medicines": [
+            {
+                "medicine_id": "6526d02ddc980ba82a4a62bb",
+                "quantity": 2,
+                "_id": "657e34c15228f58a6f07d83d"
+            }
+        ],
+        "netPrice": 40,
+        "totalPrice": 40
+    }
+}
+```
+
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f16fc19d-dbd9-4447-a21f-9fcbc313c5db)
 
-API endpoint: http://localhost:8001/patient/getPatient
+
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/removeMedicineFromCart`                                                                                     |
+| Test Body JSON: | `{"userName":"omarS","medicineId":"6526d02ddc980ba82a4a62bb"}` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Medicine removed",
+    "data": {
+        "medicines": [],
+        "netPrice": 40,
+        "totalPrice": 40
+    }
+}
+```
+
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f14c73df-18ea-4b19-9a51-f84ad4f78281)
 
 
+
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/getPatient`                                                                                     |
+| Test Body JSON: | `{ "username":"omarS" }` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Patient returened",
+    "data": {
+        "emergencyContact": {
+            "fullName": "khaled",
+            "mobileNumber": "012321321321",
+            "relationToPatient": "son"
+        },
+        "cart": {
+            "medicines": [],
+            "netPrice": 40,
+            "totalPrice": 40
+        },
+        "_id": "657dcc49774ada6dbb291d57",
+        "username": "omarS",
+        "name": "omar shaaban",
+        "email": "omarS@gmail.com",
+        "password": "$2b$10$kh6VAn5iOKgLlg.nVCAPAOagTUqg7TYYRq0BHtujFHxPzNT3qyQO2",
+        "dateOfBirth": "2023-11-28T00:00:00.000Z",
+        "gender": "M",
+        "mobileNumber": "01232322323",
+        "deliveryAddresses": [
+            {
+                "streetName": "nour",
+                "propertyNum": 12,
+                "floorNum": 15,
+                "apartNum": 15,
+                "extraLandMarks": "LandM",
+                "_id": "657dcf48774ada6dbb291e86"
+            }
+        ],
+        "orders": [
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "medicine_id": "6526d02ddc980ba82a4a62bb",
+                            "quantity": 2,
+                            "_id": "657dd05f673a216be3b3b31d"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "nour",
+                    "propertyNum": 12,
+                    "floorNum": 15,
+                    "apartNum": 15,
+                    "extraLandMarks": "LandM"
+                },
+                "status": "cancelled",
+                "date": "2023-12-16T16:29:24.151Z",
+                "paymentMethod": "wallet",
+                "discount": 0,
+                "netPrice": 40,
+                "_id": "657dd064673a216be3b3b372"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "medicine_id": "6526d02ddc980ba82a4a62bb",
+                            "quantity": 3,
+                            "_id": "657ddf4ef9b20f3d2a13e7f4"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "nour",
+                    "propertyNum": 12,
+                    "floorNum": 15,
+                    "apartNum": 15,
+                    "extraLandMarks": "LandM"
+                },
+                "status": "cancelled",
+                "date": "2023-12-16T17:48:32.453Z",
+                "paymentMethod": "cash",
+                "discount": 0,
+                "netPrice": 60,
+                "_id": "657de2f0f9b20f3d2a13ea59"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "medicine_id": "6526d02ddc980ba82a4a62bb",
+                            "quantity": 2,
+                            "_id": "657df1034788ad4e11ef76ac"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "nour",
+                    "propertyNum": 12,
+                    "floorNum": 15,
+                    "apartNum": 15,
+                    "extraLandMarks": "LandM"
+                },
+                "status": "cancelled",
+                "date": "2023-12-16T18:48:41.179Z",
+                "paymentMethod": "cash",
+                "discount": 0,
+                "netPrice": 40,
+                "_id": "657df1094788ad4e11ef7755"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "quantity": 2,
+                            "_id": "657e2ed517813e9969dfaf75"
+                        },
+                        {
+                            "quantity": 1,
+                            "_id": "657e2ed517813e9969dfaf76"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "Main Street",
+                    "propertyNum": 10,
+                    "floorNum": 3,
+                    "apartNum": 2,
+                    "extraLandMarks": "Near the post office"
+                },
+                "status": "pending",
+                "date": "2023-12-16T00:00:00.000Z",
+                "paymentMethod": "card",
+                "discount": 10,
+                "netPrice": 50,
+                "_id": "657e2ed517813e9969dfaf74"
+            },
+            {
+                "cart": {
+                    "medicines": [
+                        {
+                            "quantity": 2,
+                            "_id": "657e2f2517813e9969dfaf85"
+                        },
+                        {
+                            "quantity": 1,
+                            "_id": "657e2f2517813e9969dfaf86"
+                        }
+                    ]
+                },
+                "deliveryAddress": {
+                    "streetName": "Main Street",
+                    "propertyNum": 10,
+                    "floorNum": 3,
+                    "apartNum": 2,
+                    "extraLandMarks": "Near the post office"
+                },
+                "status": "pending",
+                "date": "2023-12-16T00:00:00.000Z",
+                "paymentMethod": "card",
+                "discount": 10,
+                "netPrice": 50,
+                "_id": "657e2f2517813e9969dfaf84"
+            }
+        ],
+        "__v": 19,
+        "walletBalance": 200
+    }
+}
+```
+
+
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/062565b0-2e59-4d02-b896-cf5581547d16)
+
+
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/clearCart`                                                                                     |
+| Test Body JSON: | `{"username":"omarS"}` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Cart Cleared",
+    "data": {}
+}
+```
 ## 3.3 | Contribution:
 
 Contributions are always welcome!
@@ -351,11 +619,13 @@ Please adhere to this project's code of conduct.
 
 This project follows the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/). Please read the [full text](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) so that you can understand what actions will and will not be tolerated.
 
----
+
+
 
 # Section 4: Credits and Licensing
 
 ## Credits:
+
 > ⚠️: **Note:** Click to expand.
 
 <details>
@@ -381,13 +651,11 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 
 </details>
 
-
-
 ## License:
+<details>
+    <Summary> MIT License </Summary>
 
-**MIT License**
-
-*Copyright (c) 2023 Skill-IssueSquad*
+_Copyright (c) 2023 Skill-IssueSquad_
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -406,3 +674,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+</details>
+
+
+<details>
+    <Summary> Apache 2.0 License </Summary>
+
+[License details](https://www.apache.org/licenses/LICENSE-2.0)
+
+</details>
