@@ -8,7 +8,7 @@ El7a2ni Pharmacy is a virtual online Pharmacy platform that enables patients and
 
 ## 1.1 | Motiviation:
 
-This project was motivated by the very dire need for a more accessible and streamlined way of communication between doctors and patients unlike what is usually present in the real world. Most traditional clinics are usually limited by how many patients they can take in a day and how many of the staff is able to work on any given day. Most tasks have the ability to be automated and streamlined using software solutions that will subsequently increase the capacity of doctors to receive more patients and the ability of patients to communicate with more doctors effeciently; All while keeping their prescriptions and visit statuses organized and accessible any time without the need to call in and ask a staff member.
+This project was motivated by the very dire need for a more accessible way of buying medicines and contacting pharmacists unlike what is usually present in the real world. Most traditional pharmacies are usually limited by how many patients they can serve at the same time and how many of the staff is able to work on any given day. Most tasks have the ability to be automated and streamlined using software solutions that will subsequently increase the capacity of pharmacies to serve more patients and the ability of patients to communicate with more pharmacists effeciently.
 
 ## 1.2 | Build Status:
 
