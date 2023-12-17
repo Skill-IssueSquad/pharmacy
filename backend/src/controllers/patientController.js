@@ -151,10 +151,10 @@ const addOrderToPatient = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Patient not found", data: null });
     } else {
-      // if(paymentMethod === "wallet" && !(patient.walletBalance>= netPrice)){
-      //   return res.status(200).json({success: true , message: "Not enough wallet balance" , data: patient})
+      if(paymentMethod === "wallet" && !(patient.walletBalance>= netPrice)){
+        return res.status(200).json({success: true , message: "Not enough wallet balance" , data: patient})
 
-      // }
+      }
 
       const newAddress = {
         streetName: deliveryAddress.streetName,
@@ -178,8 +178,8 @@ const addOrderToPatient = async (req, res) => {
         paymentMethod: paymentMethod,
       };
 
-      // if(paymentMethod === "wallet")
-      //   patient.walletBalance = patient.walletBalance- netPrice;
+      if(paymentMethod === "wallet")
+        patient.walletBalance = patient.walletBalance - netPrice;
 
       patient.orders.push(order);
       await patient.save();

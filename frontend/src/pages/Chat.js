@@ -103,6 +103,7 @@ const Chat = () => {
   };
   return (
     <div>
+    
       {show ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Paper
