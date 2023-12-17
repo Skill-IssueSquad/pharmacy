@@ -40,8 +40,46 @@ const MultiLevelFilterTable = () => {
   useEffect(() => {
     // Fetch the data when the component mounts
     fetchMedicines();
+    fetchDiscount(userName);
   }, []);
 
+
+
+  const fetchDiscount = async (username) => {
+    try {
+      console.log("Fetching discount for user:", username);
+  
+      const response = await fetch('http://localhost:8000/getPatientDiscount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+        }),
+      });
+  
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+  
+      const data = await response.json();
+  
+      console.log("Discount data:", data);
+  
+      setCart((prevCart) => {
+        prevCart.discount = data.data.Cartdiscount;
+        return {
+          ...prevCart,
+        };
+      });
+  
+      console.log("Discount set:", data.data.discount);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  
   useEffect(() => {
     const getPrescriptionMedicines = async (username) => {
       try {
@@ -90,7 +128,7 @@ const MultiLevelFilterTable = () => {
       const totalPrice = calculateTotalPrice(prevCart.medicines);
       console.log("The Fucking total: " + totalPrice);
   
-      const netPrice = totalPrice - prevCart.discount;
+      const netPrice = totalPrice - totalPrice*(prevCart.discount/100);
   
 
       prevCart.totalPrice =totalPrice;
