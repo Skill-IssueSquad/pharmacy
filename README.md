@@ -394,22 +394,27 @@ const clearCart = async (req, res) => {
 `router.post("/createAdmin")` Creates an admin and adds it to the DB
 `router.delete("/removeAdmin/:username")` Removes the admin with the specified username from the DB
 
-`router.get("/viewDoctors")` Allows an admin to view all registered doctors on a system
+`router.get("/viewPharmacistInfo/", viewPharmacistInfo);` Allows an admin to view the pharmacist information
 
-`router.delete("/removeDoctor/:username")` Allows an admin to remove a doctor with the specified username from the system
+`router.delete("/removePharmacist/:username", removePharmacist);` Allows an admin to remove pharmacist with a specified username from the system
 
-`router.get("/viewPatients")` Allows an admin to view all registered patients on the system
+`router.get("/viewPatientInfo/", viewPatientInfo);` Allows an admin to view all registered patients on the system
 
 `router.delete("/removePatient/:username")` Allows an admin to remove a patient with the specified username from the system
 
-`router.get("/viewInfo")` Allows admin to view all pending doctor applications.
+`router.get("/viewPharmacistRequests", viewPharmacistRequests);` Allows admin to view all pending pharmacist applications.
 
-`router.post("/acceptDoctor", acceptDoctor)` and `router.post("/rejectDoctor")` allow an admin to accept or request a doctor's application on the system.
+`router.get('/orders' ,viewallorders)` Allows an admin to view all orders in the system
 
-`router.get("/viewPackages")`
-`router.post("/addPackage")`
-`router.patch("/updatePackage/:packageType")`
-`router.delete("/deletePackage/:packageType")` allow an admin to create, update, view and delete a health package from the system
+`router.get('/ordersbymonth' ,viewallordersbymonth)` Allows an admin to view orders in a specific month
+
+`router.get("/medicines", getMedicines);` Allows an admin to view all medicines in the system
+
+`router.get("/findMedicine", findMedicine);` Allows an admin to get a specific medicine based on the medicine name
+
+`router.post("/acceptPharmacist", acceptPharmacist);` allows an admin to accept a pharmacist application.
+
+`router.post("/rejectPharmacist", rejectPharmacist);` Allows an admin to reject a pharmacist application.
 
 </details>
 
