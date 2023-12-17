@@ -331,6 +331,21 @@ const clearCart = async (req, res) => {
 </details>
 
 
+<details>
+    <summary>
+        Doctor Routes (/doctor)
+    </summary>
+
+    
+`router.post("/createPatient", submitPrescriptionToPharmacy);` The doctor creates an account for the patient and puts the medicine in cart if the patient does not have an account otherwise puts the medicine in the cart directly
+
+`router.get("/chat/getPatients/", getPatients);` fetches a list of all patients that the pharmacist can chat with.
+
+`router.get("/chat/getPharmacist/", getPharmacist);` fetches a list of all pharmacist that a doctor or a patient can chat with.
+
+</details>
+
+
 ## 3.2 | Testing:
 
 We used Postman to test our different API endpoints.
