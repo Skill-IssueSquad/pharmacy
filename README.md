@@ -347,7 +347,7 @@ const clearCart = async (req, res) => {
 
 <details>
     <summary>
-        Patient Routes (/pharmacist/medicines)
+        pharmacist Routes (/pharmacist/medicines)
     </summary>
 
     
@@ -366,6 +366,33 @@ const clearCart = async (req, res) => {
 `router.post('/getWalletBalance',getWalletBalancepharmacist); ` retrieves the wallet balance of a specific pharmacist 
 
 </details>
+
+
+
+
+
+
+
+<details>
+    <summary>
+        patient extra Routes (/medicine)
+    </summary>
+
+    
+`router.get('/' , medicineController.getAllMedicine)` Fetches all medicines
+
+`router.get('/searchByName/:name?' , medicineController.getMedicineByName)` fillter on the medicines by a specific name
+
+`router.get('/searchByMedial_use/:medical_use?' , medicineController.getMedicineByMedicalUse)` fillter on the medicines by a specific medical usage
+
+`router.post('/addToCart/:userName/:medicineId/:quantity' , medicineController.AddToCart);` Adds the selected medicine to the patient cart
+
+`router.post('/getArrayMedicinesByID',medicineController.getArrayOfMedicine);` returns the medicines in the cart of the patient
+
+</details>
+
+
+
 
 
 <details>
@@ -436,6 +463,8 @@ const clearCart = async (req, res) => {
 `router.post("/verifyOTP")` Allows for OTP verification
 
 </details>
+
+
 
 
 ## 3.2 | Testing:
