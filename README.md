@@ -135,10 +135,47 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 <details>
  
  <summary>Pharmacist chat with a patient</summary>
-
  
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/3ccb12f1-90b6-4937-a6d9-64087fd52143)
+
 </details>
+
+
+<details>
+ 
+ <summary>Patient can buy medicines</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/bc8b4d21-946e-4752-863b-88fa892908fd)
+
+
+</details>
+
+
+<details>
+ <summary>Cart of the patient</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/7116c799-dde6-4d92-ab50-933af2198f36)
+
+ 
+</details>
+
+
+<details>
+ <summary>Check out of the patient</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/c3b1a426-e8f7-4dad-92de-7eaa10dd9f8e)
+
+
+ 
+</details>
+
+<details>
+ <summary>Patient can view orders</summary>
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/c3b1a426-e8f7-4dad-92de-7eaa10dd9f8e)
+
+ </details>
+
 
 ### Code Examples
 <details>
