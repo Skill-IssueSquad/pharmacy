@@ -4,7 +4,7 @@ const Pharmacist = require("../models/Pharmacist");
 const nodeMailer = require("nodemailer");
 
 const sendEmailFunc = async (email, message, subject) => {
-  const transporter = await nodeMailer.createTransport({
+  const transporter = nodeMailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
     port: 465,
@@ -18,26 +18,73 @@ const sendEmailFunc = async (email, message, subject) => {
     },
   });
 
-  return await transporter
-    .sendMail({
-      from: "SkillIssue <el7a2ni.virtual@gmail.com>",
-      to: email,
-      subject: subject,
-      text: message,
-    })
-    .then((info) => {
-      if (info) {
-        console.log("email sent");
-        return true;
-      }
-    })
-    .catch((err) => {
-      if (err) {
-        console.log("it has an error", err);
-        return false;
-      }
-    });
+  // call addNotificationFunc
+  let res = await addNotificationFunc(email, subject, message);
+  console.log(res.message);
+
+  if (res.success) {
+    return await transporter
+      .sendMail({
+        from: "SkillIssue <el7a2ni.virtual@gmail.com>",
+        to: email,
+        subject: subject,
+        text: message,
+      })
+      .then((info) => {
+        if (info) {
+          console.log("email sent");
+          return true;
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log("it has an error");
+          return false;
+        }
+      });
+  } else {
+    return false;
+  }
 };
+
+
+
+const addNotificationFunc = async (email, title, notification) => {
+  // Extract other health record properties from the request body
+
+  try {
+    // Fetch existing health records
+    const patient = await Patient.findOne({ email });
+
+    if (!patient) {
+      console.log("Patient not found:", req.params.username);
+
+      return {
+        success: false,
+        message: "Patient not found",
+        data: null,
+      };
+    }
+    let isSeen = false;
+    patient.notifications.push({ isSeen, title, notification });
+
+    const updatedPatient = await patient.save();
+
+    return {
+      success: true,
+      message: "Notification added successfully",
+      data: updatedPatient,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+};
+
+
 
 const submitPrescriptionToPharmacy = async (req, res) => {
   try {
