@@ -545,9 +545,23 @@ We used Postman to test our different API endpoints.
 ```
 
 
-API endpoint: http://localhost:8001/patient/clearCart
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/062565b0-2e59-4d02-b896-cf5581547d16)
+
+
+| Element         | Input                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Test API:       | `http://localhost:8001/patient/clearCart`                                                                                     |
+| Test Body JSON: | `{"username":"omarS"}` |
+
+### Expected reply JSON:
+
+```bash
+{
+    "success": true,
+    "message": "Cart Cleared",
+    "data": {}
+}
 
 ## 3.3 | Contribution:
 
