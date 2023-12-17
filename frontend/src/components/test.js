@@ -28,6 +28,7 @@ const MultiLevelFilterTable = () => {
   const [getRender, setRender] = useState(false);
   const [hashMap, setHashMap] = useState({});
   const [prescriptionMedicines, setPrescriptionMedicines] = useState([]);
+  const [disableSave, setDisableSave] = useState(true);
 
   const [cart, setCart] = useState({
     medicines: [],
@@ -68,27 +69,6 @@ const MultiLevelFilterTable = () => {
     getPrescriptionMedicines(userName);
   }, []);
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const updateHashMap = (key, value) => {
     setHashMap((prevHashMap) => {
@@ -131,8 +111,9 @@ const MultiLevelFilterTable = () => {
       discount: 0,
       netPrice: 0,
     })
+    setDisableSave(true);
+    alert("Cart has been saved successfully");
   };
-
 
 
   const SaveCartToDB = (username,cart) => fetch('http://localhost:8001/patient/saveCart', {
@@ -162,42 +143,31 @@ const MultiLevelFilterTable = () => {
     .catch((error) => console.error('Error Saving Cart to the Database :', error));
 
 
-
-
-
-
-
-
-
-
-
-  const handleInput = (event, itemId, maxQuantity) => {
-    const inputElement = event.target;
-    let enteredValue = parseInt(inputElement.value, 10);
-  
-    // Check if the entered value is a number
-    if (isNaN(enteredValue)) {
-      enteredValue = 0;
-    }
-  
-    // Ensure the entered value is within the specified range
-    enteredValue = Math.max(0, Math.min(enteredValue, maxQuantity));
-  
-    // Update the input value
-    inputElement.value = enteredValue;
-    
-    updateHashMap(itemId,enteredValue);
-    
-    // You can store or handle the entered value and itemId as needed
-    // For example, you might want to update the corresponding item in your state.
-    // handleItemQuantityChange(itemId, enteredValue);
+    const handleInput = (event, itemId, maxQuantity) => {
+        const inputElement = event.target;
+        let enteredValue = parseInt(inputElement.value, 10);
+      
+        // Check if the entered value is a number
+        if (isNaN(enteredValue)) {
+          enteredValue = 0;
+        }
+      
+        // Ensure the entered value is within the specified range
+        enteredValue = Math.max(0, Math.min(enteredValue, maxQuantity));
+      
+        // Update the input value
+        inputElement.value = enteredValue;
+        
+        updateHashMap(itemId,enteredValue);
+        
+        // You can store or handle the entered value and itemId as needed
+        // For example, you might want to update the corresponding item in your state.
+        // handleItemQuantityChange(itemId, enteredValue);
   };
 
 
   
   const addToCart = (id,medicineName,prescription) => {
-
-
 
     if(prescription){
 
@@ -215,20 +185,20 @@ const MultiLevelFilterTable = () => {
         }
 
       }
-
-
-
       
     }
 
 
 
-  console.log(hashMap[id]);
-    if(hashMap[id] === undefined || hashMap[id] === 0)
-    return;
+    console.log(hashMap[id]);
+    if(hashMap[id] === undefined || hashMap[id] === 0){
+      alert("Please choose an amount");
+      return;
+    }
     const existingMedicineIndex = cart.medicines.findIndex(
       (medicine) => medicine.medicine_id === id
     );
+
   
     if (existingMedicineIndex !== -1) {
       
@@ -256,8 +226,9 @@ const MultiLevelFilterTable = () => {
         ...prevCart,
         medicines: [...prevCart.medicines, newMedicine],
       }));
-    }
-
+    }    
+    alert("Medicine added to cart. Please save your cart before proceeding to checkout.");
+    setDisableSave(false);
     // Calculate totalPrice, netPrice, and update the state
    // const totalPrice = calculateTotalPrice(cart.medicines);
     //const netPrice = totalPrice - 0;
@@ -359,15 +330,15 @@ const MultiLevelFilterTable = () => {
   };
   
   const tableHeaders = [
-    "medicineName",
-    "description",
-    "medicinalUsage",
-    "activeIngredients",
-    "price",
-    "picture",
+    "Medicine",
+    "Description",
+    "Usage",
+    "Active Ingredients",
+    "Price",
+    "Picture",
     "Status",
     "Quantity",
-    "Add To Cart"
+    "Purchase"
   ];
 
   const filteredData = data.filter((item) => {
@@ -383,32 +354,31 @@ const MultiLevelFilterTable = () => {
        <div style={{ marginBottom: '5px' }}>
         <ResponsiveAppBar button={"Home"}/>
       </div>
-    <div style={{ paddingTop:'30px',display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column'}} > 
+    <div style={{ paddingTop:'40px',display: 'flex' ,alignItems:'center',justifyContent:'center',flexDirection: 'column', }} > 
       <div style={{ display: 'flex' ,alignItems:'center',justifyContent:'center'}}>
+     <h1 style={{fontWeight:'400', fontSize: '30px', marginLeft:'-400px' ,marginRight: '40px', marginTop:'5px', position:'relative'}}>Available Medicines</h1>
       <TextField
-        label="Filter by medicineName"
+        label="Filter by Name"
         name="medicineName"
         value={filter.medicineName}
         onChange={handleFilterChange}
       />
       <TextField style={{marginLeft:'50px'}}
-        label="Filter by medicinalUsage"
+        label="Filter by Usage"
         name="medicinalUsage"
         value={filter.medicinalUsage}
         onChange={handleFilterChange}
       />
-
-     <button style={{marginLeft:'50px' ,color:'black'}} onClick={viewCart}><a  href="/Cart"  style={{textDecoration: 'none',color: 'black'}} >View Cart </a></button> 
-      <button style={{marginLeft:'50px'}} onClick={saveCart}>Save Cart </button>
+      <Button style={{marginLeft:'50px'}} onClick={saveCart} variant="contained" disabled={disableSave}>Save Cart </Button>
 
     </div>
     <div>
-      <TableContainer component={Paper}>
-        <Table style={{ width: '1500px' ,height:'1000px'}}>
-          <TableHead sx = {{padding : "64px"} }>
-            <TableRow >
+      <TableContainer component={Paper} style={{width:1400, height:520, marginTop: "25px", border: '1px solid blue',  }}>
+        <Table style={{ width: '1400px' ,height:'1000px', tableLayout: 'fixed'}}>
+          <TableHead sx = {{padding : "0px", } }>
+            <TableRow sx = {{padding : "0px", }}>
               {tableHeaders.map((header) => (
-                <TableCell key={header}  sx = {{padding : "64px"}}>
+                <TableCell key={header}  sx = {{padding : "20px",textAlign: 'center', borderColor:'blue', position: 'sticky', top: 0, background: '#fff', zIndex: 1, fontWeight:'bold' }}>
                   {header}{" "}
                   
                 </TableCell>
@@ -417,11 +387,11 @@ const MultiLevelFilterTable = () => {
           </TableHead>
           <TableBody>
   {filteredData.map((item) => (
-    <TableRow key={item._id["$oid"]}>
-      <TableCell style={{textAlign:'center'}}>{item.medicineName}</TableCell>
-      <TableCell style={{textAlign:'center'}}>{item.description}</TableCell>
-      <TableCell style={{textAlign:'center'}}>{item.medicinalUsage}</TableCell>
-      <TableCell style={{textAlign:'center'}}>
+    <TableRow key={item._id["$oid"]} sx = {{padding : "0px", borderColor:'blue'}}>
+      <TableCell style={{textAlign:'center', padding:'0px', borderColor:'blue',}}>{item.medicineName}</TableCell>
+      <TableCell style={{textAlign:'center', padding:'0px', borderColor:'blue',}}>{item.description}</TableCell>
+      <TableCell style={{textAlign:'center', borderColor:'blue',}}>{item.medicinalUsage}</TableCell>
+      <TableCell style={{textAlign:'center', padding:'10px', borderColor:'blue',}}>
       <ul>
                   {item.activeIngredients.map((ingredient) => (
                     <li key={ingredient._id}>
@@ -432,10 +402,10 @@ const MultiLevelFilterTable = () => {
                 </ul>
                 </TableCell>
 
-      <TableCell style={{textAlign:'center'}}>{item.price}</TableCell>
-     <TableCell style={{textAlign:'center'}} ><img src = {item.picture } width = "100px"></img></TableCell>
-     <TableCell style={{ textAlign: 'center' }}>{item.quantity > 0 ? 'Available' : 'Out of Stock'}</TableCell>
-     <TableCell style={{ textAlign: 'center' }}>
+      <TableCell style={{textAlign:'center', borderColor:'blue',}}>{item.price}</TableCell>
+     <TableCell style={{textAlign:'center', borderColor:'blue',}} ><img src = {item.picture } width = "100px"></img></TableCell>
+     <TableCell style={{ textAlign: 'center', borderColor:'blue', }}>{item.quantity > 0 ? 'Available' : 'Out of Stock'}</TableCell>
+     <TableCell style={{ textAlign: 'center', borderColor:'blue', }}>
   <input
     type="number"
     id={`quantity-${item.id}`} 
@@ -447,16 +417,16 @@ const MultiLevelFilterTable = () => {
     value={hashMap[item._id] || ""}
 
   />
-</TableCell>     <TableCell style={{ textAlign: 'center' }}> {item.quantity > 0 ? (
+</TableCell>     <TableCell style={{ textAlign: 'center' , borderColor:'blue',}}> {item.quantity > 0 ? (
         <>
     
-      <button style={{width :"90px",height:"50px",backgroundColor:""}}  onClick={() => addToCart(item._id,item.medicineName,item.requiresPrescription)} disabled={item.quantity === 0}>
+      <Button style={{width :"50px",height:"50px",backgroundColor:""}}  onClick={() => addToCart(item._id,item.medicineName,item.requiresPrescription)} disabled={item.quantity === 0}>
         Add To Cart
              
-      </button>
+      </Button>
     </>
   ) : (
-    <button style={{width :"90px" ,height:"50px"}} onClick={() =>viewAlternatives(item.medicineName)}>View Alternatives</button>
+    <Button style={{width :10 ,height:"50px",}} color="secondary" onClick={() =>viewAlternatives(item.medicineName)}>View Alternatives</Button>
   )}
 </TableCell>
       </TableRow>
