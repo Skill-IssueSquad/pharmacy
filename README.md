@@ -366,6 +366,7 @@ We used Postman to test our different API endpoints.
 }
 ```
 
+
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/f14c73df-18ea-4b19-9a51-f84ad4f78281)
 
 
@@ -543,7 +544,6 @@ We used Postman to test our different API endpoints.
     }
 }
 ```
-
 
 
 ![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/062565b0-2e59-4d02-b896-cf5581547d16)
