@@ -133,6 +133,15 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 ## 2.2 | Code examples and screenshots:
 <details>
+ 
+ <summary>Pharmacist chat with a patient</summary>
+
+ 
+![image](https://github.com/Skill-IssueSquad/pharmacy/assets/98961039/3ccb12f1-90b6-4937-a6d9-64087fd52143)
+</details>
+
+### Code Examples
+<details>
 <summary>Get Cart of Patient</summary>
 
 ```
