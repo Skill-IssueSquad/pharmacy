@@ -176,9 +176,6 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
  </details>
 
-
-### Code Examples
-
 ### Project structure:
 <details>
     <summary> Project structure  </summary>
@@ -187,7 +184,7 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
 </details>
 
-
+### Code Examples
 
 <details>
 <summary>Get Cart of Patient</summary>
