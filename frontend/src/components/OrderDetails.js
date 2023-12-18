@@ -18,6 +18,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { json } from 'react-router-dom';
+import { MDBCard } from 'mdb-react-ui-kit';
 
 const OrderDetails = () => {
   const [order, setOrder] = useState([]);
@@ -193,102 +194,100 @@ const OrderDetails = () => {
   return (
     <div>
       <ResponsiveAppBar button={"Orders"}/>
-
-    <Container maxWidth="md">
-      
-      <Typography variant="h4" align="center" gutterBottom>
+      <Typography variant="h4" align="center" gutterBottom style={{marginTop: '20px'}}>
         Order Details
       </Typography>
-      <Typography variant="h6" gutterBottom>
-        Order Information
-      </Typography>
-      <FormControl style={{ marginBottom: 20, minWidth: 120 }}>
-        <InputLabel id="order-select-label">Select Order</InputLabel>
-        <Select
-          labelId="order-select-label"
-          id="order-select"
-          value={selectedOrder ? selectedOrder.id : ''}
-          onChange={handleOrderChange}
-        >
-          {order.map((orderItem) => (
-            <MenuItem key={orderItem.id} value={orderItem.id}>
-              Order {orderItem.id}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Order Number</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Discount</TableCell>
-              <TableCell>Net Price</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {order.map((orderItem, index) => (
-              <TableRow key={index}>
-                {orderItem.id === selectedOrder?.id ? (
-                  <>
-                    <TableCell>{orderItem.id}</TableCell>
-                    <TableCell>{orderItem.status}</TableCell>
-                    <TableCell>{formatDate(orderItem.date)}</TableCell>
-                    <TableCell>{orderItem.discount}</TableCell>
-                    <TableCell>{orderItem.netPrice}</TableCell>
-                    <TableCell><button  disabled={orderItem.status === "cancelled"} onClick={DeleteOrder}>Cancel Order</button></TableCell>
-                  </>
-                ) : null}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Typography variant="h6" style={{ marginTop: 20 }} gutterBottom>
-        Delivery Address
-      </Typography>
-      {selectedOrder && (
-        <Typography>
-          {formatAddress(selectedOrder.deliveryAddress)}
+      <MDBCard style={{width:540, height:500, left:'450px', top: '20px'}}>
+        <Typography variant="h6" gutterBottom style={{marginLeft: '20px', marginTop:'20px'}}>
+          Order Information
         </Typography>
-      )}
-      <Typography variant="h6" style={{ marginTop: 20 }} gutterBottom>
-        Order Items
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Medicine ID</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Total Price</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {selectedOrder &&
-              selectedOrder.cart.medicines.map((item, index) => (
+        <FormControl style={{ marginBottom: 20,marginLeft:'20px', width: 500 }}>
+          <InputLabel id="order-select-label">Select Order</InputLabel>
+          <Select
+            labelId="order-select-label"
+            id="order-select"
+            value={selectedOrder ? selectedOrder.id : ''}
+            onChange={handleOrderChange}
+          >
+            {order.map((orderItem) => (
+              <MenuItem key={orderItem.id} value={orderItem.id}>
+                Order {orderItem.id}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <TableContainer component={Paper} style={{width:480,  marginLeft:'30px',backgroundColor: "#f0f0f0", }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Order Number</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Discount</TableCell>
+                <TableCell>Net Price</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {order.map((orderItem, index) => (
                 <TableRow key={index}>
-                  <TableCell>
-                    {medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.medicineName || 'N/A'}
-                  </TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>
-                    {medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price || 0}
-                  </TableCell>
-                  <TableCell>
-                    {(medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price || 0) * item.quantity || 0}
-                  </TableCell>
+                  {orderItem.id === selectedOrder?.id ? (
+                    <>
+                      <TableCell>{orderItem.id}</TableCell>
+                      <TableCell>{orderItem.status}</TableCell>
+                      <TableCell>{formatDate(orderItem.date)}</TableCell>
+                      <TableCell>{orderItem.discount}</TableCell>
+                      <TableCell>{orderItem.netPrice}</TableCell>
+                      <TableCell><button  disabled={orderItem.status === "cancelled"} onClick={DeleteOrder}>Cancel Order</button></TableCell>
+                    </>
+                  ) : null}
                 </TableRow>
               ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Typography variant="h6" style={{ marginTop: 20, marginLeft:'20px' }} gutterBottom>
+          Delivery Address
+        </Typography>
+        {selectedOrder && (
+          <Typography>
+            {formatAddress(selectedOrder.deliveryAddress)}
+          </Typography>
+        )}
+        <Typography variant="h6" style={{ marginTop: 20,  marginLeft:'20px' }} gutterBottom>
+          Order Items
+        </Typography>
+        <TableContainer component={Paper} style={{width:450,  marginLeft:'40px', backgroundColor: "#f0f0f0", }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Medicine ID</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Total Price</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {selectedOrder &&
+                selectedOrder.cart.medicines.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.medicineName || 'N/A'}
+                    </TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>
+                      {medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price || 0}
+                    </TableCell>
+                    <TableCell>
+                      {(medicines.flat().find((medicine) => medicine._id === item.medicine_id)?.price || 0) * item.quantity || 0}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </MDBCard>
     </div>
   );
 }};

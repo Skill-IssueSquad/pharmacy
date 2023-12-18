@@ -176,18 +176,15 @@ Eslint link: [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeum
 
  </details>
 
-
-### Code Examples
-
 ### Project structure:
 <details>
     <summary> Project structure  </summary>
  
-[View Here](https://raw.githubusercontent.com/Skill-IssueSquad/pharmacy/MileStone_Three_Branch_Patient/Structure_pharmacy.txt?token=GHSAT0AAAAAACHBMQ76GZJVB4QMEYP4QL2UZL6KRIA)
+[View Here](https://github.com/Skill-IssueSquad/pharmacy/blob/MileStone_Three_Branch_Patient/Structure_pharmacy.txt)
 
 </details>
 
-
+### Code Examples
 
 <details>
 <summary>Get Cart of Patient</summary>

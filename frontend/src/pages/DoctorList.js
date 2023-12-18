@@ -44,9 +44,9 @@ const DocChat = () => {
   return (
     <div>
       <Navbar button={"Chat with Doctor"}/>
-      <h1>Chat with doctors</h1>
+      <h1 style={{marginLeft: 500}}>Chat with doctors</h1>
       <div style={{ maxWidth: 300 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{marginLeft: 500}}>
           <Table sx={{ maxWidth: 300 }} aria-label="simple table">
             <TableHead>
               <TableRow>
