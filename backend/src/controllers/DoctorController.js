@@ -204,7 +204,15 @@ const submitPrescriptionToPharmacy = async (req, res) => {
 
     var subject = "Pharmacy Cart";
     var message = `Dear ${patientPharmacy.name},\n\nYour doctor ( ${docName} ) has added prescription medicines into your cart in the pharmacy.\n\nBest Regards,\nSkillIssue Team`;
-    let sent = await sendEmailFunc(patientPharmacy.email, message, subject);
+    var email = patientPharmacy.email;
+    let sent = await fetch("http://localhost:8000/notifyPatient", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message, subject, email }),
+    });
     if (!sent) {
       res.status(500).json({
         success: false,
